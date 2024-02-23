@@ -1,117 +1,138 @@
--- 1.1 Select the names of all the products in the store.
-select Name from Products;
-
--- 1.2 Select the names and the prices of all the products in the store.
-select name, price from products;
-
--- 1.3 Select the name of the products with a price less than or equal to $200.
-select name from products where price <= 200;
+--3.1 Select all warehouses.
+select * from warehouses;
 
 
--- 1.4 Select all the products with a price between $60 and $120.
-select * from products where price between 60 and 120;
-                        -- OR
-select * from products where price >= 60 and price <= 120;
+--3.2 Select all boxes with a value larger than $150.
+select * from boxes where Value>150;
 
--- 1.5 Select the name and price in cents (i.e., the price must be multiplied by 100).
-select name, price*100 from products;
+
+--3.3 Select all distinct contents in all the boxes.
+select distinct contents from boxes;
+
+
+--3.4Select the average value of all the boxes.
+select avg(value) from boxes;
+
+
+--3.5 Select the warehouse code and the average value of the boxes in each warehouse.
+select warehouse, avg(value) from boxes group by warehouse;
+
+
+--3.6 Same as previous exercise, but select only those warehouses where the average value of the boxes is greater than 150.
+select warehouse, avg(value) 
+from boxes 
+group by warehouse
+having avg(value)> 150;
+
+
+--3.7 Select the code of each box, along with the name of the city the box is located in.
+select boxes.code, warehouses.location
+from boxes join warehouses
+on boxes.Warehouse = Warehouses.Code;
+
+
+--3.8 Select the warehouse codes, along with the number of boxes in each warehouse. 
+-- Optionally, take into account that some warehouses are empty (i.e., the box count should show up as zero, instead of omitting the warehouse from the result).
+select Warehouse, count(*) 
+from boxes 
+group by warehouse;
+
+
+--3.9 Select the codes of all warehouses that are saturated (a warehouse is saturated if the number of boxes in it is larger than the warehouse's capacity).
+select Code
+from warehouses join (select warehouse temp_a, count(*) temp_b from boxes group by warehouse) temp
+on (warehouses.code = temp.temp_a)
+where warehouses.Capacity<temp.temp_b;
+
+	--	OR
+
+SELECT Code
+   FROM Warehouses
+   WHERE Capacity <
+   (
+     SELECT COUNT(*)
+       FROM Boxes
+       WHERE Warehouse = Warehouses.Code
+   );
+
+
+
+--3.10 Select the codes of all the boxes located in Chicago.
+
+select Boxes.code 
+from boxes join Warehouses
+on boxes.warehouse = warehouses.code
+where warehouses.location = 'Chicago';
+
+/* Without subqueries */
+ SELECT Boxes.Code
+   FROM Warehouses LEFT JOIN Boxes
+   ON Warehouses.Code = Boxes.Warehouse
+   WHERE Location = 'Chicago';
+
+ /* With a subquery */
+ SELECT Code
+   FROM Boxes
+   WHERE Warehouse IN
+   (
+     SELECT Code
+       FROM Warehouses
+       WHERE Location = 'Chicago'
+   );
+
+
+--3.11 Create a new warehouse in New York with a capacity for 3 boxes.
+INSERT INTO Warehouses VALUES (6, 'New York', 3);
+
+
+--3.12 Create a new box, with code "H5RT", containing "Papers" with a value of $200, and located in warehouse 2.
+INSERT INTO Boxes VALUES('H5RT', 'Papers', 200, 2);
+
+
+--3.13 Reduce the value of all boxes by 15%.
+update boxes
+set value = value * 0.85;
+
+
+--3.14 Remove all boxes with a value lower than $100.
+delete from boxes 
+where value < 100;
+
+-- 3.15 Remove all boxes from saturated warehouses.
+delete from boxes
+where warehouse in
+(
+SELECT Code
+   FROM Warehouses
+   WHERE Capacity <
+   (
+     SELECT COUNT(*)
+       FROM Boxes
+       WHERE Warehouse = Warehouses.Code
+   )
+);
+
+-- 3.16 Add Index for column "Warehouse" in table "boxes"
+-- !!!NOTE!!!: index should NOT be used on small tables in practice
+CREATE INDEX INDEX_WAREHOUSE ON Boxes (warehouse);
+
+-- 3.17 Print all the existing indexes
+-- !!!NOTE!!!: index should NOT be used on small tables in practice
+
+-- MySQL
+SHOW INDEX FROM Boxes FROM mydb;
+SHOW INDEX FROM mydb.Boxes;
+
+-- SQLite
+.indexes Boxes
 -- OR
-select name, concat(price*100, ' cents') from products;
+SELECT * FROM SQLITE_MASTER WHERE type = "index";
 
--- 1.6 Compute the average price of all the products.
-select avg(price) from products;
-              -- OR
-select sum(price)/count(price) from products;
+-- Oracle
+select INDEX_NAME, TABLE_NAME, TABLE_OWNER 
+from SYS.ALL_INDEXES 
+order by TABLE_OWNER, TABLE_NAME, INDEX_NAME
 
--- 1.9 Select the name and price of all products with a price larger than or equal to $180, and sort first by price (in descending order), and then by name (in ascending order).
-select name, price from products where price>=180 order by price desc, name asc;
-
--- 1.10 Select all the data from the products, including all the data for each product's manufacturer.
-select a.*, b.name from products a join Manufacturers b on(a.manufacturer = b.code);
-                                    -- OR
-select a.*, b.name from products a, Manufacturers b where a.manufacturer = b.code;
-
--- 1.11 Select the product name, price, and manufacturer name of all the products.
-select a.name, a.price, b.name from products a join Manufacturers b on(a.manufacturer = b.code);
-                                  -- OR
-SELECT Products.Name, Price, Manufacturers.Name FROM Products INNER JOIN Manufacturers
-ON Products.Manufacturer = Manufacturers.Code;
-
--- 1.12 Select the average price of each manufacturer's products, showing only the manufacturer's code.
-SELECT AVG(Price), Manufacturer FROM Products GROUP BY Manufacturer;
-
--- 1.13 Select the average price of each manufacturer's products, showing the manufacturer's name.
-select avg(a.price), b.name 
-from Products a join Manufacturers b 
-on a.manufacturer = b.code
-group by b.name;
-
-
--- 1.14 Select the names of manufacturer whose products have an average price larger than or equal to $150.
-select avg(a.price), b.name 
-from Manufacturers b join Products a 
-on b.code = a.Manufacturer
-group by b.name
-having avg(a.price)>=150;
-
--- 1.15 Select the name and price of the cheapest product.
-select name, price from Products 
-where price = (
-select min(price)
-from products);
-                -- OR
-SELECT name, price
-FROM Products
-ORDER BY price ASC
-LIMIT 1;
-
--- 1.16 Select the name of each manufacturer along with the name and price of its most expensive product.
-select max_price_mapping.name as manu_name, max_price_mapping.price, products_with_manu_name.name as product_name
-from 
-    (SELECT Manufacturers.Name, MAX(Price) price
-     FROM Products, Manufacturers
-     WHERE Manufacturer = Manufacturers.Code
-     GROUP BY Manufacturers.Name)
-     as max_price_mapping
-   left join
-     (select products.*, manufacturers.name manu_name
-      from products join manufacturers
-      on (products.manufacturer = manufacturers.code))
-      as products_with_manu_name
- on
-   (max_price_mapping.name = products_with_manu_name.manu_name
-    and
-    max_price_mapping.price = products_with_manu_name.price);
-
-                            -- OR
-
-with manufacturer_insight as (
-	SELECT m.name as manufacturer_name, p.name as product_name, p.price as product_price,
-  		dense_rank() over (partition by m.name ORDER by p.price desc) as product_rank
-  	from Manufacturers m 
-  	join Products p on m.Code = p.Manufacturer
-)
-select manufacturer_name, product_name, product_price
-from manufacturer_insight 
-WHERE product_rank = 1;
-
--- 1.17 Add a new product: Loudspeakers, $70, manufacturer 2.
-insert into Products values (11, 'Loudspeakers', 70, 2);
-
-
--- 1.18 Update the name of product 8 to "Laser Printer".
-update products
-set name = 'Laser Printer'
-where code=8;
-
--- 1.19 Apply a 10% discount to all products.
-update products
-set price=price*0.9;
-
-
--- 1.20 Apply a 10% discount to all products with a price larger than or equal to $120.
-update products
-set price = price * 0.9
-where price >= 120; 
-
-
+-- 3.18 Remove (drop) the index you added just
+-- !!!NOTE!!!: index should NOT be used on small tables in practice
+DROP INDEX INDEX_WAREHOUSE;
