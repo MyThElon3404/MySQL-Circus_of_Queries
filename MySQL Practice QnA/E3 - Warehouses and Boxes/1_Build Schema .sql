@@ -1,41 +1,41 @@
--- Create tables -> Product & Manufacturer
+-- Create tables -> Warehouses & Boxes
 -- ===============================================================================
 
-drop table if EXISTS Manufacturers;
-CREATE TABLE Manufacturers (
-  Code INTEGER,
-  Name VARCHAR(255) NOT NULL,
-  PRIMARY KEY (Code)   
-);
+drop table if EXISTS Warehouses;
+CREATE TABLE Warehouses (
+   Code INTEGER NOT NULL,
+   Location VARCHAR(255) NOT NULL ,
+   Capacity INTEGER NOT NULL,
+   PRIMARY KEY (Code)
+ );
 
-drop table if EXISTS Products;
-CREATE TABLE Products (
-  Code INTEGER,
-  Name VARCHAR(255) NOT NULL ,
-  Price DECIMAL NOT NULL,
-  Manufacturer INTEGER NOT NULL,
-  PRIMARY KEY (Code), 
-  FOREIGN KEY (Manufacturer) REFERENCES Manufacturers(Code)
-);
-
-INSERT INTO Manufacturers(Code,Name) VALUES(1,'Sony');
-INSERT INTO Manufacturers(Code,Name) VALUES(2,'Creative Labs');
-INSERT INTO Manufacturers(Code,Name) VALUES(3,'Hewlett-Packard');
-INSERT INTO Manufacturers(Code,Name) VALUES(4,'Iomega');
-INSERT INTO Manufacturers(Code,Name) VALUES(5,'Fujitsu');
-INSERT INTO Manufacturers(Code,Name) VALUES(6,'Winchester');
-
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(1,'Hard drive',240,5);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(2,'Memory',120,6);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(3,'ZIP drive',150,4);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(4,'Floppy disk',5,6);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(5,'Monitor',240,1);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(6,'DVD drive',180,2);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(7,'CD drive',90,2);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(8,'Printer',270,3);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(9,'Toner cartridge',66,3);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(10,'DVD burner',180,2);
-
+drop table if EXISTS Boxes;
+CREATE TABLE Boxes (
+    Code CHAR(4) NOT NULL,
+    Contents VARCHAR(255) NOT NULL ,
+    Value REAL NOT NULL,
+    Warehouse INTEGER NOT NULL,
+    PRIMARY KEY (Code),
+    FOREIGN KEY (Warehouse) REFERENCES Warehouses(Code)
+ );
+ 
+ INSERT INTO Warehouses(Code,Location,Capacity) VALUES(1,'Chicago',3);
+ INSERT INTO Warehouses(Code,Location,Capacity) VALUES(2,'Chicago',4);
+ INSERT INTO Warehouses(Code,Location,Capacity) VALUES(3,'New York',7);
+ INSERT INTO Warehouses(Code,Location,Capacity) VALUES(4,'Los Angeles',2);
+ INSERT INTO Warehouses(Code,Location,Capacity) VALUES(5,'San Francisco',8);
+ 
+ INSERT INTO Boxes(Code,Contents,Value,Warehouse) VALUES('0MN7','Rocks',180,3);
+ INSERT INTO Boxes(Code,Contents,Value,Warehouse) VALUES('4H8P','Rocks',250,1);
+ INSERT INTO Boxes(Code,Contents,Value,Warehouse) VALUES('4RT3','Scissors',190,4);
+ INSERT INTO Boxes(Code,Contents,Value,Warehouse) VALUES('7G3H','Rocks',200,1);
+ INSERT INTO Boxes(Code,Contents,Value,Warehouse) VALUES('8JN6','Papers',75,1);
+ INSERT INTO Boxes(Code,Contents,Value,Warehouse) VALUES('8Y6U','Papers',50,3);
+ INSERT INTO Boxes(Code,Contents,Value,Warehouse) VALUES('9J6F','Papers',175,2);
+ INSERT INTO Boxes(Code,Contents,Value,Warehouse) VALUES('LL08','Rocks',140,4);
+ INSERT INTO Boxes(Code,Contents,Value,Warehouse) VALUES('P0H6','Scissors',125,1);
+ INSERT INTO Boxes(Code,Contents,Value,Warehouse) VALUES('P2T6','Scissors',150,2);
+ INSERT INTO Boxes(Code,Contents,Value,Warehouse) VALUES('TU55','Papers',90,5);
 
 
 
