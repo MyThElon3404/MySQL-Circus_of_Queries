@@ -81,7 +81,19 @@ from
  on
    (max_price_mapping.name = products_with_manu_name.manu_name
     and
-    max_price_mapping.price = products_with_manu_name.price); 
+    max_price_mapping.price = products_with_manu_name.price);
+
+                            -- OR
+
+with manufacturer_insight as (
+	SELECT m.name as manufacturer_name, p.name as product_name, p.price as product_price,
+  		dense_rank() over (partition by m.name ORDER by p.price desc) as product_rank
+  	from Manufacturers m 
+  	join Products p on m.Code = p.Manufacturer
+)
+select manufacturer_name, product_name, product_price
+from manufacturer_insight 
+WHERE product_rank = 1;
 
 -- 1.17 Add a new product: Loudspeakers, $70, manufacturer 2.
 insert into Products values (11, 'Loudspeakers', 70, 2);
