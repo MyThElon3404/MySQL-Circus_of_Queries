@@ -1,26 +1,28 @@
-- 1.1 Select the names of all the products in the store.
-- 1.2 Select the names and the prices of all the products in the store.
-- 1.3 Select the name of the products with a price less than or equal to $200.
-- 1.4 Select all the products with a price between $60 and $120.
-- 1.5 Select the name and price in cents (i.e., the price must be multiplied by 100).
-- 1.6 Compute the average price of all the products.
-- 1.7 Compute the average price of all products with manufacturer code equal to 2.
-- 1.8 Compute the number of products with a price larger than or equal to $180.
-- 1.9 Select the name and price of all products with a price larger than or equal to $180, and sort first by price (in descending order), and then by name (in ascending order).
-- 1.10 Select all the data from the products, including all the data for each product's manufacturer.
-- 1.11 Select the product name, price, and manufacturer name of all the products.
-- 1.12 Select the average price of each manufacturer's products, showing only the manufacturer's code.
-- 1.13 Select the average price of each manufacturer's products, showing the manufacturer's name.
-- 1.14 Select the names of manufacturers whose products have an average price larger than or equal to $150.
-- 1.15 Select the name and price of the cheapest product.
-- 1.16 Select the name of each manufacturer along with the name and price of its most expensive product.
-- 1.17 Add a new product: Loudspeakers, $70, manufacturer 2.
-- 1.18 Update the name of product 8 to "Laser Printer".
-- 1.19 Apply a 10% discount to all products.
-- 1.20 Apply a 10% discount to all products with a price larger than or equal to $120.
+- 3.1 Select all warehouses.
+- 3.2 Select all boxes with a value larger than $150.
+- 3.3 Select all distinct contents in all the boxes.
+- 3.4 Select the average value of all the boxes.
+- 3.5 Select the warehouse code and the average value of the boxes in each warehouse.
+- 3.6 Same as previous exercise, but select only those warehouses where the average value of the boxes is greater than 150.
+- 3.7 Select the code of each box, along with the name of the city the box is located in.
+- 3.8 Select the warehouse codes, along with the number of boxes in each warehouse. 
+    -  Optionally, take into account that some warehouses are empty (i.e., the box count should show up as zero, instead of omitting the warehouse from the result).
+- 3.9 Select the codes of all warehouses that are saturated (a warehouse is saturated if the number of boxes in it is larger than the warehouse's capacity).
+- 3.10 Select the codes of all the boxes located in Chicago.
+- 3.11 Create a new warehouse in New York with a capacity for 3 boxes.
+- 3.12 Create a new box, with code "H5RT", containing "Papers" with a value of $200, and located in warehouse 2.
+- 3.13 Reduce the value of all boxes by 15%.
+- 3.14 Remove all boxes with a value lower than $100.
+-  3.15 Remove all boxes from saturated warehouses.
+-  3.16 Add Index for column "Warehouse" in table "boxes"
+    -  !!!NOTE!!!: index should NOT be used on small tables in practice
+-  3.17 Print all the existing indexes
+    -  !!!NOTE!!!: index should NOT be used on small tables in practice
+-  3.18 Remove (drop) the index you added just
+    -  !!!NOTE!!!: index should NOT be used on small tables in practice
 
 ### **_Relational Schema:_**
-![Model](https://upload.wikimedia.org/wikipedia/commons/b/b2/Computer-store-db.png)
+![Model](https://upload.wikimedia.org/wikipedia/commons/4/47/Sql_warehouse.png)
 
 ### **_To know more-_** - 
-LINK: https://en.wikibooks.org/wiki/SQL_Exercises/The_computer_store
+Link: https://en.wikibooks.org/wiki/SQL_Exercises/The_warehouse
