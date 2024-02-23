@@ -1,33 +1,37 @@
 -- Create tables -> Product & Manufacturer
 -- ===============================================================================
-CREATE TABLE Departments (
-  Code INTEGER PRIMARY KEY,
-  Name varchar(255) NOT NULL ,
-  Budget decimal NOT NULL 
+
+drop table if EXISTS Manufacturers;
+CREATE TABLE Manufacturers (
+  Code INTEGER,
+  Name VARCHAR(255) NOT NULL,
+  PRIMARY KEY (Code)   
 );
 
-CREATE TABLE Employees (
-  SSN INTEGER PRIMARY KEY,
-  Name varchar(255) NOT NULL ,
-  LastName varchar(255) NOT NULL ,
-  Department INTEGER NOT NULL, 
-  foreign key (department) references Departments(Code) 
+drop table if EXISTS Products;
+CREATE TABLE Products (
+  Code INTEGER,
+  Name VARCHAR(255) NOT NULL ,
+  Price DECIMAL NOT NULL,
+  Manufacturer INTEGER NOT NULL,
+  PRIMARY KEY (Code), 
+  FOREIGN KEY (Manufacturer) REFERENCES Manufacturers(Code)
 );
 
-INSERT INTO Departments(Code,Name,Budget) VALUES(14,'IT',65000);
-INSERT INTO Departments(Code,Name,Budget) VALUES(37,'Accounting',15000);
-INSERT INTO Departments(Code,Name,Budget) VALUES(59,'Human Resources',240000);
-INSERT INTO Departments(Code,Name,Budget) VALUES(77,'Research',55000);
+INSERT INTO Manufacturers(Code,Name) VALUES(1,'Sony');
+INSERT INTO Manufacturers(Code,Name) VALUES(2,'Creative Labs');
+INSERT INTO Manufacturers(Code,Name) VALUES(3,'Hewlett-Packard');
+INSERT INTO Manufacturers(Code,Name) VALUES(4,'Iomega');
+INSERT INTO Manufacturers(Code,Name) VALUES(5,'Fujitsu');
+INSERT INTO Manufacturers(Code,Name) VALUES(6,'Winchester');
 
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('123234877','Michael','Rogers',14);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('152934485','Anand','Manikutty',14);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('222364883','Carol','Smith',37);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('326587417','Joe','Stevens',37);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('332154719','Mary-Anne','Foster',14);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('332569843','George','ODonnell',77);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('546523478','John','Doe',59);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('631231482','David','Smith',77);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('654873219','Zacary','Efron',59);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('745685214','Eric','Goldsmith',59);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('845657245','Elizabeth','Doe',14);
-INSERT INTO Employees(SSN,Name,LastName,Department) VALUES('845657246','Kumar','Swamy',14);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(1,'Hard drive',240,5);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(2,'Memory',120,6);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(3,'ZIP drive',150,4);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(4,'Floppy disk',5,6);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(5,'Monitor',240,1);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(6,'DVD drive',180,2);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(7,'CD drive',90,2);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(8,'Printer',270,3);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(9,'Toner cartridge',66,3);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(10,'DVD burner',180,2);
