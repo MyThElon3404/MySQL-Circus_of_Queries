@@ -1,41 +1,72 @@
--- Create tables -> Product & Manufacturer
+-- Create tables -> Scientists & Projects & AssignedTo
 -- ===============================================================================
 
-drop table if EXISTS Manufacturers;
-CREATE TABLE Manufacturers (
-  Code INTEGER,
-  Name VARCHAR(255) NOT NULL,
-  PRIMARY KEY (Code)   
+drop table if EXISTS Scientists;
+create table Scientists (
+  SSN int,
+  Name Char(30) not null,
+  Primary Key (SSN)
 );
 
-drop table if EXISTS Products;
-CREATE TABLE Products (
-  Code INTEGER,
-  Name VARCHAR(255) NOT NULL ,
-  Price DECIMAL NOT NULL,
-  Manufacturer INTEGER NOT NULL,
-  PRIMARY KEY (Code), 
-  FOREIGN KEY (Manufacturer) REFERENCES Manufacturers(Code)
+drop table if EXISTS Projects;
+Create table Projects (
+  Code Char(4),
+  Name Char(50) not null,
+  Hours int,
+  Primary Key (Code)
 );
 
-INSERT INTO Manufacturers(Code,Name) VALUES(1,'Sony');
-INSERT INTO Manufacturers(Code,Name) VALUES(2,'Creative Labs');
-INSERT INTO Manufacturers(Code,Name) VALUES(3,'Hewlett-Packard');
-INSERT INTO Manufacturers(Code,Name) VALUES(4,'Iomega');
-INSERT INTO Manufacturers(Code,Name) VALUES(5,'Fujitsu');
-INSERT INTO Manufacturers(Code,Name) VALUES(6,'Winchester');
+drop table if EXISTS AssignedTo;
+create table AssignedTo (
+  Scientist int not null,
+  Project char(4) not null,
+  Primary Key (Scientist, Project),
+  Foreign Key (Scientist) references Scientists (SSN),
+  Foreign Key (Project) references Projects (Code)
+);
 
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(1,'Hard drive',240,5);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(2,'Memory',120,6);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(3,'ZIP drive',150,4);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(4,'Floppy disk',5,6);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(5,'Monitor',240,1);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(6,'DVD drive',180,2);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(7,'CD drive',90,2);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(8,'Printer',270,3);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(9,'Toner cartridge',66,3);
-INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(10,'DVD burner',180,2);
+INSERT INTO Scientists(SSN,Name) 
+  VALUES(123234877,'Michael Rogers'),
+    (152934485,'Anand Manikutty'),
+    (222364883, 'Carol Smith'),
+    (326587417,'Joe Stevens'),
+    (332154719,'Mary-Anne Foster'),	
+    (332569843,'George ODonnell'),
+    (546523478,'John Doe'),
+    (631231482,'David Smith'),
+    (654873219,'Zacary Efron'),
+    (745685214,'Eric Goldsmith'),
+    (845657245,'Elizabeth Doe'),
+    (845657246,'Kumar Swamy');
 
+ INSERT INTO Projects ( Code,Name,Hours)
+ VALUES ('AeH1','Winds: Studying Bernoullis Principle', 156),
+       ('AeH2','Aerodynamics and Bridge Design',189),
+       ('AeH3','Aerodynamics and Gas Mileage', 256),
+       ('AeH4','Aerodynamics and Ice Hockey', 789),
+       ('AeH5','Aerodynamics of a Football', 98),
+       ('AeH6','Aerodynamics of Air Hockey',89),
+       ('Ast1','A Matter of Time',112),
+       ('Ast2','A Puzzling Parallax', 299),
+       ('Ast3','Build Your Own Telescope', 6546),
+       ('Bte1','Juicy: Extracting Apple Juice with Pectinase', 321),
+       ('Bte2','A Magnetic Primer Designer', 9684),
+       ('Bte3','Bacterial Transformation Efficiency', 321),
+       ('Che1','A Silver-Cleaning Battery', 545),
+       ('Che2','A Soluble Separation Solution', 778);
 
+ INSERT INTO AssignedTo ( Scientist, Project)
+   VALUES (123234877,'AeH1'),
+    (152934485,'AeH3'),
+    (222364883,'Ast3'),	   
+    (326587417,'Ast3'),
+    (332154719,'Bte1'),
+    (546523478,'Che1'),
+    (631231482,'Ast3'),
+    (654873219,'Che1'),
+    (745685214,'AeH3'),
+    (845657245,'Ast1'),
+    (845657246,'Ast2'),
+    (332569843,'AeH4');
 
 
