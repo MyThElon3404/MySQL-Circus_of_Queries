@@ -1,27 +1,22 @@
-- 2.1 Select the last name of all employees.
-- 2.2 Select the last name of all employees, without duplicates.
-- 2.3 Select all the data of employees whose last name is "Smith".
-- 2.4 Select all the data of employees whose last name is "Smith" or "Doe".
-- 2.5 Select all the data of employees that work in department 14.
-- 2.6 Select all the data of employees that work in department 37 or department 77.
-- 2.7 Select all the data of employees whose last name begins with an "S".
-- 2.8 Select the sum of all the departments' budgets.
-- 2.9 Select the number of employees in each department (you only need to show the department code and the number of employees).
-- 2.10 Select all the data of employees, including each employee's department's data.
-- 2.11 Select the name and last name of each employee, along with the name and budget of the employee's department.
-- 2.12 Select the name and last name of employees working for departments with a budget greater than $60,000.
-- 2.13 Select the departments with a budget larger than the average budget of all the departments.
-- 2.14 Select the names of departments with more than two employees.
-- 2.15 Very Important - Select the name and last name of employees working for departments with second lowest budget.
-- 2.16  Add a new department called "Quality Assurance", with a budget of $40,000 and departmental code 11. And Add an employee called "Mary Moore" in that department, with SSN 847-21-9811.
-- 2.17 Reduce the budget of all departments by 10%.
-- 2.18 Reassign all employees from the Research department (code 77) to the IT department (code 14).
-- 2.19 Delete from the table all employees in the IT department (code 14).
-- 2.20 Delete from the table all employees who work in departments with a budget greater than or equal to $60,000.
-- 2.21 Delete from the table all employees.
+- 5.1 Select the name of all the pieces. 
+- 5.2  Select all the providers' data. 
+- 5.3 Obtain the average price of each piece (show only the piece code and the average price).
+- 5.4  Obtain the names of all providers who supply piece 1.
+- 5.5 Select the name of pieces provided by provider with code "HAL".
+- 5.6
+-- ---------------------------------------------
+- Interesting and important one.
+  - For each piece, find the most expensive offering of that piece and include the piece name, provider name, and price 
+(note that there could be two providers who supply the same piece at the most expensive price).
+-- ---------------------------------------------
+- 5.7 Add an entry to the database to indicate that "Skellington Supplies" (code "TNBC") will provide sprockets (code "1") for 7 cents each.
+- 5.8 Increase all prices by one cent.
+- 5.9 Update the database to reflect that "Susan Calvin Corp." (code "RBT") will not supply bolts (code 4).
+- 5.10 Update the database to reflect that "Susan Calvin Corp." (code "RBT") will not supply any pieces 
+    -- (the provider should still remain in the database).
 
 ### **_Relational Schema:_**
-![Model](https://upload.wikimedia.org/wikipedia/commons/3/36/Employees.png)
+![Model](https://upload.wikimedia.org/wikipedia/commons/5/53/Sql_pieces_providers.png)
 
 ### **_To know more-_** - 
-LINK : https://en.wikibooks.org/wiki/SQL_Exercises/Employee_management
+LINK : https://en.wikibooks.org/wiki/SQL_Exercises/Pieces_and_providers
