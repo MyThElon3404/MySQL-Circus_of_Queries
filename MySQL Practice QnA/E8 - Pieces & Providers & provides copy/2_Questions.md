@@ -1,22 +1,13 @@
-- 5.1 Select the name of all the pieces. 
-- 5.2  Select all the providers' data. 
-- 5.3 Obtain the average price of each piece (show only the piece code and the average price).
-- 5.4  Obtain the names of all providers who supply piece 1.
-- 5.5 Select the name of pieces provided by provider with code "HAL".
-- 5.6
--- ---------------------------------------------
-- Interesting and important one.
-  - For each piece, find the most expensive offering of that piece and include the piece name, provider name, and price 
-(note that there could be two providers who supply the same piece at the most expensive price).
--- ---------------------------------------------
-- 5.7 Add an entry to the database to indicate that "Skellington Supplies" (code "TNBC") will provide sprockets (code "1") for 7 cents each.
-- 5.8 Increase all prices by one cent.
-- 5.9 Update the database to reflect that "Susan Calvin Corp." (code "RBT") will not supply bolts (code 4).
-- 5.10 Update the database to reflect that "Susan Calvin Corp." (code "RBT") will not supply any pieces 
-    -- (the provider should still remain in the database).
-
-### **_Relational Schema:_**
-![Model](https://upload.wikimedia.org/wikipedia/commons/5/53/Sql_pieces_providers.png)
-
-### **_To know more-_** - 
-LINK : https://en.wikibooks.org/wiki/SQL_Exercises/Pieces_and_providers
+- 9.1 give the total number of recordings in this table
+- 9.2 the number of packages listed in this table?
+- 9.3 How many times the package "Rcpp" was downloaded?
+- 9.4 How many recordings are from China ("CN")?
+- 9.5 Give the package name and how many times they're downloaded. Order by the 2nd column descently.
+- 9.6 Give the package ranking (based on how many times it was downloaded) during 9AM to 11AM
+- 9.7 How many recordings are from China ("CN") or Japan("JP") or Singapore ("SG")?
+- 9.8 Print the countries whose downloaded are more than the downloads from China ("CN")
+- 9.9 Print the average length of the package name of all the UNIQUE packages
+- 9.10 Get the package whose downloading count ranks 2nd (print package name and it's download count).
+- 9.11 Print the name of the package whose download count is bigger than 1000.
+- 9.12 The field "r_os" is the operating system of the users.
+    - 	Here we would like to know what main system we have (ignore version number), the relevant counts, and the proportion (in percentage).
