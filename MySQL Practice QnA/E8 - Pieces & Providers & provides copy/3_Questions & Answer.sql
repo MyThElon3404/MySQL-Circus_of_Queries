@@ -1,99 +1,105 @@
-show tables;
+-- 8.1 give the total number of recordings in this table
+SELECT COUNT(*) FROM cran_logs_2015_01_01;
 
-select * from Pieces;
-select * from Providers;
-select * from provides; 
+-- 8.2 The number of packages listed in this table?
+SELECT COUNT(DISTINCT package) FROM cran_logs_2015_01_01;
 
+-- 8.3 How many times the package "Rcpp" was downloaded?
+SELECT COUNT(*) FROM cran_logs_2015_01_01
+WHERE package = 'Rcpp';
 
--- 5.1 Select the name of all the pieces. 
-select Name from Pieces;
+-- 8.4 How many recordings are from China ("CN")?
+SELECT COUNT(*) FROM cran_logs_2015_01_01
+WHERE country = 'CN';
 
--- 5.2 Select all the providers' data. 
-select * from providers;
- 
--- 5.3 Obtain the average price of each piece (show only the piece code and the average price).
-select piece, avg(price) 
-from Provides 
-group by piece;
+-- 8.5 Give the package name and how many times they're downloaded. Order by the 2nd column decently.
+SELECT package, COUNT(*)
+FROM cran_logs_2015_01_01
+GROUP BY package
+ORDER BY 2 DESC;
 
--- 5.4 Obtain the names of all providers who supply piece 1.
-select Name 
-from Providers
-where Code in (
-	select  Provider from provides where Piece = 1
-); 
+-- 8.6 Give the package ranking (based on how many times it was downloaded) from 9AM to 11 AM
+select a.package, count(*) 
+from  (
+	select * from cran_logs_2015_01_01 
+	where substr(time, 1, 5)<"11:00" 
+        and substr(time, 1, 5)>"09:00"
+) as a
+group by a.package 
+order by 2 desc;
 
-select Providers.Name 
-from Providers join Provides
-on Providers.Code = Provides.Provider
-where Provides.Piece = 1;
-
-/* Without subquery */
- SELECT Providers.Name
-   FROM Providers INNER JOIN Provides
-          ON Providers.Code = Provides.Provider
-             AND Provides.Piece = 1;
-             
-/* With subquery */
-SELECT Name
-FROM Providers
-WHERE Code IN (
-	SELECT Provider FROM Provides WHERE Piece = 1
-);
+-- 8.7 How many recordings are from China ("CN") or Japan("JP") or Singapore ("SG")?
+--    Select based on a given list.
+SELECT COUNT(*)
+FROM cran_logs_2015_01_01
+WHERE country = 'CN' OR country = 'JP' OR country = 'SG';
+    
+SELECT COUNT(*) FROM cran_logs_2015_01_01
+WHERE country IN ('CN', 'JP', 'SG');
 
 
--- 5.5 Select the name of pieces provided by provider with code "HAL".
-select Name from Pieces
-where Code in (
-select Piece from Provides where Provider = 'HAL'
-);
+-- 8.8 Print the countries whose downloaded are more than the downloads from China ("CN")
 
-select Pieces.Name
-from Pieces join Provides
-on (Pieces.code = Provides.Piece)
-where Provides.Provider = 'HAL';
+SELECT TEMP.country
+FROM (
+	SELECT country, COUNT(*) AS downloads
+    	FROM cran_logs_2015_01_01
+    	GROUP BY country
+) AS TEMP
+WHERE TEMP.downloads > (
+	SELECT COUNT(*) FROM cran_logs_2015_01_01
+        WHERE country = 'CN');
 
-/* With EXISTS subquery */   
--- Interesting clause
-SELECT Name
-  FROM Pieces
-  WHERE EXISTS(
-    SELECT * FROM Provides
-      WHERE Provider = 'HAL'
-        AND Piece = Pieces.Code
-  );
+-- 8.9 Print the average length of the package name of all the UNIQUE packages
 
-
--- 5.6
--- ---------------------------------------------
--- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
--- Intereting and important one.
--- For each piece, find the most expensive offering of that piece and include the piece name, provider name, and price 
--- (note that there could be two providers who supply the same piece at the most expensive price).
-
-SELECT Pieces.Name, Providers.Name, Price
-  FROM Pieces INNER JOIN Provides ON Pieces.Code = Piece
-              INNER JOIN Providers ON Providers.Code = Provider
-  WHERE Price =
-  (
-    SELECT MAX(Price) FROM Provides
-    WHERE Piece = Pieces.Code
-  );
-
--- 5.7 Add an entry to the database to indicate that "Skellington Supplies" (code "TNBC") will provide sprockets (code "1") for 7 cents each.
-INSERT INTO Provides(Piece, Provider, Price) VALUES (1, 'TNBC', 7);
-
--- 5.8 Increase all prices by one cent.
-UPDATE Provides
-SET Price = Price + 1;
-
--- 5.9 Update the database to reflect that "Susan Calvin Corp." (code "RBT") will not supply bolts (code 4).
-DELETE FROM Provides WHERE provider = 'RBT' AND Piece = 4;
+SELECT AVG(LENGTH(temp.packages)) 
+FROM (
+	SELECT DISTINCT package as packages
+	FROM cran_logs_2015_01_01
+) temp;
 
 
--- 5.10 Update the database to reflect that "Susan Calvin Corp." (code "RBT") will not supply any pieces 
--- (the provider should still remain in the database).
-DELETE FROM provides
-WHERE Provider = 'RBT';
+-- 8.10 Get the package whose downloading count ranks 2nd (print package name and it's download count).
+
+SELECT temp.a package, temp.b count
+FROM (
+	SELECT package a, count(*) b
+	FROM cran_logs_2015_01_01
+	GROUP BY package
+	ORDER BY b DESC
+	LIMIT 2
+) temp
+ORDER BY temp.b ASC
+LIMIT 1;
 
 
+-- 9.11 Print the name of the package whose download count is bigger than 1000.
+
+-- Solution 1 (without sub-query)
+SELECT package
+FROM cran_logs_2015_01_01
+GROUP BY package
+HAVING count(*) > 1000;
+
+-- Solution 2 (with sub-query)
+SELECT temp.package
+FROM (
+	SELECT package, COUNT(*) AS count
+	FROM cran_logs_2015_01_01
+	GROUP BY package
+) AS temp
+WHERE temp.count > 1000;
+
+
+-- 8.12 The field "r_os" is the operating system of the users.
+-- 	Here we would like to know what main system we have (ignore version number), the relevant counts, and the proportion (in percentage).
+
+SELECT SUBSTR(r_os, 1, 5) AS OS, 
+	COUNT(*) AS [Download Count], 
+	SUBSTR(COUNT(*)/((SELECT COUNT(*) FROM cran)*1.0)*100, 1, 4) || "%" AS PROPORTION
+FROM cran_logs_2015_01_01
+GROUP BY SUBSTR(r_os, 1, 5);
+-- Here we use INT*1.0 to convert an integer to float so that we can compute the percentage (1/5 can be 0.2 instead of 0)
+-- || is an alternative of CONCAT() in SQLite.
+-- SUBSTR(field, start_position, length) is used to get a part of a character string.
+-- [] can help use spaces in the aliases.
