@@ -2,7 +2,7 @@
 -- 			SQL Queries
 -- ==========================================================================================
 
-# Q1. Delete duplicate data from cars table (Example Table)
+# Q. Delete duplicate data from cars table (Example Table)
 -- create a cars table
 drop table if exists cars;
 create table cars(
@@ -38,7 +38,7 @@ where model_id in (select model_id
                   where x.rn > 1);
 -- =========================================================================================================
 
-# Q2. Display highest and lowest salary from employee table
+# Q. Display highest and lowest salary from employee table
 -- create a emplyee table
 drop table if exists employee;
 create table employee(
@@ -70,7 +70,7 @@ from employee;
 
 -- =============================================================================================================
 
-# Q3. Find actual distance
+# Q. Find actual distance
 	
 drop table if exists car_travels;
 create table car_travels(
@@ -97,7 +97,7 @@ from car_travels;
 
 -- =================================================================================================================
 
-# Q4. Convert the given input to expected output
+# Q. Convert the given input to expected output
 
 drop table if exists src_dest_distance;
 create table src_dest_distance
