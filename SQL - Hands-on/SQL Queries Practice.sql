@@ -129,3 +129,138 @@ join cte t2
         and t1.source = t2.destination
         and t1.destination = t2.source;
 
+-- =================================================================================================================
+
+# Q. Write a SQL query to find the second highest salary from the table emp. (Column name – id, salary)
+
+drop table if exists emp_salary;
+create table emp_salary (
+	id int,
+  	salary int
+);
+
+insert into emp_salary
+values (1, 50000), (2, 60000), (3, 45000), (4, 70000), (5, 55000),
+	(6, 80000), (7, 40000), (8, 72000), (9, 68000), (10, 59000);
+
+select * from emp_salary
+order by salary desc;
+
+-- SOLUTION 1 : using limit
+
+select * from emp_salary
+order by salary desc
+limit 1, 1; -- first value skip no of rows and second value display limited rows
+-- here skip 1 row and display 1 row
+
+-- SOLUTION 2 : using limit and offset
+
+select * from emp_salary
+order by salary desc
+limit 1 -- display 1 row
+offset 1; -- skip 1 row
+
+-- SOLUTION 3 : using sub-query
+
+select *
+from emp_salary
+where salary < (
+	select max(salary) from emp_salary
+)
+order by salary desc
+limit 1;
+
+-- SOLUTION 4 : using CTE
+with salary_cte as (
+	select *,
+  		row_number() over(order by salary desc) as salary_rnum
+  	from emp_salary
+)
+select id, salary from salary_cte
+where salary_rnum = 2;
+
+-- =================================================================================================================
+
+# Q. Write a SQL query to find the numbers which consecutively occurs 3 
+	number_tb (Column name – id, numbers)
+
+drop table if exists number_tb;
+create table number_tb (
+	id int not null,
+  	number int not null
+);
+
+insert into number_tb
+values (1, 5), (2, 2), (3, 2), (4, 2), (5, 7), (6, 7), (7, 7),
+	(8, 3), (9, 3), (10, 3), (11, 4), (12, 4), (13, 4), (14, 4);
+
+select * from number_tb;
+
+-- SOLUTION 1 : using self join
+
+select distinct t1.number as number_occurance
+from number_tb as t1
+join number_tb as t2 on t1.id = t2.id - 1
+join number_tb as t3 on t2.id = t3.id - 1
+where t1.number = t2.number
+	and t2.number = t3.number;
+
+-- SOLUTION 2 : using CTE and window function
+
+with number_cte as (
+	select id, number,
+  		lag(number, 1) over (order by id) as prev,
+  		lag(number, 2) over (order by id) as prev_prev
+  	from number_tb
+)
+select distinct number
+from number_cte
+where number = prev
+	and number = prev_prev;
+
+-- =================================================================================================================
+
+# Q. Write a SQL query to find the days when temperature was higher than its prev day - 
+	temp_tb (Column name – Days, Temp)
+
+drop table if exists temperature_tb;
+create table temperature_tb (
+	days int not null,
+  	temperatures int not null
+);
+
+insert into temperature_tb
+values (1, 25), (2, 28), (3, 27), 
+	(4, 30), (5, 26), (6, 32), (7, 31), (8, 35);
+
+select * from temperature_tb;
+
+-- SOLUTION 1 : using self join
+
+select t1.days, t1.temperatures
+from temperature_tb as t1
+join temperature_tb as t2 on t1.days = t2.days + 1
+where t1.temperatures > t2.temperatures;
+
+-- SOLUTION 2 : using CTE and window function
+
+with temp_rank_cte as (
+	select days, temperatures,
+  		lag(temperatures, 1) over (order by days) as prev_temp
+  	from temperature_tb
+)
+select days, temperatures
+from temp_rank_cte
+where temperatures > prev_temp;
+
+-- SOLUTION 3 : using sub-queries
+
+select days, temperatures
+from temperature_tb
+where temperatures > (
+	select temperatures
+  	from temperature_tb as t2
+  	where t2.days = temperature_tb.days - 1
+)
+
+-- =================================================================================================================
