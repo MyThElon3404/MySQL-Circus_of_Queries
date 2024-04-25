@@ -61,6 +61,9 @@ VALUES
 select * from sales;
 select * from menu;
 select * from members;
+-- Entity Relationship Diagram :
+-- https://dbdiagram.io/d/Dannys-Diner-608d07e4b29a09603d12edbd?utm_source=dbdiagram_embed&utm_medium=bottom_open
+-- (Paste this link into search bar)
 --	------------------------------ -- Case Study Questions	--------------------------------------------------------
 
 -- 1. What is the total amount each customer spent at the restaurant?
