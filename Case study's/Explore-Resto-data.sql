@@ -220,6 +220,32 @@ on sales.product_id = points_tb.product_id
 group by sales.customer_id
 order by sales.customer_id;
 -- --------------------------------------------------------------------------------------------------
+-- 11. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, 
+-- not just sushi - how many points do customer A and B have at the end of January?
+
+with valid_member_date_cte as (
+	select *,
+		DATEADD(DAY, 6, mem.join_date) as member_valid_date,
+		EOMONTH('2021-01-01') as last_date
+	from members as mem
+)
+select s.customer_id as customer,
+	sum(
+		case when s.product_id = 1 then m.price * 20
+			when s.order_date between vm.join_date and vm.member_valid_date 
+				then m.price * 20
+			else m.price * 10
+		end
+	) as total_points
+from valid_member_date_cte as vm
+inner join sales as s
+	on vm.customer_id = s.customer_id
+inner join menu as m
+	on m.product_id = s.product_id
+where s.order_date <= vm.last_date
+group by s.customer_id;
+
+-- --------------------------------------------------------------------------------------------------
 					-- Join All The Things -> sales, menu, members
                     
 SELECT s.customer_id, s.order_date, m.product_name, m.price,
