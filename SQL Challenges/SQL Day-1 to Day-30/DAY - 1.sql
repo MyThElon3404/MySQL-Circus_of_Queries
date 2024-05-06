@@ -14,7 +14,6 @@ VALUES(501, 'alan', 'India'),(502, 'rex', 'US'),
 	(503, 'dodo', 'India'),(504, 'rahul', 'US'),
 	(505, 'zara', 'Canda'),(506, 'max', 'Canada');
 
-
 drop table if exists products;
 CREATE TABLE products(
 	product_id int PRIMARY KEY,
