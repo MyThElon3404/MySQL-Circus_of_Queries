@@ -93,8 +93,8 @@ group by month(order_date)
 order by month(order_date) asc;
 -- ==================================================================================================================================
 
--- QUESTION : 2
--- 2. Write an SQL query to find out the total sales revenue generated for each month in the year 2023.
+-- QUESTION : 3
+-- 3. Write an SQL query to find out the total sales revenue generated for each month in the year 2023.
 
 drop table if exists sales;
 CREATE TABLE sales (
