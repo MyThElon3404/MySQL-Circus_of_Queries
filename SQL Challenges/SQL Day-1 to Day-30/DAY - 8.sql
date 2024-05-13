@@ -41,3 +41,49 @@ select
 from histogram;
 
 -- ==================================================================================================================================
+
+-- QUESTION : 2
+-- 2. Remove duplicate records if distance, source, destination is same
+-- and keep the first occurrence only
+
+DROP TABLE IF EXISTS city_distance;
+CREATE TABLE city_distance (
+    distance INT,
+    source VARCHAR(512),
+    destination VARCHAR(512)
+);
+
+INSERT INTO city_distance(distance, source, destination) 
+VALUES 
+	('100', 'New Delhi', 'Panipat'), ('200', 'Ambala', 'New Delhi'),
+	('150', 'Bangalore', 'Mysore'), ('150', 'Mysore', 'Bangalore'),
+	('250', 'Mumbai', 'Pune'), ('250', 'Pune', 'Mumbai'),
+	('2500', 'Chennai', 'Bhopal'), ('2500', 'Bhopal', 'Chennai'),
+	('60', 'Tirupati', 'Tirumala'), ('80', 'Tirumala', 'Tirupati');
+
+select * from city_distance;
+
+-- SOLUTION :------------------------------------------------------------------------------------------------------------------------
+
+-- 1. Using cte, row_number, left join
+
+with rn_cte as (
+	select *,
+		ROW_NUMBER() over(order by (select null)) as rn
+	from city_distance
+)
+select t1.distance as distance, t1.source as source, t1.destination as destination
+from rn_cte as t1
+left join rn_cte as t2
+	on t1.source = t2.destination and t1.destination = t2.source
+where t2.destination is null or t1.distance <> t2.distance or t1.rn < t2.rn;
+
+-- 2. using self join and where clause
+
+select t1.*
+from city_distance as t1
+left join city_distance as t2
+	on t1.source = t2.destination and t2.source = t1.destination
+where t2.distance is null or t1.distance <> t2.distance or t1.source < t2.source;
+
+-- ==================================================================================================================================
