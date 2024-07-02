@@ -1,4 +1,6 @@
--- CTE (Common Table Expression) - A Common Table Expression (CTE) is a temporary result set that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement. A CTE is defined using the WITH keyword, followed by the CTE name and the query that defines the CTE.
+-- CTE (Common Table Expression) - A Common Table Expression (CTE) is a temporary result set that you can reference within a 
+-- SELECT, INSERT, UPDATE, or DELETE statement. A CTE is defined using the WITH keyword, 
+-- followed by the CTE name and the query that defines the CTE.
 
 -- Benefits of Using CTEs
 -- Improved Readability: CTEs can make complex queries easier to read and maintain by breaking them down into simpler parts.
