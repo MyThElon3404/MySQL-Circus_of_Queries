@@ -96,6 +96,65 @@ from bank_loan_data
 group by YEAR(issue_date), MONTH(issue_date)
 order by Year asc, Month asc;
 
+-- ---------------------------------------------------------------------------------------------------------------------------------
+
+-- Query - Monthly Trends by Issue Date
+select DATEPART(MONTH, issue_date) as month_number,
+	DATENAME(MONTH, issue_date) as month_name,
+	COUNT(id) as total_applications,
+	SUM(loan_amount) as total_funded_amount,
+	SUM(total_payment) as total_received_amount
+from bank_loan_data
+group by DATEPART(MONTH, issue_date), DATENAME(MONTH, issue_date)
+order by month_number;
+
+-- Query - Regional Analysis by State
+select address_state,
+	COUNT(id) as total_applications,
+	SUM(loan_amount) as total_funded_amount,
+	SUM(total_payment) as total_received_amount
+from bank_loan_data
+group by address_state
+order by SUM(loan_amount) desc;
+
+-- Query - Loan Term Analysis
+select term,
+	COUNT(id) as total_applications,
+	SUM(loan_amount) as total_funded_amount,
+	SUM(total_payment) as total_received_amount
+from bank_loan_data
+group by term
+order by term;
+
+-- Query - Employee Length Analysis
+select emp_length,
+	COUNT(id) as total_applications,
+	SUM(loan_amount) as total_funded_amount,
+	SUM(total_payment) as total_received_amount
+from bank_loan_data
+group by emp_length
+order by emp_length;
+
+-- Query - Loan Purpose Breakdown
+select purpose,
+	COUNT(id) as total_applications,
+	SUM(loan_amount) as total_funded_amount,
+	SUM(total_payment) as total_received_amount
+from bank_loan_data
+group by purpose
+order by purpose;
+
+-- Query - Home Ownership Analysis
+select home_ownership,
+	COUNT(id) as total_applications,
+	SUM(loan_amount) as total_funded_amount,
+	SUM(total_payment) as total_received_amount
+from bank_loan_data
+group by home_ownership
+order by total_applications desc;
+
+-- ---------------------------------------------------------------------------------------------------------------------------------
+
 -- =================================================================================================================================
 
 -- Month-over-Month (MoM) Return Query (Sample Query)
