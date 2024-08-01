@@ -4,11 +4,10 @@
 -- data-driven decisions, track our loan portfolio's health, and identify trends that can inform our lending strategies.
 
 -- Import file to SSMS (Flat File) - SQL Server Management Studio
+-- https://github.com/MyThElon3404/MySQL-Circus_of_Queries/blob/main/Case%20study's/Case%20Study%20-%20Bank%20Loan%20Dataset.csv
 
 -- =================================================================================================================================
-
 -- Basic Key Performance Indicators (KPIs)
-
 -- =================================================================================================================================
 
 -- Query - Total Loan Applications
@@ -31,7 +30,6 @@ group by Year(issue_date), MONTH(issue_date)
 order by Year asc, Month asc;
 
 -- Query - Month-over-Month (MoM) Total Loan Applications
-
 
 -- ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -220,9 +218,7 @@ FROM YoY_Calculation
 ORDER BY Month;
 
 -- =================================================================================================================================
-
 -- Good Loan and Bad Loan Key Performance Indicators (KPIs)
-
 -- =================================================================================================================================
 
 -- Query - Good Loan Application Percentage
@@ -268,9 +264,7 @@ from bank_loan_data
 where loan_status='Charged Off';
 
 -- =================================================================================================================================
-
 -- All summary by Loan Status
-
 -- =================================================================================================================================
 
 select loan_status,
