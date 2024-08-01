@@ -18,3 +18,24 @@ You use calculated columns when you need to add a column with a calculation that
 
 #### Measures
 - A measure in Power BI is a dynamic calculation that performs aggregations or computations based on data in your model. Measures are created using Data Analysis Expressions (DAX), a formula language specifically designed for working with data models.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
