@@ -10,4 +10,11 @@ You use calculated columns when you need to add a column with a calculation that
   4. Click on "Modeling" in the ribbon and select "New Column".
   5. Enter the DAX formula. For instance, to calculate the total sales amount from quantity and unit price columns:
 - DAX Formula -
+  1. simple dax calculation
   Total Sales = Sales[Quantity] * Sales[Unit Price]
+
+  2. Creating a Conditional Calculated Column
+  Sales Category = IF(Sales[Total Sales] > 1000, "High", "Low")
+
+#### Measures
+- A measure in Power BI is a dynamic calculation that performs aggregations or computations based on data in your model. Measures are created using Data Analysis Expressions (DAX), a formula language specifically designed for working with data models.
