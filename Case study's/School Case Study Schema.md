@@ -155,7 +155,40 @@ left join EnrollmentMaster as e
 	)
 where e.CID is null;
 ```
+- Q2. List the name of the advanced course where the enrollment by foreign students is the highest.
+``` sql
+SELECT TOP 1 cm.CourseName
+FROM CourseMaster cm
+inner JOIN EnrollmentMaster em 
+	ON cm.CID = em.CID
+inner JOIN StudentMaster sm 
+	ON em.SID = sm.SID
+WHERE cm.Category = 'A' 
+	AND sm.Origin = 'F'
+GROUP BY cm.CourseName
+ORDER BY COUNT(*) DESC;
 
+	-- OR --
+
+WITH ForeignStudentEnrollments AS (
+    SELECT cm.CourseName, 
+		COUNT(*) AS EnrollmentCount
+    FROM CourseMaster cm
+    inner JOIN EnrollmentMaster em 
+		ON cm.CID = em.CID
+    inner JOIN StudentMaster sm 
+		ON em.SID = sm.SID
+    WHERE cm.Category = 'A' 
+		AND sm.Origin = 'F'
+    GROUP BY cm.CourseName
+)
+SELECT CourseName
+FROM ForeignStudentEnrollments
+WHERE EnrollmentCount = (
+    SELECT MAX(EnrollmentCount)
+    FROM ForeignStudentEnrollments
+);
+```
 
 
 
