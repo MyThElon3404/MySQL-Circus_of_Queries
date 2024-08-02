@@ -27,7 +27,7 @@ CREATE THE FOLLOWING THREE TABLES WITH SAME NAMES AND DATA TYPES AS PROVIDED BEL
 |DOE	|DateTime	|NOT NULL
 |FWF (Fee Waiver Flag)	|Bit	|NOT NULL
 |Grade	|Char(1)	|O/A/B/C
-
+```sql
 DROP TABLE IF EXISTS CourseMaster;
 CREATE TABLE CourseMaster (
     CID INT PRIMARY KEY,
@@ -128,6 +128,7 @@ INSERT INTO EnrollmentMaster VALUES (140, 14, '2021-06-20', 0, 'O');
 INSERT INTO EnrollmentMaster VALUES (90, 3, '2021-06-23', 1, 'O');
 INSERT INTO EnrollmentMaster VALUES (100, 3, '2021-07-02', 0, 'A');
 INSERT INTO EnrollmentMaster VALUES (40, 13, '2021-07-22', 0, 'B');
+```
 -- --------------------------------------------------------------------------------------------------------------
 
 -- Q1. 
