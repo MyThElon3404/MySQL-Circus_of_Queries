@@ -129,7 +129,33 @@ INSERT INTO EnrollmentMaster VALUES (90, 3, '2021-06-23', 1, 'O');
 INSERT INTO EnrollmentMaster VALUES (100, 3, '2021-07-02', 0, 'A');
 INSERT INTO EnrollmentMaster VALUES (40, 13, '2021-07-22', 0, 'B');
 ```
-- Q1. 
+- Q1. List the names of the Students who have not enrolled for Java course.
+```sql
+select name
+from StudentMaster
+where SID not in (
+	select distinct SID
+	from EnrollmentMaster
+	where CID in (
+		select SID
+		from CourseMaster
+		where CourseName = 'Java'
+	)
+);
+        -- OR --
+
+select s.Name as student_name
+from StudentMaster as s
+left join EnrollmentMaster as e
+	on s.SID = e.SID
+	and e.CID = (
+		select distinct cid
+		from CourseMaster
+		where CourseName = 'Java'
+	)
+where e.CID is null;
+```
+
 
 
 
