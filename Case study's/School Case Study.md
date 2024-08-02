@@ -1,10 +1,5 @@
-/********************************************************************
---			School Case Study
-**********************************************************************/
--- Sample Schema
--- NOTE - CASE STUDY querstions are below Schema
-
-### TABLES
+## School Case Study
+#### TABLES
 CREATE THE FOLLOWING THREE TABLES WITH SAME NAMES AND DATA TYPES AS PROVIDED BELOW:
 
 [Here are the scripts of these tables](https://github.com/AmitPatel-analyst/SQL-Case-Study/blob/main/School%20Case%20Study/School_Queries.sql)
