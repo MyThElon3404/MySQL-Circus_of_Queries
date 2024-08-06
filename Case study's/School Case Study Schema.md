@@ -214,7 +214,41 @@ inner join EnrollmentMaster as em
 where YEAR(DOE)=2021
 	and MONTH(DOE)=04;
 ```
+- Q5. List name, Number of Enrollments and Popularity for all Courses. Popularity has to be displayed as “High” if number of enrollments is higher than 5,
+“Medium” if greater than or equal to 3 and less than or equal to 5, and “Low” if the no. is less than 3.
+``` sql
+select cm.CourseName,
+	count(em.CID) as num_of_enrollment,
+	case
+		when count(em.CID) > 5 then 'High'
+		when count(em.CID) >= 3 and count(em.CID) <= 5 then 'Medium'
+		when count(em.CID) < 3 then 'Low'
+	end as Popularity
+from CourseMaster as cm
+inner join EnrollmentMaster as em
+	on cm.CID = em.CID
+group by cm.CourseName;
 
+	-- OR -- Using CTE
+
+WITH EnrollmentCount AS (
+    SELECT cm.CourseName,
+        COUNT(em.CID) AS num_of_enrollment
+    FROM CourseMaster AS cm
+    INNER JOIN EnrollmentMaster AS em
+        ON cm.CID = em.CID
+    GROUP BY cm.CourseName
+)
+SELECT 
+    CourseName,
+    num_of_enrollment,
+    CASE
+        WHEN num_of_enrollment > 5 THEN 'High'
+        WHEN num_of_enrollment >= 3 AND num_of_enrollment <= 5 THEN 'Medium'
+        WHEN num_of_enrollment < 3 THEN 'Low'
+    END AS Popularity
+FROM EnrollmentCount;
+```
 
 
 
