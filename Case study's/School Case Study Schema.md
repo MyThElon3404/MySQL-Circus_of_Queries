@@ -300,20 +300,63 @@ left join EnrollmentMaster as em
 	on cm.CID = em.CID
 where em.CID is not null;
 ```
+- Q8. For those enrollments for which fee have been waived, when fwf = 1 means yes ,provide the names of students who have got ‘O’ grade.
+``` sql
+select distinct sm.SID,
+	sm.Name
+from StudentMaster as sm
+inner join EnrollmentMaster as em
+	on sm.SID = em.SID
+where em.FWF = 1
+	and em.Grade = 'O';
 
+	-- OR --
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+select SID, Name
+from StudentMaster
+where SID in (
+	select distinct SID
+	from EnrollmentMaster
+	where FWF = 1 and Grade = 'O'
+);
+```
+- Q9. List the names of the foreign, undergraduate students who have got grade ‘O’ in any Advanced course.
+``` sql
+select distinct sm.SID,
+	sm.Name
+from StudentMaster as sm
+inner join EnrollmentMaster as em
+	on sm.SID = em.SID
+inner join CourseMaster as cm
+	on em.CID = cm.CID
+where sm.Origin = 'F'
+	and sm.Type = 'U'
+	and em.Grade = 'O'
+	and cm.Category = 'A';
+```
+- Q10. List the course name, total no. of enrollments in each month of 2020, 2021.
+``` sql
+select cm.CourseName,
+	count(cm.CID) as enrollment_count,
+	DATENAME(MONTH, em.DOE) as month_name,
+	year(em.DOE) as year
+from CourseMaster as cm
+inner join EnrollmentMaster as em
+	on cm.CID = em.CID
+group by cm.CourseName, DATENAME(MONTH, em.DOE), year(em.DOE)
+order by year(em.DOE),
+	CASE DATENAME(month, em.DOE) -- this is for order by month name like Jan, Feb, march etc.
+        WHEN 'January' THEN 1
+        WHEN 'February' THEN 2
+        WHEN 'March' THEN 3
+        WHEN 'April' THEN 4
+        WHEN 'May' THEN 5
+        WHEN 'June' THEN 6
+        WHEN 'July' THEN 7
+        WHEN 'August' THEN 8
+        WHEN 'September' THEN 9
+        WHEN 'October' THEN 10
+        WHEN 'November' THEN 11
+        WHEN 'December' THEN 12
+    END;
+```
