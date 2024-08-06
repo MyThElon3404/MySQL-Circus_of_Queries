@@ -189,7 +189,20 @@ WHERE EnrollmentCount = (
     FROM ForeignStudentEnrollments
 );
 ```
+- Q3. List the names of the Undergraduate, local students who have got a “B” grade in any basic course.
+``` sql
+-- Type - 'U'
+-- Origin - 'L'
+-- Grade - 'B'
 
+select sm.Name as student_name
+from StudentMaster as sm
+inner join EnrollmentMaster as em
+	on sm.sid = em.sid
+where sm.Type='U'
+	and sm.Origin='L'
+	and em.Grade='B';
+```
 
 
 
