@@ -249,8 +249,57 @@ SELECT
     END AS Popularity
 FROM EnrollmentCount;
 ```
+- Q6. List the names of the Local students who have enrolled for exactly 2 basic courses.
+``` sql
+select sm.Name,
+	count(*) as enrolled_count
+from StudentMaster as sm
+inner join EnrollmentMaster as em
+	on sm.SID = em.SID
+inner join CourseMaster as cm
+	on em.CID = cm.CID
+where sm.Origin = 'L'
+	and cm.Category = 'B'
+group by sm.Name
+having count(*) = 2;
 
+	-- OR -- USING CTE
+WITH LocalBasicEnrollments AS (
+    SELECT sm.SID, sm.Name,
+        COUNT(sm.SID) AS EnrolledCount
+    FROM StudentMaster AS sm
+    INNER JOIN EnrollmentMaster AS em
+		ON sm.SID = em.SID
+    INNER JOIN CourseMaster AS cm 
+		ON em.CID = cm.CID
+    WHERE sm.Origin = 'L' AND cm.Category = 'B'
+    GROUP BY sm.SID, sm.Name
+)
+-- Select from the CTE where the enrollment count is exactly 2
+SELECT Name
+FROM LocalBasicEnrollments
+WHERE EnrolledCount = 2;
+```
+- Q7. List the names of the Courses enrolled by all (every) students.
+``` sql
+SELECT cm.CourseName
+FROM CourseMaster AS cm
+WHERE cm.CID NOT IN (
+        SELECT cm.CID
+        FROM CourseMaster AS cm
+        EXCEPT -- distinct values as result
+        SELECT em.CID
+        FROM EnrollmentMaster AS em
+    );
 
+	-- OR --
+
+select distinct cm.CourseName
+from CourseMaster as cm
+left join EnrollmentMaster as em
+	on cm.CID = em.CID
+where em.CID is not null;
+```
 
 
 
