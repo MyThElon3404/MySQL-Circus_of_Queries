@@ -203,6 +203,18 @@ where sm.Type='U'
 	and sm.Origin='L'
 	and em.Grade='B';
 ```
+- Q4. List the names of the courses for which no student has enrolled in the month of APRIL 2021.
+``` sql
+select cm.CourseName,
+	CONCAT(DATENAME(MONTH, em.DOE), 
+		' ', YEAR(em.DOE)) as enrolled_MMYY
+from CourseMaster as cm
+inner join EnrollmentMaster as em
+	on cm.CID = em.CID
+where YEAR(DOE)=2021
+	and MONTH(DOE)=04;
+```
+
 
 
 
