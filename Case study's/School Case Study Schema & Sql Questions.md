@@ -28,6 +28,8 @@ CREATE THE FOLLOWING THREE TABLES WITH SAME NAMES AND DATA TYPES AS PROVIDED BEL
 |FWF (Fee Waiver Flag)	|Bit	|NOT NULL
 |Grade	|Char(1)	|O/A/B/C
 
+### Schema is here: 
+
 <details>
 	<summary>Click here for solution</summary>
 	
