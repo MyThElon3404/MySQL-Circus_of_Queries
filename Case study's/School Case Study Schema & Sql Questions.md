@@ -1,6 +1,6 @@
 ## School Case Study
-#### TABLES
-CREATE THE FOLLOWING THREE TABLES WITH SAME NAMES AND DATA TYPES AS PROVIDED BELOW:
+
+### TABLES
 
 |Column Name |	Data Type	 | Remarks |
 |------------|-------------|---------|
