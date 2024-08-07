@@ -27,6 +27,9 @@ CREATE THE FOLLOWING THREE TABLES WITH SAME NAMES AND DATA TYPES AS PROVIDED BEL
 |DOE	|DateTime	|NOT NULL
 |FWF (Fee Waiver Flag)	|Bit	|NOT NULL
 |Grade	|Char(1)	|O/A/B/C
+
+<summary>Click here for solution</summary>
+
 ```sql
 DROP TABLE IF EXISTS CourseMaster;
 CREATE TABLE CourseMaster (
