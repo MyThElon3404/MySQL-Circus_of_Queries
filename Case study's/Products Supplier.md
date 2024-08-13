@@ -141,15 +141,55 @@ select * from SuplDetl;
 ```
 </details>
 
+Q.1. List the month-wise average supply of parts supplied for all parts. Provide the information only if the average is higher than 250.
+```sql
 
+```
 
+Q.2. List the names of the Suppliers who do not supply part with PID ‘1’.
+```sql
 
+```
 
+Q.3. List the part id, name, price and difference between price and average price of all parts.
+```sql
 
+ ```
 
+Q.4. List the names of the suppliers who have supplied at least Two parts where the quantity supplied is lower than 500.
+```sql
 
+```
 
+Q.5. List the names of the suppliers who live in a city where no supply has been made.
+--		it means supplier iD should matched in both table but city should not be matched.
+```sql
 
+```
 
+Q.6. List the names of the parts which have not been supplied in the month of May 2019.
+```sql
 
+```
 
+Q.7.  List name and Price category for all parts. Price category has to be displayed as “Cheap” 
+--		if price is less than 200, “Medium” if the price is greater than or equal to 200 and less than 500,
+--		and “Costly” if the price is greater than or equal to 500.
+```sql
+
+```
+
+Q.8. List the names of the suppliers who have supplied exactly 100 units of part P16.
+```sql
+
+```
+
+Q.9. List the names of the parts whose price is more than the average price of parts.
+```sql  
+
+```
+
+Q.10. For all products supplied by Supplier S70, List the part name and total quantity SUPPLIED.
+```sql 
+
+```
