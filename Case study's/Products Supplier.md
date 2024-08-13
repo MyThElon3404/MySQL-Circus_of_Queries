@@ -31,7 +31,7 @@
 ### Schema is here: 
 <details>
 	<summary>Click here for get Schema Details</summary>
-```sql
+``` sql
 
 select * from abc;
  
