@@ -141,7 +141,9 @@ select * from SuplDetl;
 ```
 </details>
 
-Q.1. List the month-wise average supply of parts supplied for all parts. Provide the information only if the average is higher than 250.
+### Questions :
+
+- Q.1. List the month-wise average supply of parts supplied for all parts. Provide the information only if the average is higher than 250.
 ```sql
 
 ```
