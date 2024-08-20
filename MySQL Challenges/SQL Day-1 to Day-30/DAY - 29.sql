@@ -17,7 +17,9 @@ CREATE TABLE sf_employee (
     address VARCHAR(255),
     manager_id INT
 );
-INSERT INTO sf_employee (id, first_name, last_name, age, sex, employee_title, department, salary, target, email, city, address, manager_id) VALUES
+
+INSERT INTO sf_employee (id, first_name, last_name, age, sex, employee_title, department, salary, target, email, city, address, manager_id) 
+VALUES
 (1, 'Allen', 'Wang', 55, 'F', 'Manager', 'Management', 200000, 0, 'Allen@company.com', 'California', '1069 Ventura Drive', 1),
 (2, 'Joe', 'Jack', 32, 'M', 'Sales', 'Sales', 1000, 200, 'Joe@company.com', 'California', '995 Jim Rosa Lane', 1),
 (3, 'Henry', 'Ted', 31, 'M', 'Senior Sales', 'Sales', 2000, 200, 'Henry@company.com', 'California', '1609 Ford Street', 1),
@@ -54,7 +56,8 @@ CREATE TABLE sf_bonus (
     bonus INT,
     FOREIGN KEY (worker_ref_id) REFERENCES sf_employee(id)
 );
-INSERT INTO sf_bonus (worker_ref_id, bonus) VALUES
+INSERT INTO sf_bonus (worker_ref_id, bonus) 
+VALUES
 (1, 5000),
 (2, 3000),
 (3, 4000),
