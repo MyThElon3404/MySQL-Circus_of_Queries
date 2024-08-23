@@ -24,8 +24,6 @@ VALUES
 (10, 108, '2017-04-27', 'prequal_response_received', 'InSchool'),
 (11, 100, '2015-04-21', 'prequal_completd_offer', 'Refinance');
 
-select * from loans;
-
 drop table if exists submissions;
 CREATE TABLE submissions (
     id INT PRIMARY KEY,
@@ -43,8 +41,6 @@ VALUES
 (4, 21149, 4.75, 'variable', 7),
 (5, 14379, 3.75, 'variable', 5),
 (6, 6221.12, 6.75, 'variable', 11);
-
-select * from submissions;
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
@@ -112,8 +108,6 @@ VALUES
 (7, 'Donald Jim', 'open', 'USA'),
 (22, 'Michael Bone', 'open', 'Canada'),
 (31, 'Sara Michaels', 'open', 'Denmark');
-
-select * from fb_active_users;
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
