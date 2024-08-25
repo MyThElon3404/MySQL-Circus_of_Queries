@@ -28,6 +28,21 @@ select
 from cct;
 ```
 </details>
+<details>
+	<summary>✅check null values per column</summary>
+	
+```sql
+select
+	sum(case when "index" is null then 1 else 0 end) as index_null_cnt,
+	sum(case when City is null then 1 else 0 end) as city_null_cnt,
+	sum(case when "Date" is null then 1 else 0 end) as date_null_cnt,
+	sum(case when Card_Type is null then 1 else 0 end) as card_type_null_cnt,
+	sum(case when Exp_Type is null then 1 else 0 end) as exp_type_null_cnt,
+	sum(case when Gender is null then 1 else 0 end) as gender_null_cnt,
+	sum(case when Amount is null then 1 else 0 end) as amount_null_cnt
+from cct;
+```
+</details>
 
 
 - ## Question & Answer for case study
