@@ -14,7 +14,7 @@
 
 ## EDA of Transaction data
 <details>
-	<summary>Click here for solution</summary>
+	<summary>✅check null values per column</summary>
 	
 ```sql
 select
