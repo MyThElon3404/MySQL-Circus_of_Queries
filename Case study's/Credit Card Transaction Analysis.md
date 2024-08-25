@@ -12,13 +12,21 @@
 
 ----------------------------------------------------------------------------------------------------------------------------
 
+- ## EDA of Transaction data
+  <details>
+	  <summary>Click Here for Answer</summary>
+	  	<details>
+	  		<summary>- check null values per column</summary>
+  	  	</details>
+  </details>
+
+
+
 - ## Question & Answer for case study
 
 - Q1. write a query to print top 5 cities with highest spends and their percentage contribution of total credit card spends
 <details>
 	<summary> Click Here for Answer </summary>
-
- 	selct * from cct;
-
+	
 </details>
 
