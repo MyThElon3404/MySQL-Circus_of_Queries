@@ -113,7 +113,7 @@ order by total_amount_spend desc;
 
 - ## Question & Answer for case study
 
-- Q1. write a query to print top 5 cities with highest spends and their percentage contribution of total credit card spends
+- ### Q1. write a query to print top 5 cities with highest spends and their percentage contribution of total credit card spends
 
 <details>
 	<summary> Click Here for Answer </summary>
@@ -139,27 +139,18 @@ join total_spent_cte as ts
 </details>
 
 
-- Q1. write a query to print top 5 cities with highest spends and their percentage contribution of total credit card spends
+- ### Q2. write a query to print highest spend month and amount spent in that month for each card type
 <details>
 	<summary> Click Here for Answer </summary>
 	
 ```sql
-with total_spent_cte as (
-	select sum(Amount) as total_amount_spend
-	from cct
-), top_5_highest_spend_cities as (
-	select TOP 5 City,
-		sum(Amount) as spent_amount
-	from cct
-	group by City
-	order by spent_amount desc
-)
-select tc.City, tc.spent_amount,
-	ts.total_amount_spend,
-	ROUND((100.0*tc.spent_amount) / ts.total_amount_spend, 2) as contribute_perc
-from top_5_highest_spend_cities as tc
-join total_spent_cte as ts
-	on 1=1;
+select TOP 1 Card_Type, 
+	DATEPART(YEAR, "Date") as date_year,
+	DATENAME(MONTH, "Date") as date_month,
+	sum(Amount) as amount_spend
+from cct
+group by Card_Type, DATEPART(YEAR, "Date"), DATENAME(MONTH, "Date")
+order by amount_spend desc;
 ```
 </details>
 
