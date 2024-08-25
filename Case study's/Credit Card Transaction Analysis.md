@@ -2,7 +2,7 @@
 
 - Dataset for this case study download from here - [Dataset](https://www.kaggle.com/datasets/thedevastator/analyzing-credit-card-spending-habits-in-india)
 
-### Dataset Schema information - 
+## Dataset Schema information - 
 - city(String) - City name where transaction took place
 - date(Date) - Transaction date
 - card_type(String) - Type of card used for transaction
@@ -11,3 +11,6 @@
 - amount(number) - Amount of transaction
 
 ---------------------------------------------------------------------------------------------------------------------------------
+
+- ### Question & Answer for case study
+
