@@ -14,9 +14,9 @@
 
 - ## EDA of Transaction data
   <details>
-	  <summary>Click Here for Answer</summary>
+	  <summary>✅Click Here for Answer</summary>
 	  	<details>
-	  		<summary>- check null values per column</summary>
+	  		<summary>✅check null values per column</summary>
   	  	</details>
   </details>
 
