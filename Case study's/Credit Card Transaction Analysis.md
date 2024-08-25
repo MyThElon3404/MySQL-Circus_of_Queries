@@ -14,3 +14,11 @@
 
 - ### Question & Answer for case study
 
+- Q1. write a query to print top 5 cities with highest spends and their percentage contribution of total credit card spends
+<details>
+	<summary> Click Here for Answer </summary>
+
+ 	selct * from cct;
+
+</details>
+
