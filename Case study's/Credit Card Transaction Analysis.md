@@ -37,6 +37,77 @@ from cct
 order by "Date" asc;
 ```
 </details>
+<details>
+	<summary>✅last transaction date in dataset</summary>
+	
+```sql
+select TOP 1 "Date"
+from cct
+order by "Date" desc;
+```
+</details>
+<details>
+	<summary>✅total number of records in the dataset</summary>
+	
+```sql
+select count(*) as total_records
+from cct;
+```
+</details>
+<details>
+	<summary>✅order the cities accordingly to usage of credit cards</summary>
+	
+```sql
+select City, count(1) as card_used_frequecy
+from cct
+group by City
+order by 2 desc;
+```
+</details>
+<details>
+	<summary>✅different card_type used by female and male</summary>
+	
+```sql
+select Card_Type, Gender,
+	count(1) as card_usage_freq
+from cct
+group by Card_Type, Gender
+order by card_usage_freq desc;
+```
+</details>
+<details>
+	<summary>✅total spend of each card type by gender like male and female</summary>
+	
+```sql
+select Card_Type, Gender,
+	sum(Amount) as total_amount_spend
+from cct
+group by Card_Type, Gender
+order by total_amount_spend desc;
+```
+</details>
+<details>
+	<summary>✅card usage by different expence type by gender like male and female</summary>
+	
+```sql
+select Card_Type, Exp_Type,
+	count(1) as total_amount_spend
+from cct
+group by Card_Type, Exp_Type
+order by total_amount_spend desc;
+```
+</details>
+<details>
+	<summary>✅total spend of expence type by gender like male and female</summary>
+	
+```sql
+select Card_Type, Exp_Type,
+	sum(Amount) as total_amount_spend
+from cct
+group by Card_Type, Exp_Type
+order by total_amount_spend desc;
+```
+</details>
 
 
 - ## Question & Answer for case study
