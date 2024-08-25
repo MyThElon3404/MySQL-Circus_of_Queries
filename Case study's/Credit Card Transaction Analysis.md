@@ -12,11 +12,12 @@
 
 ----------------------------------------------------------------------------------------------------------------------------
 
-- ## EDA of Transaction data
+## EDA of Transaction data
   <details>
 	  <summary>✅Click Here for Answer</summary>
 	  	<details>
-	  		<summary>✅check null values per column</summary>
+	  		<summary>1.check null values per column</summary>
+			
   	  	</details>
   </details>
 
