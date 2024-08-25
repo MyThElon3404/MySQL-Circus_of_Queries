@@ -10,9 +10,9 @@
 - gender(String) - Gender of card holder
 - amount(number) - Amount of transaction
 
----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
 
-- ### Question & Answer for case study
+- ## Question & Answer for case study
 
 - Q1. write a query to print top 5 cities with highest spends and their percentage contribution of total credit card spends
 <details>
