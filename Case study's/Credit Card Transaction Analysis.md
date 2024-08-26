@@ -239,51 +239,44 @@ ORDER BY gold_percentage ASC;
 	<summary> Click Here for Answer </summary>
 	
 ```sql
-select TOP 1 Card_Type, 
-	DATEPART(YEAR, "Date") as date_year,
-	DATENAME(MONTH, "Date") as date_month,
-	sum(Amount) as amount_spend
-from cct
-group by Card_Type, DATEPART(YEAR, "Date"), DATENAME(MONTH, "Date")
-order by amount_spend desc;
-```
-</details>
-
-
-- #### Q3. write a query to print the transaction details(all columns from the table) for each card type. when it reaches a cumulative of 10,00,000 total spends(We should have 4 rows in the o/p one for each card type)
-<details>
-	<summary> Click Here for Answer </summary>
-	
-```sql
--- SOLUTION 1 : 
-with cumulative_sum_cte as (
-	select *,
-		SUM(Amount) over(partition by Card_Type order by "Date", Amount) as cumulative_sum
-	from cct
-), rank_cs_cte as (
-	select *,
-		DENSE_RANK() over(partition by Card_Type order by cumulative_sum) as drnk
-	from cumulative_sum_cte
-	where cumulative_sum >= 1000000
+-- SOLUTION 1:
+WITH city_exp_cte AS (
+    SELECT City, Exp_Type,
+        SUM(Amount) AS spend_amount
+    FROM cct
+    GROUP BY City, Exp_Type
+), min_max_exp_cte AS (
+    SELECT City,
+        MIN(spend_amount) AS min_spend,
+        MAX(spend_amount) AS max_spend
+    FROM city_exp_cte
+    GROUP BY City
 )
-select *
-from rank_cs_cte
-where drnk = 1;
+SELECT 
+    a.City,
+    MAX(CASE WHEN b.spend_amount = a.min_spend THEN b.Exp_Type END) AS lowest_expense_type,
+    MAX(CASE WHEN b.spend_amount = a.max_spend THEN b.Exp_Type END) AS highest_expense_type
+FROM min_max_exp_cte AS a
+JOIN city_exp_cte AS b
+    ON a.City = b.City
+GROUP BY a.City;
 
 -- SOLUTION 2:
-WITH cumulative_sum_cte AS (
-    SELECT Card_Type, Date, Amount,
-        SUM(Amount) OVER (PARTITION BY Card_Type ORDER BY "Date", Amount) AS cumulative_sum
+SELECT 
+    City,
+    MAX(CASE WHEN spend_amount = MIN(spend_amount) OVER (PARTITION BY City) THEN Exp_Type END) AS lowest_expense_type,
+    MAX(CASE WHEN spend_amount = MAX(spend_amount) OVER (PARTITION BY City) THEN Exp_Type END) AS highest_expense_type
+FROM (
+    SELECT City, Exp_Type,
+        SUM(Amount) AS spend_amount
     FROM cct
-), threshold_cte AS (
-    SELECT Card_Type, Date, Amount, cumulative_sum,
-        LAG(cumulative_sum, 1, 0) OVER (PARTITION BY Card_Type ORDER BY "Date", Amount) AS prev_cumulative_sum
-    FROM cumulative_sum_cte
-)
-SELECT Card_Type, Date, Amount,cumulative_sum
-FROM threshold_cte
-WHERE cumulative_sum >= 1000000 
-	AND prev_cumulative_sum < 1000000;
+    GROUP BY City, Exp_Type
+) AS city_exp
+GROUP BY City;
+
 ```
 </details>
+
+
+
 
