@@ -368,7 +368,23 @@ ORDER BY growth_per_month DESC;
 </details>
 
 
+- #### Q8. during weekends which city has highest total spend to total no of transcations ratio 
+<details>
+	<summary> Click Here for Answer </summary>
+	
+```sql
+-- SOLUTION 1:
+select TOP 1 City,
+	SUM(Amount) as total_spend,
+	COUNT(1) as transaction_cnt,
+	ration = SUM(Amount) / COUNT(1)
+from cct
+where DATEPART(WEEKDAY, Date) in (7, 1)
+group by City
+order by ration desc;
 
+```
+</details>
 
 
 - #### Q9. which city took least number of days to reach its 500th transaction after first transaction in that city 
