@@ -114,7 +114,6 @@ order by total_amount_spend desc;
 ## Question & Answer for case study
 
 - ### Q1. write a query to print top 5 cities with highest spends and their percentage contribution of total credit card spends
-
 <details>
 	<summary> Click Here for Answer </summary>
 	
@@ -140,7 +139,6 @@ join total_spent_cte as ts
 
 
 - ### Q2. write a query to print highest spend month and amount spent in that month for each card type
-- 
 <details>
 	<summary> Click Here for Answer </summary>
 	
@@ -156,7 +154,7 @@ order by amount_spend desc;
 </details>
 
 
-- Q1. write a query to print top 5 cities with highest spends and their percentage contribution of total credit card spends
+- Q3. write a query to print the transaction details(all columns from the table) for each card type. when it reaches a cumulative of 10,00,000 total spends(We should have 4 rows in the o/p one for each card type)
 <details>
 	<summary> Click Here for Answer </summary>
 	
