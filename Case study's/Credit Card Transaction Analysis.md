@@ -190,3 +190,100 @@ WHERE cumulative_sum >= 1000000
 	AND prev_cumulative_sum < 1000000;
 ```
 </details>
+
+
+- #### Q4. write a query to find city which had lowest percentage spend for gold card type
+<details>
+	<summary> Click Here for Answer </summary>
+	
+```sql
+-- SOLUTION 1:
+with gold_ts_cte as (
+	select City,
+		SUM(Amount) as citywise_total_gold_spend
+	from cct
+	where Card_Type = 'Gold'
+	group by City
+), city_gold_cte as (
+	select City,
+		SUM(Amount) as city_amount_spend
+	from cct
+	group by City
+)
+select TOP 1 a.City,
+	ROUND((100*a.citywise_total_gold_spend*1.0/b.city_amount_spend*1.0), 2) as gold_percentage
+from gold_ts_cte as a
+join city_gold_cte as b
+	on a.City = b.City
+order by gold_percentage asc;
+
+-- SOLUTION 2:
+WITH city_spend_cte AS (
+    SELECT City,
+        SUM(CASE WHEN Card_Type = 'Gold' THEN Amount ELSE 0 END) AS citywise_total_gold_spend,
+        SUM(Amount) AS city_amount_spend
+    FROM cct
+    GROUP BY City
+)
+SELECT TOP 1 City,
+    ROUND(100.0 * citywise_total_gold_spend / city_amount_spend, 2) AS gold_percentage
+FROM city_spend_cte
+ORDER BY gold_percentage ASC;
+
+```
+</details>
+
+
+- #### Q5. write a query to print 3 columns: city, highest_expense_type , lowest_expense_type 
+<details>
+	<summary> Click Here for Answer </summary>
+	
+```sql
+select TOP 1 Card_Type, 
+	DATEPART(YEAR, "Date") as date_year,
+	DATENAME(MONTH, "Date") as date_month,
+	sum(Amount) as amount_spend
+from cct
+group by Card_Type, DATEPART(YEAR, "Date"), DATENAME(MONTH, "Date")
+order by amount_spend desc;
+```
+</details>
+
+
+- #### Q3. write a query to print the transaction details(all columns from the table) for each card type. when it reaches a cumulative of 10,00,000 total spends(We should have 4 rows in the o/p one for each card type)
+<details>
+	<summary> Click Here for Answer </summary>
+	
+```sql
+-- SOLUTION 1 : 
+with cumulative_sum_cte as (
+	select *,
+		SUM(Amount) over(partition by Card_Type order by "Date", Amount) as cumulative_sum
+	from cct
+), rank_cs_cte as (
+	select *,
+		DENSE_RANK() over(partition by Card_Type order by cumulative_sum) as drnk
+	from cumulative_sum_cte
+	where cumulative_sum >= 1000000
+)
+select *
+from rank_cs_cte
+where drnk = 1;
+
+-- SOLUTION 2:
+WITH cumulative_sum_cte AS (
+    SELECT Card_Type, Date, Amount,
+        SUM(Amount) OVER (PARTITION BY Card_Type ORDER BY "Date", Amount) AS cumulative_sum
+    FROM cct
+), threshold_cte AS (
+    SELECT Card_Type, Date, Amount, cumulative_sum,
+        LAG(cumulative_sum, 1, 0) OVER (PARTITION BY Card_Type ORDER BY "Date", Amount) AS prev_cumulative_sum
+    FROM cumulative_sum_cte
+)
+SELECT Card_Type, Date, Amount,cumulative_sum
+FROM threshold_cte
+WHERE cumulative_sum >= 1000000 
+	AND prev_cumulative_sum < 1000000;
+```
+</details>
+
