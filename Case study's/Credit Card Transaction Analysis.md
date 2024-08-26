@@ -278,5 +278,165 @@ GROUP BY City;
 </details>
 
 
+- #### Q6. Write a query to find percentage contribution of spends by females for each expense type.
+<details>
+	<summary> Click Here for Answer </summary>
+	
+```sql
+-- SOLUTION 1:
+with cte_1 as (
+	select  Exp_Type , 
+		sum(Amount) as Exp_type_spent_amount
+	from cct
+	where Gender = 'F'
+	group by Exp_Type
+), cte_2 as (
+	select sum(Amount) as total_spent
+	from cct
+	where Gender = 'F'
+)
+select Exp_Type,
+	Exp_type_spent_amount,
+	total_spent,
+	format(100.0* Exp_type_spent_amount / total_spent ,'N2') as perc_contribution_spent_female
+from  cte_1 inner join cte_2 on 1=1;
 
+-- SOLUTION 2:
+WITH cte AS (
+    SELECT Exp_Type,
+        SUM(Amount) AS Exp_type_spent_amount,
+        SUM(SUM(Amount)) OVER () AS total_spent
+    FROM cct
+    WHERE Gender = 'F'
+    GROUP BY Exp_Type
+)
+SELECT Exp_Type,
+    Exp_type_spent_amount,
+    total_spent,
+    FORMAT(100.0 * Exp_type_spent_amount / total_spent, 'N2') AS perc_contribution_spent_female
+FROM cte;
+```
+</details>
+
+
+- #### Q7. which card and expense type combination saw highest month over month growth in january 2014
+<details>
+	<summary> Click Here for Answer </summary>
+	
+```sql
+-- SOLUTION 1:
+with cte1 as (
+	select Card_Type, Exp_Type,
+		DATEPART(YEAR, Date) as year,
+		DATEPART(MONTH, Date) as Month,
+		sum(Amount) as total_amount
+	from cct
+	group by Card_Type, Exp_Type, 
+		DATEPART(YEAR, Date), DATEPART(MONTH, Date)
+), cte2 as (
+	select *,
+		LAG(total_amount, 1) over(partition by Card_Type, Exp_Type order by year, Month) as prev_month_total_amount
+	from cte1
+), cte3 as (
+	select *,
+		100.0*(total_amount - prev_month_total_amount) / prev_month_total_amount as growth_per_month
+	from cte2
+	where year = 2014
+		and Month = 1
+)
+select TOP 1 *
+from cte3
+order by growth_per_month desc;
+
+-- SOLUTION 2:
+WITH cte AS (
+    SELECT Card_Type, Exp_Type,
+        DATEPART(YEAR, Date) AS year, DATEPART(MONTH, Date) AS Month,
+        SUM(Amount) AS total_amount,
+        LAG(SUM(Amount), 1) OVER (PARTITION BY Card_Type, Exp_Type ORDER BY DATEPART(YEAR, Date), DATEPART(MONTH, Date))
+			AS prev_month_total_amount
+    FROM cct
+    GROUP BY Card_Type, Exp_Type, DATEPART(YEAR, Date), DATEPART(MONTH, Date)
+)
+SELECT TOP 1 Card_Type, Exp_Type, year, Month, total_amount, prev_month_total_amount,
+    100.0 * (total_amount - prev_month_total_amount) / prev_month_total_amount AS growth_per_month
+FROM cte
+WHERE year = 2014 AND Month = 1
+ORDER BY growth_per_month DESC;
+
+```
+</details>
+
+
+- #### Q8. during weekends which city has highest total spend to total no of transcations ratio 
+<details>
+	<summary> Click Here for Answer </summary>
+	
+```sql
+-- SOLUTION 1:
+select TOP 1 City,
+	SUM(Amount) as total_spend,
+	COUNT(1) as transaction_cnt,
+	ration = SUM(Amount) / COUNT(1)
+from cct
+where DATEPART(WEEKDAY, Date) in (7, 1)
+group by City
+order by ration desc;
+
+```
+</details>
+
+
+- #### Q9. which city took least number of days to reach its 500th transaction after first transaction in that city 
+<details>
+	<summary> Click Here for Answer </summary>
+	
+```sql
+-- SOLUTION 1:
+with cte1 as (
+	select City,
+		count(1) as transaction_cnt,
+		MIN(Date) as min_trans_date,
+		MAX(Date) as max_trans_date
+	from cct
+	group by City
+	having count(1) >= 500
+), cte2 as (
+	select City, Date,
+		ROW_NUMBER() over(partition by city order by Date) as rn
+	from cct
+	where City in (select City from cte1)
+), cte3 as (
+	select a.City, a.min_trans_date, a.max_trans_date,
+		a.transaction_cnt, b.Date
+	from cte1 as a
+	join cte2 as b
+		on a.City = b.City
+	where b.rn = 500
+)
+select City, min_trans_date, Date as "500th_trans_date",
+	DATEDIFF(DAY, min_trans_date, Date) as day_to_reach_500th_trans
+from cte3
+order by day_to_reach_500th_trans;
+
+-- SOLUTION 2:
+WITH cte AS (
+    SELECT City,
+        COUNT(1) AS transaction_cnt,
+        MIN(Date) AS min_trans_date,
+        MAX(Date) AS max_trans_date,
+        ROW_NUMBER() OVER(PARTITION BY City ORDER BY Date) AS rn
+    FROM cct
+    GROUP BY City
+    HAVING COUNT(1) >= 500
+)
+SELECT City, min_trans_date, 
+    MAX(CASE WHEN rn = 500 THEN Date END) AS "500th_trans_date",
+    DATEDIFF(DAY, min_trans_date, MAX(CASE WHEN rn = 500 THEN Date END)) AS day_to_reach_500th_trans
+FROM cte
+GROUP BY City, min_trans_date, max_trans_date, transaction_cnt
+ORDER BY day_to_reach_500th_trans;
+
+```
+</details>
 
