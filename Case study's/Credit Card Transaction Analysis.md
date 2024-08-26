@@ -387,56 +387,5 @@ order by ration desc;
 </details>
 
 
-- #### Q9. which city took least number of days to reach its 500th transaction after first transaction in that city 
-<details>
-	<summary> Click Here for Answer </summary>
-	
-```sql
--- SOLUTION 1:
-with cte1 as (
-	select City,
-		count(1) as transaction_cnt,
-		MIN(Date) as min_trans_date,
-		MAX(Date) as max_trans_date
-	from cct
-	group by City
-	having count(1) >= 500
-), cte2 as (
-	select City, Date,
-		ROW_NUMBER() over(partition by city order by Date) as rn
-	from cct
-	where City in (select City from cte1)
-), cte3 as (
-	select a.City, a.min_trans_date, a.max_trans_date,
-		a.transaction_cnt, b.Date
-	from cte1 as a
-	join cte2 as b
-		on a.City = b.City
-	where b.rn = 500
-)
-select City, min_trans_date, Date as "500th_trans_date",
-	DATEDIFF(DAY, min_trans_date, Date) as day_to_reach_500th_trans
-from cte3
-order by day_to_reach_500th_trans;
 
--- SOLUTION 2:
-WITH cte AS (
-    SELECT City,
-        COUNT(1) AS transaction_cnt,
-        MIN(Date) AS min_trans_date,
-        MAX(Date) AS max_trans_date,
-        ROW_NUMBER() OVER(PARTITION BY City ORDER BY Date) AS rn
-    FROM cct
-    GROUP BY City
-    HAVING COUNT(1) >= 500
-)
-SELECT City, min_trans_date, 
-    MAX(CASE WHEN rn = 500 THEN Date END) AS "500th_trans_date",
-    DATEDIFF(DAY, min_trans_date, MAX(CASE WHEN rn = 500 THEN Date END)) AS day_to_reach_500th_trans
-FROM cte
-GROUP BY City, min_trans_date, max_trans_date, transaction_cnt
-ORDER BY day_to_reach_500th_trans;
-
-```
-</details>
 
