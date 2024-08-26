@@ -160,21 +160,34 @@ order by amount_spend desc;
 	<summary> Click Here for Answer </summary>
 	
 ```sql
-with total_spent_cte as (
-	select sum(Amount) as total_amount_spend
+-- SOLUTION 1 : 
+with cumulative_sum_cte as (
+	select *,
+		SUM(Amount) over(partition by Card_Type order by "Date", Amount) as cumulative_sum
 	from cct
-), top_5_highest_spend_cities as (
-	select TOP 5 City,
-		sum(Amount) as spent_amount
-	from cct
-	group by City
-	order by spent_amount desc
+), rank_cs_cte as (
+	select *,
+		DENSE_RANK() over(partition by Card_Type order by cumulative_sum) as drnk
+	from cumulative_sum_cte
+	where cumulative_sum >= 1000000
 )
-select tc.City, tc.spent_amount,
-	ts.total_amount_spend,
-	ROUND((100.0*tc.spent_amount) / ts.total_amount_spend, 2) as contribute_perc
-from top_5_highest_spend_cities as tc
-join total_spent_cte as ts
-	on 1=1;
+select *
+from rank_cs_cte
+where drnk = 1;
+
+-- SOLUTION 2:
+WITH cumulative_sum_cte AS (
+    SELECT Card_Type, Date, Amount,
+        SUM(Amount) OVER (PARTITION BY Card_Type ORDER BY "Date", Amount) AS cumulative_sum
+    FROM cct
+), threshold_cte AS (
+    SELECT Card_Type, Date, Amount, cumulative_sum,
+        LAG(cumulative_sum, 1, 0) OVER (PARTITION BY Card_Type ORDER BY "Date", Amount) AS prev_cumulative_sum
+    FROM cumulative_sum_cte
+)
+SELECT Card_Type, Date, Amount,cumulative_sum
+FROM threshold_cte
+WHERE cumulative_sum >= 1000000 
+	AND prev_cumulative_sum < 1000000;
 ```
 </details>
