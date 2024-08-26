@@ -111,7 +111,7 @@ order by total_amount_spend desc;
 
 ------------------------------------------------------------------------------------------------------------------------
 
-- ## Question & Answer for case study
+## Question & Answer for case study
 
 - ### Q1. write a query to print top 5 cities with highest spends and their percentage contribution of total credit card spends
 
@@ -140,6 +140,7 @@ join total_spent_cte as ts
 
 
 - ### Q2. write a query to print highest spend month and amount spent in that month for each card type
+- 
 <details>
 	<summary> Click Here for Answer </summary>
 	
