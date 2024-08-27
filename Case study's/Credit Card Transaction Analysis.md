@@ -439,4 +439,3 @@ ORDER BY day_to_reach_500th_trans;
 
 ```
 </details>
-
