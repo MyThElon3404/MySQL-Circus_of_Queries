@@ -154,7 +154,8 @@ order by amount_spend desc;
 </details>
 
 
-- #### Q3. write a query to print the transaction details(all columns from the table) for each card type. when it reaches a cumulative of 10,00,000 total spends(We should have 4 rows in the o/p one for each card type)
+- #### Q3. write a query to print the transaction details(all columns from the table) for each card type.
+- #### when it reaches a cumulative of 10,00,000 total spends(We should have 4 rows in the o/p one for each card type)
 <details>
 	<summary> Click Here for Answer </summary>
 	
