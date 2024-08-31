@@ -17,4 +17,30 @@ The dataset driving this project offers a comprehensive look at historical sales
 |industry	 | VARCHAR(50) |	NOT NULL 
 |sales	   | float | NULL
 
+---------------------------------------------------------------------------------------------------------------------------------------
+
+# QUESTIONS & ANSWERS :
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
