@@ -1,8 +1,11 @@
 # Sales for Retail and Food Services in U.S.A.
 
+---------------------------------------------------------------------------------------------------------------------------------------
 
 - ### Overview :
 This project delves into the dynamic world of Retail and Food Services in the U.S.A., leveraging data directly sourced from the U.S. government. By harnessing the power of SQL, we've meticulously crafted a robust database, enabling seamless management and in-depth analysis. Our primary focus lies in uncovering key insights by exploring sales data through the lens of the NAICS (North American Industry Classification System) codes and categories, offering a comprehensive view of industry trends and performance.
+
+---------------------------------------------------------------------------------------------------------------------------------------
 
 - ### Dataset Overview :
 The dataset driving this project offers a comprehensive look at historical sales data for Retail and Food Services across the U.S.A. Sourced from the U.S. government website, this dataset is a cornerstone of reliability and accuracy. It encapsulates crucial information, including NAICS codes, business categories, sales figures, geographical regions, and time periods (e.g., monthly or yearly), enabling a nuanced analysis of industry trends.
@@ -18,8 +21,8 @@ The dataset driving this project offers a comprehensive look at historical sales
 |sales	   | float | NULL
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-
-# QUESTIONS & ANSWERS :
+## QUESTIONS & ANSWERS :
+---------------------------------------------------------------------------------------------------------------------------------------
 
 
 
