@@ -18,7 +18,7 @@ The dataset driving this project offers a comprehensive look at historical sales
 |naics_Code	       | Integer | NOT NULL
 |kind_of_business | VARCHAR(50) | NOT NULL
 |industry	 | VARCHAR(50) |	NOT NULL 
-|sales	   | float | NULL
+|sales	   | float | CAN BE NULL
 
 ![image](https://github.com/user-attachments/assets/b8312e2c-099a-4ba1-a5ba-9399a5bfcb45)
 
