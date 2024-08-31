@@ -50,6 +50,28 @@ order by total_sales desc;
 
 ![image](https://github.com/user-attachments/assets/5740da8e-09b4-4e28-91e5-2484a6c55ab2)
 
+---------------------------------------------------------------------------------------------------------------------------------------
+
+- Q2. Top-performing industries in terms of sales for a year 2021, and how do their sales compare month-over-month?
+``` sql
+with monthly_sales as (
+	select month, year, industry,
+		SUM(sales) as total_sales
+	from retail_sales
+	where year = 2021
+	group by month, year, industry
+),
+	industries_performance as (
+		select *,
+			RANK() over(partition by month, year order by total_sales desc) as sales_rn
+		from monthly_sales
+	)
+select *
+from industries_performance
+where sales_rn = 1
+order by total_sales desc;
+```
+- ANSWER :
 
 
 
