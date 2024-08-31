@@ -46,7 +46,8 @@ from industries_performance
 where sales_rn = 1
 order by total_sales desc;
 ```
-- ANS : 
+- ANSWER :
+
 ![image](https://github.com/user-attachments/assets/5740da8e-09b4-4e28-91e5-2484a6c55ab2)
 
 
