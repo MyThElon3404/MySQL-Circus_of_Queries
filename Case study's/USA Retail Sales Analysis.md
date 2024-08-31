@@ -46,7 +46,7 @@ from industries_performance
 where sales_rn = 1
 order by total_sales desc;
 ```
-- ANSWER :
+- SAMPLE ANSWER :
 
 ![image](https://github.com/user-attachments/assets/5740da8e-09b4-4e28-91e5-2484a6c55ab2)
 
@@ -69,7 +69,7 @@ from industries_performance
 where sales_rn = 1
 order by total_sales desc;
 ```
-- ANSWER :
+- SAMPLE ANSWER :
 
 ![image](https://github.com/user-attachments/assets/8758093f-3e29-4ab6-b184-d0288de48280)
 
@@ -92,7 +92,7 @@ from industries_performance
 where sales_rn = 1
 order by total_sales desc;
 ```
-- ANSWER :
+- SAMPLE ANSWER :
 
 ![image](https://github.com/user-attachments/assets/b00fa71f-2f53-467b-a0de-e0c3b0e6496a)
 
@@ -100,7 +100,7 @@ order by total_sales desc;
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 
-- Q2. Which specific kind of businesses contribute the most to total sales, and how does their performance vary across industries?
+- Q2. Which specific kind of businesses contribute the most to total sales, and it's belongs to which industries?
 ``` sql
 WITH ts_cte AS (
     SELECT SUM(sales) AS total_sales
@@ -113,27 +113,54 @@ business_wise_total_sales AS (
     GROUP BY kind_of_business
 ),
 most_contributer_business AS (
-    SELECT kind_of_business,
+    SELECT TOP 1 kind_of_business,
            business_total_sales,
            total_sales,
            ROUND((business_total_sales * 100.0 / total_sales), 2) AS business_contribe
     FROM ts_cte
     JOIN business_wise_total_sales
         ON 1 = 1
+	ORDER BY business_contribe DESC
 )
-SELECT *
-FROM most_contributer_business
-WHERE business_contribe = (
-    SELECT MAX(business_contribe)
-    FROM most_contributer_business
-);
+SELECT distinct b.industry, a.kind_of_business,
+	a.business_total_sales, a.business_contribe
+FROM most_contributer_business as a
+JOIN retail_sales as b
+	ON a.kind_of_business = b.kind_of_business;
 ```
-- ANSWER :
+- SAMPLE ANSWER :
 
-![image](https://github.com/user-attachments/assets/a4b0d1d8-d099-4828-8fab-cf0326092f37)
+![image](https://github.com/user-attachments/assets/00347ad6-91d2-441f-8f0c-9607dfc08402)
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 
+- Q3. Is there any seasonality in sales for specific industries, and how do they perform month-over-month?
+``` sql
+select month, year, industry,
+	SUM(sales) as total_sales
+from retail_sales
+group by industry, month, year
+order by month, year;
+```
+- SAMPLE ANSWER :
+
+![image](https://github.com/user-attachments/assets/a65c9150-fd15-4ca6-81b6-53d8c3fb4ea3)
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+- Q4. How does the sales distribution vary among industries based on their North American Industry Classification System (NAICS) codes?
+``` sql
+select naics_Code, industry,
+	SUM(sales) as total_sales
+from retail_sales
+group by naics_Code, industry
+order by total_sales desc;
+```
+- SAMPLE ANSWER :
+
+![image](https://github.com/user-attachments/assets/2c292ed7-69cf-4736-9015-835f6da01dea)
+
+---------------------------------------------------------------------------------------------------------------------------------------
 
 
 
