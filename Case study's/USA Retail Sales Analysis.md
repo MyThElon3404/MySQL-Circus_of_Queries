@@ -96,34 +96,43 @@ order by total_sales desc;
 
 ![image](https://github.com/user-attachments/assets/b00fa71f-2f53-467b-a0de-e0c3b0e6496a)
 
-- Like this you can calculate `Top-performing industries in terms of sales` for any year
+- Like this you can calculate `Top-performing industries in terms of sales` for any year.
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 
-- Q2. Top-performing industries in terms of sales for a year 2021, and how do their sales compare month-over-month?
+- Q2. Which specific kind of businesses contribute the most to total sales, and how does their performance vary across industries?
 ``` sql
-with monthly_sales as (
-	select month, year, industry,
-		SUM(sales) as total_sales
-	from retail_sales
-	where year = 2021
-	group by month, year, industry
+WITH ts_cte AS (
+    SELECT SUM(sales) AS total_sales
+    FROM retail_sales
 ),
-	industries_performance as (
-		select *,
-			RANK() over(partition by month, year order by total_sales desc) as sales_rn
-		from monthly_sales
-	)
-select *
-from industries_performance
-where sales_rn = 1
-order by total_sales desc;
+business_wise_total_sales AS (
+    SELECT kind_of_business,
+           SUM(sales) AS business_total_sales
+    FROM retail_sales
+    GROUP BY kind_of_business
+),
+most_contributer_business AS (
+    SELECT kind_of_business,
+           business_total_sales,
+           total_sales,
+           ROUND((business_total_sales * 100.0 / total_sales), 2) AS business_contribe
+    FROM ts_cte
+    JOIN business_wise_total_sales
+        ON 1 = 1
+)
+SELECT *
+FROM most_contributer_business
+WHERE business_contribe = (
+    SELECT MAX(business_contribe)
+    FROM most_contributer_business
+);
 ```
 - ANSWER :
 
+![image](https://github.com/user-attachments/assets/a4b0d1d8-d099-4828-8fab-cf0326092f37)
 
-
-
+---------------------------------------------------------------------------------------------------------------------------------------
 
 
 
