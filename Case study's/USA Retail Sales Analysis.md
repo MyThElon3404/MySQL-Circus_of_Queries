@@ -27,7 +27,7 @@ The dataset driving this project offers a comprehensive look at historical sales
 ## QUESTIONS & ANSWERS :
 ---------------------------------------------------------------------------------------------------------------------------------------
 
-- Q1. Top-performing industries in terms of sales for a year 2021, and how do their sales compare month-over-month?
+- Q1. 1. Top-performing industries in terms of sales for a year 2021, and how do their sales compare month-over-month?
 ``` sql
 with monthly_sales as (
 	select month, year, industry,
@@ -49,6 +49,54 @@ order by total_sales desc;
 - ANSWER :
 
 ![image](https://github.com/user-attachments/assets/5740da8e-09b4-4e28-91e5-2484a6c55ab2)
+
+- Q1. 2. Top-performing industries in terms of sales for a year 2022, and how do their sales compare month-over-month?
+``` sql
+with monthly_sales as (
+	select month, year, industry,
+		SUM(sales) as total_sales
+	from retail_sales
+	where year = 2022
+	group by month, year, industry
+),
+	industries_performance as (
+		select *,
+			RANK() over(partition by month, year order by total_sales desc) as sales_rn
+		from monthly_sales
+	)
+select *
+from industries_performance
+where sales_rn = 1
+order by total_sales desc;
+```
+- ANSWER :
+
+![image](https://github.com/user-attachments/assets/8758093f-3e29-4ab6-b184-d0288de48280)
+
+- Q1. 3. Top-performing industries in terms of sales for a year 2020, and how do their sales compare month-over-month?
+``` sql
+with monthly_sales as (
+	select month, year, industry,
+		SUM(sales) as total_sales
+	from retail_sales
+	where year = 2020
+	group by month, year, industry
+),
+	industries_performance as (
+		select *,
+			RANK() over(partition by month, year order by total_sales desc) as sales_rn
+		from monthly_sales
+	)
+select *
+from industries_performance
+where sales_rn = 1
+order by total_sales desc;
+```
+- ANSWER :
+
+![image](https://github.com/user-attachments/assets/b00fa71f-2f53-467b-a0de-e0c3b0e6496a)
+
+- Like this you can calculate `Top-performing industries in terms of sales` for any year
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 
