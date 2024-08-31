@@ -20,11 +20,14 @@ The dataset driving this project offers a comprehensive look at historical sales
 |industry	 | VARCHAR(50) |	NOT NULL 
 |sales	   | float | NULL
 
+![image](https://github.com/user-attachments/assets/b8312e2c-099a-4ba1-a5ba-9399a5bfcb45)
+
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 ## QUESTIONS & ANSWERS :
 ---------------------------------------------------------------------------------------------------------------------------------------
 
-
+- Q1. 
 
 
 
