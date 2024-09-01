@@ -288,14 +288,74 @@ order by year;
 
 ![image](https://github.com/user-attachments/assets/b3183d34-969a-4aa9-94d0-4103fb9dd332)
 
+----------------------------------------------------------------------------------------------------------------------------------------
+
+- Q11. What is the yearly ratio of total sales for women's clothing stores to total sales for men's clothing stores?
+``` sql
+with cte as (
+	select year,
+		sum(case when kind_of_business='Women''s clothing stores' then sales
+			else 0 end) as women_store_sales,
+		sum(case when kind_of_business='Men''s clothing stores' then sales
+			else 0 end) as men_store_sales
+	from retail_sales
+	group by year
+)
+select *,
+	case when men_store_sales!=0 and women_store_sales!=0
+		then women_store_sales / men_store_sales else 0
+	end as women_men_ratio
+from cte
+order by  year;
+```
+- SAMPLE ANSWER :
+
+![image](https://github.com/user-attachments/assets/bda9a5b9-200a-43be-aee5-42f0a6550779)
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
+- Q12. What is the year-to-date total sale of each month for 2019, 2020, 2021, and 2022 for the womenâ€™s clothing stores?
+``` sql
+with filter_cte as (
+	select year, month, sales
+	from retail_sales
+	where kind_of_business = 'Women''s clothing stores'
+),
+	ytd_sales as (
+		select year, month, sales,
+			sum(sales) over(partition by year order by month 
+				ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as ytd_total_sales
+		from filter_cte
+	)
+select *
+from ytd_sales;
+```
+- SAMPLE ANSWER :
 
+![image](https://github.com/user-attachments/assets/06b2bffa-3b65-4b95-933c-1b7f0ca8bdde)
 
+----------------------------------------------------------------------------------------------------------------------------------------
 
+- Q13. What is the month-over-month growth rate of women's clothing businesses in 2022?
+``` sql
+with filter_cte as (
+	select month, sales,
+		lag(sales) over(partition by kind_of_business order by month) as prev_sales
+	from retail_sales
+	where kind_of_business='Women''s clothing stores'
+		and year = 2022
+),
+	mom_growth_rate as (
+		select *,
+			100.0*(sales - prev_sales)/prev_sales as mom_gr
+		from filter_cte
+	)
+select *
+from mom_growth_rate
+order by month;
+```
+- SAMPLE ANSWER :
 
+![image](https://github.com/user-attachments/assets/42d1db67-9f81-41cf-ab02-72fc3351a498)
 
-
-
-
+----------------------------------------------------------------------------------------------------------------------------------------
