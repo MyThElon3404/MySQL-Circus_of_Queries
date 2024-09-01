@@ -273,7 +273,23 @@ order by year, industry, yoy_growth desc;
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
+- Q10. What are the yearly total sales for women's clothing stores and men's clothing stores?
+``` sql
+select year,
+	sum(case when kind_of_business='Women''s clothing stores' then sales
+		else 0 end) as women_store_sales,
+	sum(case when kind_of_business='Men''s clothing stores' then sales
+		else 0 end) as men_store_sales
+from retail_sales
+group by year
+order by year;
+```
+- SAMPLE ANSWER :
 
+![image](https://github.com/user-attachments/assets/b3183d34-969a-4aa9-94d0-4103fb9dd332)
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
 
 
 
