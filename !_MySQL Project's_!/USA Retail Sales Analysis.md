@@ -219,23 +219,59 @@ order by total_sales desc;
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-- Q8. Which kind of businesses within the automotive industry had the highest sales revenue for 2022?
+- Q8. What is the contribution percentage of each business in the automotive industry this year?
 ``` sql
-select kind_of_business,
-	SUM(sales) as total_sales
-from retail_sales
-where industry = 'Automotive'
-	and year = 2022
-group by kind_of_business
-order by total_sales desc;
+with automotive_sales as (
+	select industry, kind_of_business,
+		SUM(sales) as automotive_sales
+	from retail_sales
+	where industry = 'Automotive'
+	group by industry, kind_of_business
+),
+	total_sale_cte as (
+		select
+			SUM(sales) as total_sales
+		from retail_sales
+		where industry = 'Automotive'
+	)
+select *,
+	round((100.0 * automotive_sales / total_sales), 2) as contribute_prec
+from automotive_sales as a
+join total_sale_cte as b
+	on 1=1
+order by contribute_prec desc;
 ```
 - SAMPLE ANSWER :
 
-
+![image](https://github.com/user-attachments/assets/33b1f2a6-b182-4283-9dd3-204b052c6b44)
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
+- Q9. What are the year-over-year growth rates for each industry per year?
+``` sql
+with total_sales_cte as (
+	select year, industry,
+		sum(sales) as total_sales
+	from retail_sales
+	group by year, industry
+),
+	sale_cte as (
+		select *,
+			lag(total_sales) over(partition by industry order by year) as prev_sales,
+			lag(year) over(partition by industry order by year) as prev_year
+		from total_sales_cte
+	)
+select industry, year, prev_year, total_sales, prev_sales,
+	(prev_sales - total_sales)*100.0 / prev_sales as yoy_growth
+from sale_cte
+where prev_sales is not null
+order by year, industry, yoy_growth desc;
+```
+- SAMPLE ANSWER :
 
+![image](https://github.com/user-attachments/assets/c307f60d-35c6-4536-b608-20775ae53f78)
+
+----------------------------------------------------------------------------------------------------------------------------------------
 
 
 
