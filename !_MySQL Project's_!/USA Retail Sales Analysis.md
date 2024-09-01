@@ -187,7 +187,20 @@ order by industry, month, year;
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
+- Q6. Which businesses all-time average sale was above 10 billion dollars?
+``` sql
+select kind_of_business,
+	AVG(sales) as avg_sales
+from retail_sales
+group by kind_of_business
+having AVG(sales) > 10000
+order by avg_sales desc;
+```
+- SAMPLE ANSWER :
 
+![image](https://github.com/user-attachments/assets/e557c8c6-b5de-4c2e-ae37-c9c32536d370)
+
+----------------------------------------------------------------------------------------------------------------------------------------
 
 
 
