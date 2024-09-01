@@ -202,9 +202,37 @@ order by avg_sales desc;
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
+- Q7. Which kind of businesses within the automotive industry had the highest sales revenue for 2022?
+``` sql
+select kind_of_business,
+	SUM(sales) as total_sales
+from retail_sales
+where industry = 'Automotive'
+	and year = 2022
+group by kind_of_business
+order by total_sales desc;
+```
+- SAMPLE ANSWER :
 
+![Uploading image.png…]()
 
+----------------------------------------------------------------------------------------------------------------------------------------
 
+- Q8. Which kind of businesses within the automotive industry had the highest sales revenue for 2022?
+``` sql
+select kind_of_business,
+	SUM(sales) as total_sales
+from retail_sales
+where industry = 'Automotive'
+	and year = 2022
+group by kind_of_business
+order by total_sales desc;
+```
+- SAMPLE ANSWER :
+
+![Uploading image.png…]()
+
+----------------------------------------------------------------------------------------------------------------------------------------
 
 
 
