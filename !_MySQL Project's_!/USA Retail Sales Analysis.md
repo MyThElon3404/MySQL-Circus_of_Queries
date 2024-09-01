@@ -162,13 +162,28 @@ order by total_sales desc;
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-- Q5. Are there any outliers or significant changes in sales for specific industries during particular months or years?
+- Q5. Are there significant higher (more than 1.5 times) than the sales in the previous or next month in sales for specific industries?
 ``` sql
-
+with total_sales_cte as (
+	select industry, month, year,
+		SUM(sales) as total_sales
+	from retail_sales
+	group by industry, month, year
+), lag_lead_sales as (
+	select industry, month, year, total_sales,
+		LAG(total_sales) over(partition by industry order by month, year) as prev_sale,
+		LEAD(total_sales) over(partition by industry order by month, year) as next_sale
+	from total_sales_cte
+)
+select  industry, month, year, total_sales
+from lag_lead_sales
+where total_sales > 1.5 * COALESCE(prev_sale, 0)
+	OR total_sales > 1.5 * COALESCE(next_sale, 0)
+order by industry, month, year;
 ```
 - SAMPLE ANSWER :
 
-
+![image](https://github.com/user-attachments/assets/0f008ba1-8429-4ee3-b768-aadd7856fe7c)
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
