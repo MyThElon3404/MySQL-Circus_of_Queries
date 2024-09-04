@@ -45,6 +45,7 @@ select *
 from industries_performance
 where sales_rn = 1
 order by total_sales desc;
+
 ```
 - SAMPLE ANSWER :
 
