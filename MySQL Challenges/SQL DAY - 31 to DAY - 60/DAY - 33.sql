@@ -39,4 +39,45 @@ WHERE order_date BETWEEN DATEADD(DAY, -30, MaxOrderDate.max_date)
 
 -- ==================================================================================================================================
 
+-- QUESTION : 2
+-- 2. Query to find products with a price greater than the average price of all products in their category 
+-- but less than the maximum price in their category.
 
+-- SOLUTION :------------------------------------------------------------------------------------------------------------------------
+
+-- SOLUTION 1 - Using CTE
+WITH avg_cte AS (
+    SELECT product_category, 
+        ROUND(AVG(price), 2) AS avg_price
+    FROM products
+    GROUP BY product_category
+), max_price_cte AS (
+    SELECT product_category, 
+        MAX(price) AS max_price
+    FROM products
+    GROUP BY product_category
+)
+SELECT p.*
+FROM products p
+JOIN avg_cte a 
+  ON p.product_category = a.product_category
+JOIN max_price_cte mp 
+  ON p.product_category = mp.product_category
+WHERE p.price > a.avg_price
+  AND p.price < mp.max_price;
+
+-- SOLUTION 2 - Using Sub-Query
+SELECT product_id, product_name, price, product_category
+FROM products p
+WHERE price > (
+    SELECT AVG(price) 
+    FROM products 
+    WHERE product_category = p.product_category
+)
+AND price < (
+    SELECT MAX(price) 
+    FROM products 
+    WHERE product_category = p.product_category
+);
+
+-- ==================================================================================================================================
