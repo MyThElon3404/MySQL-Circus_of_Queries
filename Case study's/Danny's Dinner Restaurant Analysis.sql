@@ -1,20 +1,10 @@
-drop schema if exists x_dannys_diner;
-
-CREATE SCHEMA x_dannys_diner_w1d1;
-use x_dannys_diner_w1d1;
-
--- alter schema x_dannys_diner rename to x_dannys_diner
-
--- alter table new_sales rename to sales;
-
 CREATE TABLE sales (
   customer_id VARCHAR(1),
   order_date DATE,
   product_id INTEGER
 );
 
-INSERT INTO sales
-  (customer_id, order_date, product_id)
+INSERT INTO sales (customer_id, order_date, product_id)
 VALUES
   ('A', '2021-01-01', '1'),
   ('A', '2021-01-01', '2'),
@@ -39,8 +29,7 @@ CREATE TABLE menu (
   price INTEGER
 );
 
-INSERT INTO menu
-  (product_id, product_name, price)
+INSERT INTO menu (product_id, product_name, price)
 VALUES
   ('1', 'sushi', '10'),
   ('2', 'curry', '15'),
@@ -52,8 +41,7 @@ CREATE TABLE members (
   join_date DATE
 );
 
-INSERT INTO members
-  (customer_id, join_date)
+INSERT INTO members (customer_id, join_date)
 VALUES
   ('A', '2021-01-07'),
   ('B', '2021-01-09');
@@ -117,6 +105,7 @@ on sales.product_id = menu. product_id
 group by menu.product_name
 order by total_count desc limit 3;
 -- --------------------------------------------------------------------------------------------------
+
 -- 	6. Which item was the most popular for each customer?
 
 WITH most_popular AS (
@@ -157,6 +146,7 @@ with most_popular as (
 select * from most_popular;
 
 -- --------------------------------------------------------------------------------------------------
+
 -- 7. Which item was purchased first by the customer after they became a member?
 
 with joined_as_member as (
