@@ -191,9 +191,12 @@ ORDER BY Month;
 SELECT 
     FORMAT(SaleDate, 'yyyy-MM') AS Month,
     SUM(Amount) AS TotalSales,
-    LAG(SUM(Amount)) OVER (PARTITION BY FORMAT(SaleDate, 'MM') ORDER BY FORMAT(SaleDate, 'yyyy-MM')) AS PreviousYearSales,
-    (CAST(SUM(Amount) AS DECIMAL(10, 2)) - CAST(LAG(SUM(Amount)) OVER (PARTITION BY FORMAT(SaleDate, 'MM') ORDER BY FORMAT(SaleDate, 'yyyy-MM')) AS DECIMAL(10, 2))) /
-    CAST(LAG(SUM(Amount)) OVER (PARTITION BY FORMAT(SaleDate, 'MM') ORDER BY FORMAT(SaleDate, 'yyyy-MM')) AS DECIMAL(10, 2)) * 100 AS YoYReturn
+    LAG(SUM(Amount)) OVER (PARTITION BY FORMAT(SaleDate, 'MM') 
+	ORDER BY FORMAT(SaleDate, 'yyyy-MM')) AS PreviousYearSales,
+    (CAST(SUM(Amount) AS DECIMAL(10, 2)) - CAST(LAG(SUM(Amount)) OVER (PARTITION BY FORMAT(SaleDate, 'MM') 
+	ORDER BY FORMAT(SaleDate, 'yyyy-MM')) AS DECIMAL(10, 2))) /
+    CAST(LAG(SUM(Amount)) OVER (PARTITION BY FORMAT(SaleDate, 'MM') 
+	ORDER BY FORMAT(SaleDate, 'yyyy-MM')) AS DECIMAL(10, 2)) * 100 AS YoYReturn
 FROM Sales
 GROUP BY FORMAT(SaleDate, 'yyyy-MM')
 ORDER BY Month;
