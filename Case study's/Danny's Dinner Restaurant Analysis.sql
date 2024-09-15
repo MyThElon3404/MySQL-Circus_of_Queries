@@ -96,6 +96,7 @@ where sales.order_date = any (
         group by customer_id
 );
 -- --------------------------------------------------------------------------------------------------
+
 -- 5. What is the most purchased item on the menu and how many times was it purchased by all customers?
 
 select count(sales.product_id) as total_count, menu.product_name
@@ -165,6 +166,7 @@ on joined_as_member.product_id = menu.product_id
 where row_num = 1
 order by customer_id asc;
 -- --------------------------------------------------------------------------------------------------
+
 -- 	8. Which item was purchased just before the customer became a member?
 
 with joined_as_member as (
@@ -182,6 +184,7 @@ on joined_as_member.product_id = menu.product_id
 where row_num = 1
 order by customer_id asc;
 -- --------------------------------------------------------------------------------------------------
+
 -- 9. What is the total items and amount spent for each member before they became a member?
 
 select sales.customer_id, count(sales.product_id) as total_items, sum(menu.price) as amount_spent
@@ -194,6 +197,7 @@ on sales.product_id = menu.product_id
 group by sales.customer_id
 order by sales.customer_id;
 -- --------------------------------------------------------------------------------------------------
+
 -- 10. If each $1 spent equates to 10 points and sushi has a 2x points multiplier — 
 -- how many points would each customer have?
 
@@ -213,6 +217,7 @@ on sales.product_id = points_tb.product_id
 group by sales.customer_id
 order by sales.customer_id;
 -- --------------------------------------------------------------------------------------------------
+
 -- 11. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, 
 -- not just sushi - how many points do customer A and B have at the end of January?
 
