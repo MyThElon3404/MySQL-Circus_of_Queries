@@ -106,7 +106,25 @@ INSERT INTO Salaries (SalaryID, EmployeeID, BaseSalary, Bonus)
 
 - Q1. Total Compensation by Department: Calculate the total compensation (Base Salary + Bonus) for each department.
 ```sql
+select d.DepartmentName,
+	SUM(s.BaseSalary + s.Bonus) as totla_compensation
+from Departments as d
+join Employees as e
+	on d.DepartmentID = e.DepartmentID
+join Salaries as s
+	on e.EmployeeID = s.EmployeeID
+group by d.DepartmentName;
+```
 
+- Q2. Top 3 Highest Paid Employees: Find the top 3 highest-paid employees based on their total compensation (Base Salary + Bonus).
+```sql
+select top 3 
+	e.EmployeeID, e.FirstName, e.LastName,
+	(s.BaseSalary + s.Bonus) as total_compensation
+from Employees as e
+join Salaries as s
+	on e.EmployeeID = s.EmployeeID
+order by total_compensation desc;
 ```
 
 
