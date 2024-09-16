@@ -1,6 +1,8 @@
 ## School Case Study
 
-### TABLES
+#### TABLES
+
+### CourseMaster
 
 |Column Name |	Data Type	 | Remarks |
 |------------|-------------|---------|
@@ -9,7 +11,7 @@
 |Category	   |  Char(1)	   | NULL, Basic/Medium/Advanced
 |Fee	       | Smallmoney	 | NOT NULL; Fee can’t be negative
 
-#### StudentMaster
+### StudentMaster
 
 |Column Name 	|Data Type	|Remarks|
 |-------------|-----------|-------|
@@ -18,7 +20,7 @@
 |Origin	|Char(1)	|NOT NULL, Local/Foreign
 |Type	|Char(1)	|NOT NULL, UnderGraduate/Graduate
 
-#### EnrollmentMaster 
+### EnrollmentMaster 
 
 |Column Name 	|Data Type	|Remarks|
 |-------------|-----------|-------|
