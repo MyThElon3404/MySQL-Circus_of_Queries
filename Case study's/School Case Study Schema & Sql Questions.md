@@ -1,6 +1,6 @@
 ## School Case Study
 
-#### TABLES :
+### TABLES :
 
 ### CourseMaster
 
