@@ -21,7 +21,7 @@
 |DepartmentID	|TinyInt	|Primary Key
 |DepartmentName	|Varchar(40)	|NOT NULL
 
-#### Salaries 
+### Salaries 
 
 |Column Name 	|Data Type	|Remarks|
 |-------------|-----------|-------|
