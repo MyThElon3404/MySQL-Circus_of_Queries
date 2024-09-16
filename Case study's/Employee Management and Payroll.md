@@ -25,7 +25,7 @@
 
 |Column Name 	|Data Type	|Remarks|
 |-------------|-----------|-------|
-|SalaryID	|Integer	|NOT NULL Primary Key
+|SalaryID	|Integer	|Primary Key
 |EmployeeID	|Tinyint	|NOT NULL Foreign Key
 |BaseSalary	|DECIMAL(10, 2)	|NOT NULL
 |Bonus	|DECIMAL(10, 2)	|NOT NULL
