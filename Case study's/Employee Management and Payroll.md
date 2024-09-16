@@ -1,16 +1,20 @@
 ## Case Study - Employee Management and Payroll
 -----------------------------------------------------------------------------------------------------------------
 
-### TABLES
+### TABLES:
+
+### Employees
 
 |Column Name |	Data Type	 | Remarks |
 |------------|-------------|---------|
-|CID	       |   Integer	 | Primary Key
-|CourseName	 |  Varchar(40)|	NOT NULL 
-|Category	   |  Char(1)	   | NULL, Basic/Medium/Advanced
-|Fee	       | Smallmoney	 | NOT NULL; Fee can’t be negative
+|EmployeeID	       |   Integer	 | Primary Key
+|FirstName	 |  VARCHAR(50)|	NOT NULL 
+|LastName	   |  VARCHAR(50)	   | NULL
+|Gender	       | VARCHAR(10)	 | NOT NULL
+|HireDate	 |  DATE|	NOT NULL 
+|DepartmentID	   |  Integer	   | NULL
 
-#### StudentMaster
+### StudentMaster
 
 |Column Name 	|Data Type	|Remarks|
 |-------------|-----------|-------|
