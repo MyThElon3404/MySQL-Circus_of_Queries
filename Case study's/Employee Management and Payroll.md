@@ -99,6 +99,7 @@ INSERT INTO Salaries (SalaryID, EmployeeID, BaseSalary, Bonus)
 (9, 9, 68000.00, 7000.00);
 ```
 </details>
+
 -----------------------------------------------------------------------------------------------------------------
 
 ## Case Study Questions :
