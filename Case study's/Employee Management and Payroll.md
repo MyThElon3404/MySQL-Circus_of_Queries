@@ -168,6 +168,32 @@ from Employees
 where HireDate >= DATEADD(YEAR, -2, GETDATE());
 ```
 
+- Q7. Average Bonus by Department: Retrieve the average bonus for each department.
+```sql
+select d.DepartmentName,
+	AVG(s.Bonus) AS AvgBonus
+from Employees as e
+join Salaries as s
+	on e.EmployeeID = s.EmployeeID
+join Departments as d
+	on e.DepartmentID = d.DepartmentID
+group by d.DepartmentName;
+```
+
+- Q8. Salary Comparison to Department Average: List all employees who earn more than the average salary in their respective departments.
+```sql
+select e.FirstName, e.LastName, s.BaseSalary, d.DepartmentName
+from Employees as e
+join Salaries as s
+	on e.EmployeeID = s.EmployeeID
+join Departments as d
+	on e.DepartmentID = d.DepartmentID
+where s.BaseSalary > (select AVG(s2.BaseSalary)
+                      from Salaries as s2
+                      join Employees as e2
+				on s2.EmployeeID = e2.EmployeeID
+                      where e2.DepartmentID = e.DepartmentID);
+```
 
 
 
