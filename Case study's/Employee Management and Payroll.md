@@ -5,33 +5,30 @@
 
 ### Employees
 
-|# Column Name |	Data Type	 | Remarks |
+|Column Name |	Data Type	 | Remarks |
 |------------|-------------|---------|
 |EmployeeID	       |   Integer	 | Primary Key
 |FirstName	 |  VARCHAR(50)|	NOT NULL 
-|LastName	   |  VARCHAR(50)	   | NULL
+|LastName	   |  VARCHAR(50)	   | NOT NULL
 |Gender	       | VARCHAR(10)	 | NOT NULL
 |HireDate	 |  DATE|	NOT NULL 
-|DepartmentID	   |  Integer	   | NULL
+|DepartmentID	   |  Integer	   | NOT NULL
 
-### StudentMaster
-
-|Column Name 	|Data Type	|Remarks|
-|-------------|-----------|-------|
-|SID	|TinyInt	|Primary Key
-|StudentName	|Varchar(40)	|NOT NULL
-|Origin	|Char(1)	|NOT NULL, Local/Foreign
-|Type	|Char(1)	|NOT NULL, UnderGraduate/Graduate
-
-#### EnrollmentMaster 
+### Departments
 
 |Column Name 	|Data Type	|Remarks|
 |-------------|-----------|-------|
-|CID	|Integer	|NOT NULL Foreign Key
-|SID	|Tinyint	|NOT NULL Foreign Key
-|DOE	|DateTime	|NOT NULL
-|FWF (Fee Waiver Flag)	|Bit	|NOT NULL
-|Grade	|Char(1)	|O/A/B/C
+|DepartmentID	|TinyInt	|Primary Key
+|DepartmentName	|Varchar(40)	|NOT NULL
+
+#### Salaries 
+
+|Column Name 	|Data Type	|Remarks|
+|-------------|-----------|-------|
+|SalaryID	|Integer	|NOT NULL Primary Key
+|EmployeeID	|Tinyint	|NOT NULL Foreign Key
+|BaseSalary	|DECIMAL(10, 2)	|NOT NULL
+|Bonus	|DECIMAL(10, 2)	|NOT NULL
 
 ### Schema is here: 
 
