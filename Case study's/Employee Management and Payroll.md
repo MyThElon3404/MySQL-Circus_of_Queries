@@ -5,7 +5,7 @@
 
 ### Employees
 
-|Column Name |	Data Type	 | Remarks |
+|# Column Name |	Data Type	 | Remarks |
 |------------|-------------|---------|
 |EmployeeID	       |   Integer	 | Primary Key
 |FirstName	 |  VARCHAR(50)|	NOT NULL 
