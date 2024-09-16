@@ -6,9 +6,9 @@
 DROP TABLE IF EXISTS Employees;
 CREATE TABLE Employees (
     EmployeeID INT PRIMARY KEY,
-    FirstName VARCHAR(50),
-    LastName VARCHAR(50),
-    Gender VARCHAR(10),
+    FirstName VARCHAR(15),
+    LastName VARCHAR(15),
+    Gender VARCHAR(6),
     HireDate DATE,
     DepartmentID INT
 );
@@ -28,7 +28,7 @@ INSERT INTO Employees (EmployeeID, FirstName, LastName, Gender, HireDate, Depart
 DROP TABLE IF EXISTS Departments;
 CREATE TABLE Departments (
     DepartmentID INT PRIMARY KEY,
-    DepartmentName VARCHAR(100)
+    DepartmentName VARCHAR(27)
 );
 
 INSERT INTO Departments (DepartmentID, DepartmentName) 
@@ -64,6 +64,26 @@ INSERT INTO Salaries (SalaryID, EmployeeID, BaseSalary, Bonus)
 (8, 8, 62000.00, 6500.00),
 (9, 9, 68000.00, 7000.00);
 
-select * from Employees;
-select * from Departments;
-select * from Salaries;
+-- =================================================================================================================================
+-- Case Study Questions
+-- =================================================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
