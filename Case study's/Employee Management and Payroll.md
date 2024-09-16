@@ -161,10 +161,12 @@ join Salaries s
 order by SalaryPercentile desc;
 ```
 
-
-
-
-
+- Q6. Employees Hired in the Last 2 Years: List all employees who were hired in the last two years.
+```sql
+select FirstName, LastName, HireDate
+from Employees
+where HireDate >= DATEADD(YEAR, -2, GETDATE());
+```
 
 
 
