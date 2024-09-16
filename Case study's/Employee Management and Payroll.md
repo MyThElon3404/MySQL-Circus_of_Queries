@@ -127,6 +127,40 @@ join Salaries as s
 order by total_compensation desc;
 ```
 
+- Q3. Average Salary by Department: Retrieve the average base salary for each department.
+```sql
+select d.DepartmentName,
+	ROUND(AVG(s.BaseSalary), 2) as salary_avg
+from Departments as d
+join Employees as e
+	on d.DepartmentID = e.DepartmentID
+join Salaries as s
+	on e.EmployeeID = s.EmployeeID
+group by d.DepartmentName;
+```
+
+- Q4. Gender-based Salary Insights: Calculate the total and average salary by gender.
+```sql
+select e.Gender,
+	SUM(s.BaseSalary + s.Bonus) as total_salary,
+	ROUND(AVG(s.BaseSalary + s.Bonus), 2) as avg_salary
+from Employees as e
+join Salaries as s
+	on e.EmployeeID = s.EmployeeID
+group by e.Gender;
+```
+
+- Q5. Employee Salary Percentile: Determine the salary percentile of each employee based on their total compensation.
+```sql
+select e.FirstName, e.LastName, 
+	s.BaseSalary + s.Bonus as TotalCompensation,
+	PERCENT_RANK() over (order by s.BaseSalary + s.Bonus desc) as SalaryPercentile
+from Employees e
+join Salaries s 
+	on e.EmployeeID = s.EmployeeID
+order by SalaryPercentile desc;
+```
+
 
 
 
