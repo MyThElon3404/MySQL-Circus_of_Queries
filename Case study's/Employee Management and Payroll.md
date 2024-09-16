@@ -195,9 +195,14 @@ where s.BaseSalary > (select AVG(s2.BaseSalary)
                       where e2.DepartmentID = e.DepartmentID);
 ```
 
-
-
-
-
-
-
+- Q9. Department with Most Employees: Find which department has the most employees.
+```sql
+select top 1
+	d.DepartmentName,
+	COUNT(e.EmployeeID) as EmployeeCount
+from Employees as e
+join Departments as d 
+	on e.DepartmentID = d.DepartmentID
+group by d.DepartmentName
+order by EmployeeCount desc;
+```
