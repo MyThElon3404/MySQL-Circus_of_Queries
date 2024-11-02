@@ -22,7 +22,8 @@ create table order_details (
 	<summary>✅Click here to see insert data</summary>
 	
 ```sql
-INSERT INTO order_details VALUES (1, 1, '2023-01-01', '11:38:36', 109),
+INSERT INTO order_details VALUES
+(1, 1, '2023-01-01', '11:38:36', 109),
 (2, 2, '2023-01-01', '11:57:40', 108),
 (3, 2, '2023-01-01', '11:57:40', 124),
 (4, 2, '2023-01-01', '11:57:40', 117),
@@ -12276,7 +12277,8 @@ create table menu_items (
 	<summary>✅Click here to see insert data</summary>
 	
 ```sql
-INSERT INTO menu_items VALUES (101, 'Hamburger', 'American', 12.95),
+INSERT INTO menu_items VALUES
+(101, 'Hamburger', 'American', 12.95),
 (102, 'Cheeseburger', 'American', 13.95),
 (103, 'Hot Dog', 'American', 9),
 (104, 'Veggie Burger', 'American', 10.5),
