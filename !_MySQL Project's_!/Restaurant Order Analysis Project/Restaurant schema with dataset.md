@@ -1,19 +1,10 @@
-## EDA of Transaction data
-<details>
-	<summary>✅check null values per column</summary>
+## Restaurant Schema
 	
 ```sql
-select
-	sum(case when "index" is null then 1 else 0 end) as index_null_cnt,
-	sum(case when City is null then 1 else 0 end) as city_null_cnt,
-	sum(case when "Date" is null then 1 else 0 end) as date_null_cnt,
-	sum(case when Card_Type is null then 1 else 0 end) as card_type_null_cnt,
-	sum(case when Exp_Type is null then 1 else 0 end) as exp_type_null_cnt,
-	sum(case when Gender is null then 1 else 0 end) as gender_null_cnt,
-	sum(case when Amount is null then 1 else 0 end) as amount_null_cnt
-from cct;
+DROP DATABASE IF EXISTS restaurant_db;
+CREATE DATABASE restaurant_db;
+USE restaurant_db;
 ```
-</details>
 
 DROP DATABASE IF EXISTS restaurant_db;
 CREATE DATABASE restaurant_db;
