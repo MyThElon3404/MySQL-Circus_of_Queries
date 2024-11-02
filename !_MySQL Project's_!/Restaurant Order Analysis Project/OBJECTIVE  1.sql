@@ -1,3 +1,4 @@
+
 -- View the menu_items table and write a query to find the number of items on the menu
 
 -- 1. View the menu_items table
