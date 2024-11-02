@@ -5,16 +5,10 @@ DROP DATABASE IF EXISTS restaurant_db;
 CREATE DATABASE restaurant_db;
 USE restaurant_db;
 ```
+## Table structure for table `order_details`
 
-DROP DATABASE IF EXISTS restaurant_db;
-CREATE DATABASE restaurant_db;
-USE restaurant_db;
-
---
--- Table structure for table `order_details`
---
-
-CREATE TABLE order_details (
+```sql
+create table order_details (
   order_details_id SMALLINT NOT NULL,
   order_id SMALLINT NOT NULL,
   order_date DATE,
@@ -22,6 +16,7 @@ CREATE TABLE order_details (
   item_id SMALLINT,
   PRIMARY KEY (order_details_id)
 );
+```
 
 --
 -- Table structure for table `menu_items`
