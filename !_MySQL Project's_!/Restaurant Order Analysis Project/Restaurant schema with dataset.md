@@ -17,9 +17,9 @@ create table order_details (
   PRIMARY KEY (order_details_id)
 );
 ```
-## EDA of Transaction data
+## Insert data into table order_details
 <details>
-	<summary>✅Insert data into table order_details</summary>
+	<summary>✅Click here to see insert data</summary>
 	
 ```sql
 INSERT INTO order_details VALUES (1, 1, '2023-01-01', '11:38:36', 109),
@@ -12260,22 +12260,22 @@ INSERT INTO order_details VALUES (1, 1, '2023-01-01', '11:38:36', 109),
 ```
 </details>
 
---
--- Table structure for table `menu_items`
---
+## Table structure for table `menu_items`
 
-CREATE TABLE menu_items (
+```sql
+create table menu_items (
   menu_item_id SMALLINT NOT NULL,
   item_name VARCHAR(45),
   category VARCHAR(45),
   price DECIMAL(5,2),
   PRIMARY KEY (menu_item_id)
 );
-
---
--- Insert data into table menu_items
---
-
+```
+## Insert data into table menu_items
+<details>
+	<summary>✅Click here to see insert data</summary>
+	
+```sql
 INSERT INTO menu_items VALUES (101, 'Hamburger', 'American', 12.95),
 (102, 'Cheeseburger', 'American', 13.95),
 (103, 'Hot Dog', 'American', 9),
@@ -12308,3 +12308,5 @@ INSERT INTO menu_items VALUES (101, 'Hamburger', 'American', 12.95),
 (130, 'Shrimp Scampi', 'Italian', 19.95),
 (131, 'Chicken Parmesan', 'Italian', 17.95),
 (132, 'Eggplant Parmesan', 'Italian', 16.95);
+```
+</details>
