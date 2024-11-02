@@ -1,3 +1,4 @@
+
 -- View the order_details table. What is the date range of the table?
 
 -- 1. View order_details table
