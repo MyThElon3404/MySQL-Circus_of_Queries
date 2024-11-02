@@ -39,5 +39,5 @@ The final objective is to combine the items and orders tables, find the least an
 4. View the details of the highest spend order. Which specific items were purchased?
 5. BONUS: View the details of the top 5 highest spend orders
 
-### FINAL QUESTION
+### FINAL QUESTION (Included in OBJECTIVE 3)
 1. how much was the most expensive order in the dataset?
