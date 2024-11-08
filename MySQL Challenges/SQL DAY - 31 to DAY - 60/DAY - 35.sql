@@ -46,7 +46,10 @@ WHERE prev_pv IS NOT NULL
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. You have a table called "orders" with columns "order_id", "customer_id", "order_date", and "total_amount". 
+-- Write a query to find the customers who have placed exactly three orders in the last 90 days, 
+-- with each order having a total amount greater than $500.
+
 
 
 
