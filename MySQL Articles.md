@@ -5,3 +5,5 @@
 - MySQL Performance Optimizations -> https://medium.com/@rjmascolo/mysql-performance-optimizations-13a14b12a092
 
 - MySQL Data Types for Optimal Performance -> https://medium.com/@ganeshchamp39/mysql-data-types-for-optimal-performance-404313179d60
+
+- SQL Ques. - https://www.youtube.com/watch?v=cIyqUG17REA
