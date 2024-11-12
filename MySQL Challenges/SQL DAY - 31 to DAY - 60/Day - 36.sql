@@ -46,20 +46,36 @@ WHERE prev_pv IS NOT NULL
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. Write a SQL query to retrieve the managers who oversee at least five employees within the same department, along with the department name and the total number of direct reports, 
+-- but only if the department has more than ten employees in total.
+
+CREATE TABLE Employee (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    department VARCHAR(50),
+    managerId INT
+);
+
+INSERT INTO Employee (id, name, department, managerId) 
+	VALUES 
+(1, 'John', 'HR', NULL),
+(2, 'Bob', 'HR', 1),
+(3, 'Olivia', 'HR', 1),
+(4, 'Emma', 'Finance', NULL),
+(5, 'Sophia', 'HR', 1),
+(6, 'Mason', 'Finance', 4),
+(7, 'Ethan', 'HR', 1),
+(8, 'Ava', 'HR', 1),
+(9, 'Lucas', 'HR', 1),
+(10, 'Isabella', 'Finance', 4),
+(11, 'Harper', 'Finance', 4),
+(12, 'Hemla', 'HR', 3),
+(13, 'Aisha', 'HR', 2),
+(14, 'Himani', 'HR', 2),
+(15, 'Lily', 'HR', 2);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
-with orders_cte as (
-	select customer_id,
-		count(order_id) as order_cnt
-	from orders
-	where order_date >= DATEADD(DAY, -90, GETDATE())
-		and total_amount > 500
-	group by customer_id
-)
-select customer_id
-from orders_cte
-where order_cnt = 3;
+
 
 -- ==================================================================================================================================
