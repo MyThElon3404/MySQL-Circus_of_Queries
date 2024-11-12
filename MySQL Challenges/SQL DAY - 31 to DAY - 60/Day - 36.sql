@@ -46,32 +46,7 @@ WHERE prev_pv IS NOT NULL
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. You have a table called "orders" with columns "order_id", "customer_id", "order_date", and "total_amount". 
--- Write a query to find the customers who have placed exactly three orders in the last 90 days, 
--- with each order having a total amount greater than $500.
-
-DROP TABLE IF EXISTS orders;
-CREATE TABLE orders (
-    order_id INT,
-    customer_id INT,
-    order_date DATE,
-    total_amount DECIMAL(10, 2)
-);
-INSERT INTO orders (order_id, customer_id, order_date, total_amount) VALUES
-(1, 101, '2024-07-15', 600.00),  -- Order more than 90 days ago
-(2, 102, '2024-08-10', 550.00),  -- Order within 90 days
-(3, 102, '2024-08-20', 600.00),  -- Order within 90 days
-(4, 102, '2024-08-30', 700.00),  -- Order within 90 days (Exactly 3 for customer 102)
-(5, 103, '2024-09-05', 400.00),  -- Order below $500, doesn't count
-(6, 104, '2024-09-15', 550.00),  -- Order within 90 days
-(7, 104, '2024-09-20', 600.00),  -- Order within 90 days
-(8, 104, '2024-09-25', 650.00),  -- Order within 90 days (Exactly 3 for customer 104)
-(9, 105, '2024-09-28', 500.00),  -- Order exactly $500, doesn't count
-(10, 106, '2024-10-02', 800.00), -- Order within 90 days
-(11, 106, '2024-10-10', 900.00), -- Order within 90 days
-(12, 106, '2024-10-15', 550.00); -- Order within 90 days (Exactly 3 for customer 106)
-
-select * from orders;
+-- 2. 
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
