@@ -76,6 +76,28 @@ INSERT INTO Employee (id, name, department, managerId)
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+WITH DepartmentCounts AS (
+    SELECT department,
+           COUNT(*) AS total_employees
+    FROM Employee
+    GROUP BY department
+),
+ManagerDirectReports AS (
+    SELECT managerId,
+           department,
+           COUNT(*) AS direct_reports
+    FROM Employee
+    WHERE managerId IS NOT NULL
+    GROUP BY managerId, department
+)
+SELECT e.name AS manager_name,
+       m.department,
+       m.direct_reports
+FROM ManagerDirectReports m
+JOIN Employee e ON e.id = m.managerId
+JOIN DepartmentCounts d ON d.department = m.department
+WHERE m.direct_reports >= 5
+  AND d.total_employees > 10;
 
 
 -- ==================================================================================================================================
