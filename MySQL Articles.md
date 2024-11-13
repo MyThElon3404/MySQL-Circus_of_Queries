@@ -7,3 +7,5 @@
 - MySQL Data Types for Optimal Performance -> https://medium.com/@ganeshchamp39/mysql-data-types-for-optimal-performance-404313179d60
 
 - SQL Ques. - https://www.youtube.com/watch?v=cIyqUG17REA
+
+- LeetCode Ques. - https://github.com/mrinal1704/SQL-Leetcode-Challenge/tree/master/Easy
