@@ -73,51 +73,57 @@ HAVING AVG(r.stars) >= 4.5;
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. Write an SQL query to calculate the total transaction amount for each customer for the current year. 
--- The output should contain Customer_Name and the total amount.
+-- 2. As an analyst at Airbnb, one of the most useful insights you could provide would be to understand the 
+-- average number of guests per booking across locations. For this question, 
+-- we would like you to write a SQL query that will find the average number of guests per booking in each city.
 
-drop table if exists Customers;
-CREATE TABLE Customers (
-    Customer_id INT PRIMARY KEY,
-    Customer_Name VARCHAR(100),
-    Registration_Date DATE
+DROP TABLE IF EXISTS bookings;
+CREATE TABLE bookings (
+    booking_id INTEGER PRIMARY KEY,
+    property_id INTEGER,
+    guests INTEGER,
+    booking_date DATE
 );
--- Insert records into Customer table
-INSERT INTO Customers (Customer_id, Customer_Name, Registration_Date)
-VALUES (1, 'John Doe', '2023-01-15'),
-    (2, 'Jane Smith', '2023-02-20'), (3, 'Michael Johnson', '2023-03-10');
+INSERT INTO bookings (booking_id, property_id, guests, booking_date) 
+VALUES
+(1, 101, 2, '2024-11-01'),
+(2, 102, 4, '2024-11-02'),
+(3, 103, 1, '2024-11-03'),
+(4, 104, 3, '2024-11-04'),
+(5, 105, 5, '2024-11-05'),
+(6, 101, 2, '2024-11-06'),
+(7, 102, 4, '2024-11-07'),
+(8, 103, 1, '2024-11-08'),
+(9, 104, 3, '2024-11-09');
 
-drop table if exists Transactions;
-CREATE TABLE Transactions (
-    Transaction_id INT PRIMARY KEY,
-    Customer_id INT,
-    Transaction_Date DATE,
-    Amount DECIMAL(10, 2),
-    FOREIGN KEY (Customer_id) REFERENCES Customers(Customer_id)
+
+DROP TABLE IF EXISTS properties;
+CREATE TABLE properties (
+    property_id INTEGER PRIMARY KEY,
+    city VARCHAR(50)
 );
--- Insert records into Transaction table
-INSERT INTO Transactions (Transaction_id, Customer_id, Transaction_Date, Amount)
-VALUES (201, 1, '2024-01-20', 50.00),
-	(202, 1, '2024-02-05', 75.50), (203, 2, '2023-02-22', 100.00),
-    (204, 3, '2022-03-15', 200.00), (205, 2, '2024-03-20', 120.75),
-	(301, 1, '2024-01-20', 50.00), (302, 1, '2024-02-05', 75.50),
-    (403, 2, '2023-02-22', 100.00), (304, 3, '2022-03-15', 200.00),
-    (505, 2, '2024-03-20', 120.75);
+INSERT INTO properties (property_id, city) 
+VALUES
+(101, 'New York'),
+(102, 'Los Angeles'),
+(103, 'Chicago'),
+(104, 'New York'),
+(105, 'Los Angeles'),
+(106, 'Chicago'),
+(107, 'New York'),
+(108, 'Los Angeles'),
+(109, 'Chicago');
 
-SELECT * FROM customers;
-SELECT * FROM transactions;
+select * from bookings;
+select * from properties;
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
-with product_supplier_cte as (
-	select sp.country, pt.product_name, pt.price,
-		row_number() over(partition by sp.country order by pt.price desc) as product_rn
-	from suppliers as sp
-	inner join products as pt
-	on sp.supplier_id = pt.supplier_id
-)
-select country, product_name
-from product_supplier_cte
-where product_rn = 1;
+select p.city as city,
+	AVG(guests) as avg_guests
+from bookings as b
+join properties as p
+	on b.property_id = p.property_id
+group by p.city;
 
 -- ==================================================================================================================================
