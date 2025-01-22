@@ -51,33 +51,50 @@ having count(*) > 1;
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. UnitedHealth Group (UHG) has a program called Advocate4Me, which allows policy holders (or, members) to call an advocate 
--- and receive support for their health care needs – whether that's claims and benefits support, drug coverage, pre- and post-authorisation, 
--- medical records, emergency assistance, or member portal services.
--- Write a query to find how many UHG policy holders made three, or more calls, assuming each call is identified by the case_id column.
+-- 2. -- Write an SQL query to find the id and the name of active users.
+-- Active users are those who logged in to their accounts for 5 or more consecutive days.
+-- Return the result table ordered by the id.
 
-CREATE TABLE callers (
-    policy_holder_id INTEGER,
-    case_id VARCHAR(255),
-    call_category VARCHAR(255),
-    call_date TIMESTAMP,
-    call_duration_secs INTEGER
+CREATE TABLE Accounts (
+    id INT PRIMARY KEY,
+    name VARCHAR(50)
 );
 
-INSERT INTO callers (policy_holder_id, case_id, call_category, call_date, call_duration_secs) 
-VALUES
-(1, 'f1d012f9-9d02-4966-a968-bf6c5bc9a9fe', 'emergency assistance', '2023-04-13T19:16:53Z', 144),
-(1, '41ce8fb6-1ddd-4f50-ac31-07bfcce6aaab', 'authorisation', '2023-05-25T09:09:30Z', 815),
-(2, '9b1af84b-eedb-4c21-9730-6f099cc2cc5e', 'claims assistance', '2023-01-26T01:21:27Z', 992),
-(2, '8471a3d4-6fc7-4bb2-9fc7-4583e3638a9e', 'emergency assistance', '2023-03-09T10:58:54Z', 128),
-(2, '38208fae-bad0-49bf-99aa-7842ba2e37bc', 'benefits', '2023-06-05T07:35:43Z', 619);
+INSERT INTO Accounts (id, name) VALUES
+(1, 'Winston'), (7, 'Jonathan');
+
+CREATE TABLE Logins (
+    id INT,
+    login_date DATE
+);
+
+INSERT INTO Logins (id, login_date) VALUES
+(7, '2020-05-30'), (1, '2020-05-30'), (7, '2020-05-31'), (7, '2020-06-01'),
+(7, '2020-06-02'), (7, '2020-06-02'), (7, '2020-06-03'), (1, '2020-06-07'),
+(7, '2020-06-10');
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
-SELECT policy_holder_id,
-    COUNT(case_id) AS num_calls
-FROM callers
-GROUP BY policy_holder_id
-HAVING COUNT(case_id) >= 3;
+with drn_cte as (
+	select id, login_date,
+		dense_rank() over(partition by id order by login_date) as drn
+	from Logins
+), 
+	date_grp as (
+		select id, login_date,
+			DATEADD(DAY, -drn, login_date) as date_grp
+		from drn_cte
+	),
+		occured_date as (
+			select id, date_grp,
+				count(date_grp) as date_occurence
+			from date_grp
+			group by id, date_grp
+		)
+select a.id, a.name
+from Accounts a
+join occured_date od
+	on a.id = od.id
+where date_occurence >= 5;
 
 -- ==================================================================================================================================
