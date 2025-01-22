@@ -1,33 +1,52 @@
 
 -- QUESTION : 1
--- 1. CVS Health is trying to better understand its pharmacy sales, and how well different products are selling. 
--- Each drug can only be produced by one manufacturer.
--- Write a query to find the top 3 most profitable drugs sold, and how much profit they made. Assume that there are no ties in the profits.
--- Display the result from the highest to the lowest total profit.
+-- 1. (business_id, event_type) is the primary key of this table.
+-- Each row in the table logs the info that an event of some type occured at some business for a number of times.
+-- Write an SQL query to find all active businesses.
+-- An active business is a business that has more than one event type with occurences greater than the average occurences of that event type among all businesses.
 
-CREATE TABLE pharmacy_sales (
-    product_id INTEGER,
-    units_sold INTEGER,
-    total_sales DECIMAL(10, 2),
-    cogs DECIMAL(10, 2),
-    manufacturer VARCHAR(255),
-    drug VARCHAR(255)
+CREATE TABLE Events (
+    business_id INT,
+    event_type VARCHAR(50),
+    occurences INT
 );
 
-INSERT INTO pharmacy_sales (product_id, units_sold, total_sales, cogs, manufacturer, drug)
-VALUES
-(9, 37410, 293452.54, 208876.01, 'Eli Lilly', 'Zyprexa'),
-(34, 94698, 600997.19, 521182.16, 'AstraZeneca', 'Surmontil'),
-(61, 77023, 500101.61, 419174.97, 'Biogen', 'Varicose Relief'),
-(136, 144814, 1084258.00, 1006447.73, 'Biogen', 'Burkhart');
+INSERT INTO Events (business_id, event_type, occurences) VALUES
+(1, 'reviews', 7), (3, 'reviews', 3), (1, 'ads', 11),
+(2, 'ads', 7), (3, 'ads', 6), (1, 'page views', 3),
+(2, 'page views', 12);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
-SELECT drug,
-    total_sales - cogs AS profit
-FROM pharmacy_sales
-ORDER BY profit DESC
-LIMIT 3; -- TOP 3
+with event_type_avg as (
+	select event_type as event,
+		AVG(occurences) as occured_avg
+	from Events
+	group by event_type
+),
+	avg_occurence_greater as (
+		select e.business_id, e.event_type
+		from event_type_avg as eta
+		join events as e
+			on eta.event = e.event_type
+		where e.occurences > eta.occured_avg
+	)
+select business_id
+from avg_occurence_greater
+group by business_id
+having count(event_type) > 1;
+
+-- ---------------------------------- OR ----------------------------------------
+
+select e.business_id
+from events as e
+where occurences > (
+		select avg(occurences)
+		from events
+		where event_type = e.event_type
+	)
+group by e.business_id
+having count(*) > 1;
 
 -- ==================================================================================================================================
 
