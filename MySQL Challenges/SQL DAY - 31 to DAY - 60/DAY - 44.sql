@@ -49,10 +49,37 @@ where ac.activity_cnt not in (
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. Write an SQL query to find employee_id of all employees that directly or indirectly report their work to the head of the company.
+-- The indirect relation between managers will not exceed 3 managers as the company is small.
+
+DROP TABLE IF EXISTS Employees;
+CREATE TABLE Employees (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(15),
+    manager_id INT
+);
+INSERT INTO Employees
+VALUES
+(1, 'Boss', 1), (3, 'Alice', 3), (2, 'Bob', 1),
+(4, 'Daniel', 2), (7, 'Luis', 4), (8, 'Jhon', 3),
+(9, 'Angela', 8), (77, 'Robert', 1);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
-
+with recursive EmployeeHierarchy AS (
+    -- Base case: the head of the company (employee_id = 1)
+    select employee_id, manager_id
+    from Employees
+    where employee_id = 1
+    union all
+    -- Recursive case: find employees who report to the employees already found
+    select e.employee_id, e.manager_id
+    from Employees e
+    join EmployeeHierarchy eh 
+		on e.manager_id = eh.employee_id
+)
+select  employee_id
+from EmployeeHierarchy
+where employee_id != 1;
 
 -- ==================================================================================================================================
