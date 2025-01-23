@@ -45,7 +45,8 @@ join
 		fruit, sold_num as sold
 	from sales
 	where fruit = 'oranges') b
-	on a.sale_date = b.sale);
+on a.sale_date = b.sale
+);
 
 -- ==================================================================================================================================
 
