@@ -32,6 +32,21 @@ from sales
 group by sale_date
 order by sale_date;
 
+------------------------------------------- OR --------------------------------------------
+
+Select sale_date, 
+	sold_num-sold as diff
+from (
+	(select *
+	from sales
+	where fruit = 'apples') a
+join 
+	(select sale_date as sale, 
+		fruit, sold_num as sold
+	from sales
+	where fruit = 'oranges') b
+	on a.sale_date = b.sale);
+
 -- ==================================================================================================================================
 
 -- QUESTION : 2
