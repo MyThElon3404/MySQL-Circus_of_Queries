@@ -44,8 +44,8 @@ join
 	(select sale_date as sale, 
 		fruit, sold_num as sold
 	from sales
-	where fruit = 'oranges') b
-on a.sale_date = b.sale
+	where fruit = 'oranges') o
+on a.sale_date = o.sale
 );
 
 -- ==================================================================================================================================
