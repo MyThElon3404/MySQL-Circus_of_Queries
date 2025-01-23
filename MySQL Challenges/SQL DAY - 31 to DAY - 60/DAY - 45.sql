@@ -51,12 +51,37 @@ on a.sale_date = o.sale
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. Write an SQL query to find all the people who viewed more than one article on the same date, sorted in ascending order by their id.
+-- Note - author_id and viewer_id should not be same.
 
-
+CREATE TABLE Views (
+    article_id INT,
+    author_id INT,
+    viewer_id INT,
+    view_date DATE
+);
+INSERT INTO Views (article_id, author_id, viewer_id, view_date)
+VALUES
+(1, 3, 5, '2019-08-01'),
+(3, 4, 5, '2019-08-01'),
+(1, 3, 6, '2019-08-02'),
+(2, 7, 7, '2019-08-01'),
+(2, 7, 6, '2019-08-02'),
+(4, 7, 1, '2019-07-22'),
+(3, 4, 4, '2019-07-21'),
+(3, 4, 4, '2019-07-21');
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
-
+with viewer_cnt_cte as (
+	select viewer_id, view_date,
+		count(*) as viewer_cnt
+	from views
+	where author_id != viewer_id
+	group by viewer_id, view_date
+)
+select viewer_id
+from viewer_cnt_cte
+where viewer_cnt > 1;
 
 -- ==================================================================================================================================
