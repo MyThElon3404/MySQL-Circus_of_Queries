@@ -108,3 +108,21 @@ inner join
 order by capital_gain_loss desc;
 
 -- ==================================================================================================================================
+
+-- Note - Every buy stock should get sell. If not eliminate those stocks please
+
+WITH BuyOperations AS (
+    SELECT stock_name, operation_day AS buy_day, price AS buy_price
+    FROM Stocks
+    WHERE operation = 'Buy'
+),
+SellOperations AS (
+    SELECT stock_name, operation_day AS sell_day, price AS sell_price
+    FROM Stocks
+    WHERE operation = 'Sell'
+)
+SELECT b.stock_name,
+       SUM(s.sell_price - b.buy_price) AS capital_gain_loss
+FROM BuyOperations b
+JOIN SellOperations s ON b.stock_name = s.stock_name AND s.sell_day > b.buy_day
+GROUP BY b.stock_name;
