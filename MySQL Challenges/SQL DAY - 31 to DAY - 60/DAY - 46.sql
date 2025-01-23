@@ -50,12 +50,61 @@ join max_salary_cte ms
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. Write an SQL query to report the Capital gain/loss for each stock.
+-- The capital gain/loss of a stock is total gain or loss after buying and selling the stock one or many times.
+-- Return the result table in any order.
 
-
+CREATE TABLE Stocks (
+    stock_name VARCHAR(15),
+    operation NVARCHAR(10) check(operation in ('Sell', 'Buy')),
+    operation_day INT,
+    price INT,
+    PRIMARY KEY (stock_name, operation_day)
+);
+INSERT INTO Stocks (stock_name, operation, operation_day, price) 
+VALUES
+('Leetcode', 'Buy', 1, 1000),
+('Corona Masks', 'Buy', 2, 10),
+('Leetcode', 'Sell', 5, 9000),
+('Handbags', 'Buy', 17, 30000),
+('Corona Masks', 'Sell', 3, 1010),
+('Corona Masks', 'Buy', 4, 1000),
+('Corona Masks', 'Sell', 5, 500),
+('Corona Masks', 'Buy', 6, 1000),
+('Handbags', 'Sell', 29, 7000),
+('Corona Masks', 'Sell', 10, 10000);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+select stock_name,
+	sum (case
+		when operation = 'Sell' then price
+		else - price
+	end) as capital_gain_loss
+from stocks
+group by stock_name
+order by capital_gain_loss desc;
 
+-- ------------------------------------ OR -------------------------------------------
+
+select stock_name,
+	sell_price - buy_price as capital_gain_loss
+from (
+	select stock_name,
+		sum(price) as sell_price
+	from stocks
+	where operation = 'Sell'
+	group by stock_name
+) sp
+inner join
+	(
+	select stock_name as sn,
+		sum(price) as buy_price
+	from stocks
+	where operation = 'Buy'
+	group by stock_name
+) bp
+	on sp.stock_name = bp.sn
+order by capital_gain_loss desc;
 
 -- ==================================================================================================================================
