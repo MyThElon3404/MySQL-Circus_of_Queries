@@ -40,6 +40,20 @@ inner join Variables v1
 inner join Variables v2
 	on e.right_operand = v2.name;
 
+---------------------------------------- OR ------------------------------------------
+
+SELECT e.*,
+    IIF(
+        (e.operator = '>' AND v1.value > v2.value) OR
+        (e.operator = '<' AND v1.value < v2.value) OR
+        (e.operator = '=' AND v1.value = v2.value),
+        'TRUE', 
+        'FALSE'
+    ) AS result
+FROM Expressions e
+JOIN Variables v1 ON e.left_operand = v1.name
+JOIN Variables v2 ON e.right_operand = v2.name;
+
 -- ==================================================================================================================================
 
 -- QUESTION : 2
