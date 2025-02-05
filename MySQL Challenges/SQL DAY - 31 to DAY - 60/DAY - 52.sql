@@ -52,12 +52,54 @@ JOIN Activity a2
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. Write a sql query to identify the question which has the highest answer rate.
 
+DROP TABLE IF EXISTS survey_log;
+CREATE TABLE survey_log (
+    id INT,
+    action VARCHAR(10),
+    question_id INT,
+    answer_id INT,
+    q_num INT,
+    timestamp INT
+);
+INSERT INTO survey_log (id, action, question_id, answer_id, q_num, timestamp) 
+VALUES 
+(5, 'show', 285, NULL, 1, 123),
+(5, 'answer', 285, 124124, 1, 124),
+(5, 'show', 369, NULL, 2, 125),
+(5, 'skip', 369, NULL, 2, 126),
+(6, 'show', 285, NULL, 1, 130),
+(6, 'answer', 285, 124125, 1, 131),
+(6, 'answer', 369, 124126, 2, 132);
 
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+WITH action_counts AS (
+    SELECT 
+        question_id,
+        COUNT(CASE WHEN action = 'answer' THEN 1 END) AS answer_count,
+        COUNT(*) AS total_count
+    FROM survey_log
+    GROUP BY question_id
+)
 
+SELECT 
+    question_id, 
+    answer_count * 1.0 / total_count AS answer_rate
+FROM action_counts
+ORDER BY answer_rate DESC
+LIMIT 1;
+
+-------------------------------------------------- OR ----------------------------------------------------
+
+select a.question_id as survey_log
+from (
+  select t1.question_id,
+    rank() over(order by rate desc) as rk
+  from t1
+) a
+where a.rk = 1
 
 -- ==================================================================================================================================
