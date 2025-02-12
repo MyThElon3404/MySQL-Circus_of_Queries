@@ -100,7 +100,31 @@ FROM FilteredShapes;
 -- The output should be correct up to 2 decimal places. Sort the final output alphabetically by category and the by total_revenue 
 -- in descending order.
 
+CREATE TABLE Products (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(255),
+    category VARCHAR(255)
+);
+INSERT INTO Products (product_id, product_name, category)  
+VALUES  
+    (1, 'Product A', 'Electronics'),  
+    (2, 'Product B', 'Clothing'),  
+    (3, 'Product C', 'Electronics'),  
+    (4, 'Product D', 'Clothing');
 
+CREATE TABLE Sales (
+    sale_id INT PRIMARY KEY,
+    product_id INT,
+    quantity_sold INT,
+    price_per_unit DECIMAL(10,2),
+    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+);
+INSERT INTO Sales (sale_id, product_id, quantity_sold, price_per_unit)  
+VALUES  
+    (101, 1, 5, 60.00),   -- Product A: 5 * 60 = 300  
+    (102, 2, 3, 95.00),   -- Product B: 3 * 95 = 285  
+    (103, 3, 5, 45.00),   -- Product C: 5 * 45 = 225  
+    (104, 4, 5, 50.00);   -- Product D: 5 * 50 = 250  
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
