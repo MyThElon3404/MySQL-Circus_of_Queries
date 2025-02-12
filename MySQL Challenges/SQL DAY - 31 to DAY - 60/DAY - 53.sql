@@ -104,6 +104,13 @@ FROM FilteredShapes;
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
-
+SELECT  
+    p.category,  
+    p.product_name,  
+    ROUND(SUM(s.quantity_sold * s.price_per_unit), 2) AS total_revenue  
+FROM Sales s  
+JOIN Products p ON s.product_id = p.product_id  
+GROUP BY p.category, p.product_name  
+ORDER BY p.category ASC, total_revenue DESC;
 
 -- ==================================================================================================================================
