@@ -91,12 +91,35 @@ ORDER BY rank;
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. Train destinations
+-- You are given data on different types of trains and their departure and destination stations in the given database.
 
+-- Task:
+-- Write an SQL query to find the names and types of trains that I have destinations in Pennsylvania or Chicago. 
+-- Sort the final output by train_name.
 
+CREATE TABLE trains (
+    train_id INT PRIMARY KEY,
+    train_name VARCHAR(255),
+    type_name VARCHAR(255),
+    departure_station VARCHAR(255),
+    destination_station VARCHAR(255)
+);
+INSERT INTO trains (train_id, train_name, type_name, departure_station, destination_station) 
+VALUES 
+(1, 'Abraham Lincoln', 'Express', 'New York', 'Pennsylvania'),
+(2, 'Advance Flyer', 'Express', 'Boston', 'Chicago'),
+(3, 'Air Line Limited', 'Express', 'Los Angeles', 'Chicago'),
+(4, 'Airway', 'Passenger', 'San Francisco', 'Pennsylvania'),
+(5, 'Blue Ridge', 'Passenger', 'Washington DC', 'New Jersey'),
+(6, 'Capital Limited', 'Express', 'Chicago', 'New York');
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+SELECT train_name, type_name 
+FROM trains 
+WHERE destination_station IN ('Pennsylvania', 'Chicago') 
+ORDER BY train_name;
 
 
 -- ==================================================================================================================================
