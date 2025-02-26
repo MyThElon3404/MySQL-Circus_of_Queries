@@ -38,7 +38,7 @@ where model_id not in (
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. we need to find number of employees inside the hospital.
 
 create table hospital ( 
 	emp_id int, 
