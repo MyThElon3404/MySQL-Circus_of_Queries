@@ -1,94 +1,21 @@
 -- QUESTION : 1
--- 1. select rows where char 'A' is present
+-- 1. 
 
-drop table if exists tb;
-create table tb (
-	s_no int,
-	col1 char(1),
-	col2 char(2),
-	col3 char(3),
-	col4 char(4)
-);
-insert into tb
-values
-(1, 'A', 'B', 'C', null),
-(2, 'C', 'B', null, 'A'),
-(3, 'B', null, 'C', null),
-(4, null, 'A', 'B', 'C');
+
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
--- SOLUTION 1: Using OR statement
-select s_no
-from tb
-where col1 = 'A'
-	or col2 = 'A'
-	or col3 = 'A'
-	or col4 = 'A';
 
--- SOLUTION 2: Using IN 
-SELECT * 
-FROM tb
-WHERE 'A' IN (col1, col2, col3, col4);
 
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. Use below table to find new and repeat customers
+-- 2. 
 
-drop table if exists customer_orders;
-CREATE TABLE customer_orders (
-    order_id INT PRIMARY KEY,
-    customer_id INT NOT NULL,
-    order_date DATE NOT NULL,
-    order_amount INT NOT NULL
-);
 
-INSERT INTO dbo.customer_orders 
-	(order_id, customer_id, order_date, order_amount)
-VALUES
-    (1, 100, '2022-01-01', 2000),
-    (2, 200, '2022-01-01', 2500),
-    (3, 300, '2022-01-01', 2100),
-    (4, 100, '2022-01-02', 2000),
-    (5, 400, '2022-01-02', 2200),
-    (6, 500, '2022-01-02', 2700),
-    (7, 100, '2022-01-03', 3000),
-    (8, 400, '2022-01-03', 1000),
-    (9, 600, '2022-01-03', 3000);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
--- SOLUTION 1: Using join and CTE
-with ordered_date_cte as (
-	select customer_id, 
-		MIN(order_date) as first_order_date
-	from customer_orders
-	group by customer_id
-)
-select co.order_date,
-	count(case when order_date = first_order_date then 1 end) as new_cust_cnt,
-	count(case when order_date != first_order_date then 1 end) as old_cust_cnt
-from ordered_date_cte od
-inner join customer_orders co
-	on od.customer_id = co.customer_id
-group by co.order_date
-order by co.order_date;
 
--- SOLUTION 2: Using window function (min agg function)
-with ordered_date_cte as (
-	select customer_id, order_date,
-		case
-			when order_date = MIN(order_date) over(partition by customer_id)
-			then 1 else 0
-		end as is_new_customer
-	from customer_orders
-)
-select order_date,
-	SUM(is_new_customer) as new_cust_cnt,
-	COUNT(*) - SUM(is_new_customer) as old_cust_cnt
-from ordered_date_cte
-group by order_date
-order by order_date asc;
 
 -- ==================================================================================================================================
