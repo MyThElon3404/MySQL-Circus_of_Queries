@@ -141,19 +141,23 @@ group by co.order_date
 order by co.order_date;
 
 -- SOLUTION 2: Using window function (min agg function)
-with ordered_date_cte as (
-	select customer_id, order_date,
-		case
-			when order_date = MIN(order_date) over(partition by customer_id)
-			then 1 else 0
-		end as is_new_customer
-	from customer_orders
+WITH customer_first_order AS (
+    SELECT customer_id, 
+           order_date, 
+           order_amount,
+           CASE WHEN order_date = MIN(order_date) OVER (PARTITION BY customer_id) 
+                THEN 1 ELSE 0 
+           END AS is_new_customer
+    FROM customer_orders
 )
-select order_date,
-	SUM(is_new_customer) as new_cust_cnt,
-	COUNT(*) - SUM(is_new_customer) as old_cust_cnt
-from ordered_date_cte
-group by order_date
-order by order_date asc;
+SELECT 
+    order_date,
+    SUM(CASE WHEN is_new_customer = 1 THEN 1 ELSE 0 END) AS new_cust_cnt,
+    SUM(CASE WHEN is_new_customer = 1 THEN order_amount ELSE 0 END) AS new_cust_revenue,
+    SUM(CASE WHEN is_new_customer = 0 THEN 1 ELSE 0 END) AS old_cust_cnt,
+    SUM(CASE WHEN is_new_customer = 0 THEN order_amount ELSE 0 END) AS old_cust_revenue
+FROM customer_first_order
+GROUP BY order_date
+ORDER BY order_date;
 
 -- ==================================================================================================================================
