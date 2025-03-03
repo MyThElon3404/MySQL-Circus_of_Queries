@@ -75,7 +75,7 @@ inner join customer_orders co
 group by co.order_date
 order by co.order_date;
 
--- SOLUTION 2: Using window functions
+-- SOLUTION 2: Using window function (min agg function)
 with ordered_date_cte as (
 	select customer_id, order_date,
 		case
