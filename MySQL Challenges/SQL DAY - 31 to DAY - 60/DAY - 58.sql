@@ -34,42 +34,61 @@ WHERE 'A' IN (col1, col2, col3, col4);
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. Person and type is the column names and it is the input table
--- We need output as pair table
--- Like these are adult and child in the table and they are going for a fair and they have a ride on some jhoola, 
--- so one adult can go with one child and is last one adult will be alone
+-- 2. Use below table to find new and repeat customers
 
-create table family (
-	person varchar(5),
-	type varchar(10),
-	age int
+drop table if exists customer_orders;
+CREATE TABLE customer_orders (
+    order_id INT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    order_date DATE NOT NULL,
+    order_amount INT NOT NULL
 );
 
-insert into family 
-values 
-('A1','Adult',54),('A2','Adult',53),
-('A3','Adult',52),('A4','Adult',58),
-('A5','Adult',54),('C1','Child',20),
-('C2','Child',19),('C3','Child',22),
-('C4','Child',15);
+INSERT INTO dbo.customer_orders 
+	(order_id, customer_id, order_date, order_amount)
+VALUES
+    (1, 100, '2022-01-01', 2000),
+    (2, 200, '2022-01-01', 2500),
+    (3, 300, '2022-01-01', 2100),
+    (4, 100, '2022-01-02', 2000),
+    (5, 400, '2022-01-02', 2200),
+    (6, 500, '2022-01-02', 2700),
+    (7, 100, '2022-01-03', 3000),
+    (8, 400, '2022-01-03', 1000),
+    (9, 600, '2022-01-03', 3000);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
-with adult_cte as (
-	SELECT Person AS Adult, 
-		ROW_NUMBER() OVER (ORDER BY Person) AS RowNum
-	FROM family
-	WHERE Type = 'Adult'
-),
-	child_cte as (
-		SELECT Person AS Child, 
-			ROW_NUMBER() OVER (ORDER BY Person) AS RowNum
-		FROM family
-		WHERE Type = 'Child'
-	)
-select a.Adult, COALESCE(c.Child, '') as Child 
-from adult_cte a
-left join child_cte c
-	on a.RowNum = c.RowNum;
+-- SOLUTION 1: Using join and CTE
+with ordered_date_cte as (
+	select customer_id, 
+		MIN(order_date) as first_order_date
+	from customer_orders
+	group by customer_id
+)
+select co.order_date,
+	count(case when order_date = first_order_date then 1 end) as new_cust_cnt,
+	count(case when order_date != first_order_date then 1 end) as old_cust_cnt
+from ordered_date_cte od
+inner join customer_orders co
+	on od.customer_id = co.customer_id
+group by co.order_date
+order by co.order_date;
+
+-- SOLUTION 2: Using window functions
+with ordered_date_cte as (
+	select customer_id, order_date,
+		case
+			when order_date = MIN(order_date) over(partition by customer_id)
+			then 1 else 0
+		end as is_new_customer
+	from customer_orders
+)
+select order_date,
+	SUM(is_new_customer) as new_cust_cnt,
+	COUNT(*) - SUM(is_new_customer) as old_cust_cnt
+from ordered_date_cte
+group by order_date
+order by order_date asc;
 
 -- ==================================================================================================================================
