@@ -45,19 +45,25 @@ VALUES
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
 -- SOLUTION 1 - Using cte and row_number
-with most_recent_ref as (
-	select id, user_id,
-		created_at,
-		-- MAX(created_at) as recently_refinance,
-		ROW_NUMBER() over(partition by user_id order by created_at desc) as rn
-	from loans
-	where type = 'Refinance'
+WITH RankedSubmissions AS (
+    SELECT 
+        s.balance,
+        l.user_id,
+        l.type,
+        s.loan_id,
+        ROW_NUMBER() OVER (PARTITION BY l.user_id ORDER BY l.created_at DESC) AS rn
+    FROM submissions s
+    JOIN loans l ON s.loan_id = l.id
+    WHERE l.type = 'Refinance'
 )
-select m.user_id, s.balance
-from most_recent_ref as m
-join submissions as s
-	on m.id = s.loan_id
-where m.rn=1;
+SELECT 
+    l.user_id, 
+    COALESCE(rs.balance, 0) AS total_balance
+FROM loans l
+LEFT JOIN RankedSubmissions rs ON l.user_id = rs.user_id AND rs.rn = 1
+GROUP BY l.user_id, rs.balance
+ORDER BY l.user_id;
+
 
 -- SOLUTION 2 - Using sub-query
 select l.user_id, s.balance
