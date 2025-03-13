@@ -181,10 +181,39 @@ INSERT INTO Events (business_id, event_type, occurences)
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
--- SOLUTION 1 - 
+-- SOLUTION 1 - Using CTE, Group BY, Having
+WITH AvgOccurrences AS (
+    -- Calculate the average occurrences for each event type
+    SELECT event_type, AVG(occurences) AS avg_occurences
+    FROM Events
+    GROUP BY event_type
+),
+FilteredEvents AS (
+    -- Find businesses where an event type's occurrences exceed its average
+    SELECT E.business_id, E.event_type
+    FROM Events E
+    JOIN AvgOccurrences A 
+    ON E.event_type = A.event_type
+    WHERE E.occurences > A.avg_occurences
+)
+-- Find businesses that have more than one qualifying event type
+SELECT business_id
+FROM FilteredEvents
+GROUP BY business_id
+HAVING COUNT(DISTINCT event_type) > 1;
 
-
--- SOLUTION 2 - 
-
+-- SOLUTION 2 - Using JOIN with a Derived Table
+select e.business_id
+from events e
+join (
+	select event_type,
+		avg(occurences) as avg_occurences
+	from events
+	group by event_type
+) av
+on e.event_type = av.event_type
+	and e.occurences > av.avg_occurences
+group by e.business_id
+having count(distinct e.event_type) > 1;
 
 -- ==================================================================================================================================
