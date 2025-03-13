@@ -101,13 +101,61 @@ ORDER BY ranking, artist_name;  -- Sort the final results by rank, then artist n
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. Write a SQL query to find duplicate values from the table
 
+CREATE TABLE EmployeeData (
+    EmpID INT PRIMARY KEY,
+    EmpName VARCHAR(50),
+    Department VARCHAR(50),
+    Salary DECIMAL(10,2)
+);
 
+INSERT INTO EmployeeData (EmpID, EmpName, Department, Salary) 
+	VALUES
+(1, 'John', 'HR', 50000),
+(2, 'Alice', 'IT', 70000),
+(3, 'Bob', 'Finance', 60000),
+(4, 'John', 'HR', 50000),
+(5, 'Emma', 'IT', 75000),
+(6, 'David', 'HR', 52000),
+(7, 'Alice', 'IT', 70000),
+(8, 'Sophia', 'Finance', 62000),
+(9, 'Bob', 'Finance', 60000),
+(10, 'Liam', 'IT', 68000),
+(11, 'Olivia', 'HR', 55000),
+(12, 'Emma', 'IT', 75000);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+-- SOLUTION 1 - Using GROUP BY with HAVING
+SELECT EmpName, Department, COUNT(*) AS DuplicateCount
+FROM EmployeeData
+GROUP BY EmpName, Department
+HAVING COUNT(*) > 1;
 
+-- SOLUTION 2 - Using ROW_NUMBER()
+WITH CTE AS (
+    SELECT *, ROW_NUMBER() OVER (PARTITION BY EmpName, Department ORDER BY EmpID) AS RowNum
+    FROM EmployeeData
+)
+SELECT * FROM CTE WHERE RowNum > 1;
+
+-- SOLUTION 3 - Using EXISTS
+SELECT * FROM EmployeeData E1
+WHERE EXISTS (
+    SELECT 1 FROM EmployeeData E2
+    WHERE E1.EmpName = E2.EmpName
+    AND E1.Department = E2.Department
+    AND E1.EmpID <> E2.EmpID
+);
+
+-- SOLUTION 4 - Using DISTINCT and JOIN
+SELECT DISTINCT E1.*
+FROM EmployeeData E1
+JOIN EmployeeData E2
+ON E1.EmpName = E2.EmpName
+AND E1.Department = E2.Department
+AND E1.EmpID <> E2.EmpID;
 
 -- ==================================================================================================================================
 
