@@ -1,11 +1,26 @@
 -- QUESTION : 1
--- 1.
+-- 1. Since some IDs have been removed from Logs. 
+-- Write an SQL query to find the start and end number of continuous ranges in table Logs.
 
+CREATE TABLE Logs (
+    log_id INT PRIMARY KEY
+);
 
+INSERT INTO Logs (log_id) VALUES
+(1), (2), (3), (7), (8), (10);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
-
+-- Solution 1 - Using window function, cte, min, max
+with cte as (
+	select log_id,
+		log_id - row_number() over(order by log_id) as rn
+	from logs
+)
+select min(log_id) as start_n,
+	max(log_id) as end_n
+from cte
+group by rn;
 
 -- ==================================================================================================================================
 
