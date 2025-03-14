@@ -206,6 +206,39 @@ WITH RECURSIVE EmployeeHierarchy AS (
 SELECT DISTINCT employee_id FROM EmployeeHierarchy;
 
 -- Solution 2: Using Recursive Common Table Expressions (CTE)
+WITH dirc AS (
+    -- Get employees who directly report to the CEO (ID = 1)
+    SELECT employee_id
+    FROM Employees
+    WHERE manager_id = 1 AND employee_id <> 1
+),
+indirect1 AS (
+    -- Get employees who report to direct reports of the CEO
+    SELECT employee_id
+    FROM Employees
+    WHERE manager_id IN (SELECT employee_id FROM dirc)
+),
+indirect2 AS (
+    -- Get employees who report to the second-level managers
+    SELECT employee_id
+    FROM Employees
+    WHERE manager_id IN (SELECT employee_id FROM indirect1)
+)
+-- Combine all levels and remove duplicates
+SELECT DISTINCT employee_id FROM (
+    SELECT employee_id FROM dirc
+    UNION ALL
+    SELECT employee_id FROM indirect1
+    UNION ALL
+    SELECT employee_id FROM indirect2
+) AS combined;
 
+-- Solution 2: Using an Iterative Approach (Join-based Solution)
+SELECT DISTINCT e1.employee_id
+FROM Employees e1
+LEFT JOIN Employees e2 ON e1.manager_id = e2.employee_id
+LEFT JOIN Employees e3 ON e2.manager_id = e3.employee_id
+WHERE (e1.manager_id = 1 OR e2.manager_id = 1 OR e3.manager_id = 1)
+	and e1.employee_id != 1;
 
 -- ==================================================================================================================================
