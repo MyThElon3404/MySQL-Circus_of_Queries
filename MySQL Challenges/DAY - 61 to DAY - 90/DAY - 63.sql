@@ -78,23 +78,105 @@ FROM Salaries s;
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. Write an SQL query to report the Capital gain/loss for each stock.
+-- The capital gain/loss of a stock is total gain or loss after buying and selling the stock one or many times.
 
-
+CREATE TABLE Stocks (
+    stock_name VARCHAR(50),
+    operation ENUM('Buy', 'Sell'),
+    operation_day INT,
+    price INT,
+    PRIMARY KEY (stock_name, operation_day)
+);
+INSERT INTO Stocks (stock_name, operation, operation_day, price) VALUES
+('Leetcode', 'Buy', 1, 1000),
+('Corona Masks', 'Buy', 2, 10),
+('Leetcode', 'Sell', 5, 9000),
+('Handbags', 'Buy', 17, 30000),
+('Corona Masks', 'Sell', 3, 1010),
+('Corona Masks', 'Buy', 4, 1000),
+('Corona Masks', 'Sell', 5, 500),
+('Corona Masks', 'Buy', 6, 1000),
+('Handbags', 'Sell', 29, 7000),
+('Corona Masks', 'Sell', 10, 10000);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+-- Solution 1 - Using SUM with CASE WHEN
+SELECT 
+    stock_name, 
+    SUM(CASE WHEN operation = 'Sell' THEN price ELSE -price END) AS capital_gain_loss
+FROM Stocks
+GROUP BY stock_name;
 
+-- Solution 2 - Using JOIN to Match Buys and Sells
+SELECT s1.stock_name, SUM(s1.price - s2.price) AS capital_gain_loss
+FROM Stocks s1
+JOIN Stocks s2 
+ON s1.stock_name = s2.stock_name 
+AND s1.operation = 'Sell' 
+AND s2.operation = 'Buy' 
+AND s2.operation_day < s1.operation_day
+GROUP BY s1.stock_name;
+
+-- Solution 3 - Using CTE with Window Functions
+WITH StockBuy AS (
+    SELECT stock_name, price FROM Stocks WHERE operation = 'Buy'
+),
+StockSell AS (
+    SELECT stock_name, price FROM Stocks WHERE operation = 'Sell'
+)
+SELECT b.stock_name, SUM(s.price - b.price) AS capital_gain_loss
+FROM StockBuy b
+JOIN StockSell s ON b.stock_name = s.stock_name
+GROUP BY b.stock_name;
 
 -- ==================================================================================================================================
 
 -- QUESTION : 3
--- 3. 
+-- 3. Write a SQL query to find all numbers that appear at least three times consecutively.
 
+CREATE TABLE Numbers (
+    Id INT PRIMARY KEY,
+    Num INT
+);
 
+INSERT INTO Numbers (Id, Num) 
+    VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 2),
+(5, 1),
+(6, 2),
+(7, 2);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+-- Solution 1 - Using LAG() and LEAD()
+SELECT DISTINCT Num
+FROM (
+    SELECT Num,
+           LAG(Num, 1) OVER (ORDER BY Id) AS PrevNum,
+           LEAD(Num, 1) OVER (ORDER BY Id) AS NextNum
+    FROM Numbers
+) t
+WHERE Num = PrevNum AND Num = NextNum;
 
+-- Solution 2 - Using GROUP BY and HAVING on Consecutive Blocks
+SELECT Num
+FROM (
+    SELECT Num, 
+           Id - ROW_NUMBER() OVER (PARTITION BY Num ORDER BY Id) AS grp
+    FROM Numbers
+) t
+GROUP BY Num, grp
+HAVING COUNT(*) >= 3;
+
+-- Solution 3 - Using SELF JOIN
+SELECT DISTINCT n1.Num
+FROM Numbers n1
+JOIN Numbers n2 ON n1.Id = n2.Id - 1 AND n1.Num = n2.Num
+JOIN Numbers n3 ON n1.Id = n3.Id - 2 AND n1.Num = n3.Num;
 
 -- ==================================================================================================================================
