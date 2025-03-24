@@ -80,12 +80,51 @@ ON q.id = n.id AND q.year = n.year;
 -- ==================================================================================================================================
 
 -- QUESTION : 3
--- 3. 
+-- 3. Your team at JPMorgan Chase is soon launching a new credit card, and to gain some context, 
+-- you are analyzing how many credit cards were issued each month.
+-- Write a query that outputs the name of each credit card and the difference in issued amount between the 
+-- month with the most cards issued, and the least cards issued. Order the results according to the biggest difference.
 
+CREATE TABLE credit_card_issuance (
+    card_name VARCHAR(50) NOT NULL,
+    issued_amount INT NOT NULL,
+    issue_month TINYINT NOT NULL CHECK (issue_month BETWEEN 1 AND 12),
+    issue_year YEAR NOT NULL,
+    PRIMARY KEY (card_name, issue_month, issue_year)
+);
 
+INSERT INTO credit_card_issuance (card_name, issued_amount, issue_month, issue_year) 
+	VALUES
+('Chase Freedom Flex', 55000, 1, 2021),
+('Chase Freedom Flex', 60000, 2, 2021),
+('Chase Freedom Flex', 65000, 3, 2021),
+('Chase Freedom Flex', 70000, 4, 2021),
+('Chase Sapphire Reserve', 170000, 1, 2021),
+('Chase Sapphire Reserve', 175000, 2, 2021),
+('Chase Sapphire Reserve', 180000, 3, 2021);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+-- Solution 1 - Using MAX() and MIN() with GROUP BY
+select card_name,
+	max(issued_amount) - 
+	min(issued_amount) as issue_difference
+from credit_card_issuance
+group by card_name
+order by issue_difference desc;
 
+-- Solution 2 - Using RANK() for Max/Min Values
+with amount_cte as (
+	select card_name, issued_amount,
+		row_number() over(partition by card_name order by issued_amount desc) as max_amount,
+		row_number() over(partition by card_name order by issued_amount asc) as min_amount
+	from credit_card_issuance
+)
+select card_name,
+	max(case when max_amount = 1 then issued_amount end) -
+	min(case when min_amount = 1 then issued_amount end) as issue_difference
+from amount_cte
+group by card_name
+order by issue_difference desc;
 
 -- ==================================================================================================================================
