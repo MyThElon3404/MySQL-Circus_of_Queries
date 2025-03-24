@@ -115,12 +115,71 @@ FROM order_cte;
 -- ==================================================================================================================================
 
 -- QUESTION : 3
--- 3. 
+-- 3. calculating the average monthly revenue from each sector using financial transaction data.
 
+CREATE TABLE Transactions (
+    transaction_id INT PRIMARY KEY,
+    company_id INT,
+    transaction_date DATE,
+    revenue DECIMAL(10, 2)
+);
 
+INSERT INTO Transactions (transaction_id, company_id, transaction_date, revenue) 
+	VALUES
+(101, 1, '2020-01-15', 5000.00),
+(102, 2, '2020-01-20', 8500.00),
+(103, 1, '2020-02-10', 4500.00),
+(104, 3, '2020-02-20', 9900.00),
+(105, 2, '2020-02-25', 7500.00);
+
+CREATE TABLE Sectors (
+    company_id INT PRIMARY KEY,
+    sector VARCHAR(50)
+);
+
+INSERT INTO Sectors (company_id, sector) 
+	VALUES
+(1, 'Technology'),
+(2, 'Healthcare'),
+(3, 'Technology');
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+-- Solution 1 - Using GROUP BY with AVG()
+SELECT 
+    s.sector, 
+    FORMAT(t.transaction_date, 'yyyy-MM') AS month, 
+    AVG(t.revenue) AS avg_monthly_revenue
+FROM Transactions t
+JOIN Sectors s ON t.company_id = s.company_id
+GROUP BY s.sector, FORMAT(t.transaction_date, 'yyyy-MM')
+ORDER BY s.sector, month;
 
+-- Solution 2 - Using Window Functions (PARTITION BY)
+SELECT 
+    sector, 
+    FORMAT(transaction_date, 'yyyy-MM') AS month, 
+    AVG(revenue) OVER (PARTITION BY sector, FORMAT(transaction_date, 'yyyy-MM')) AS avg_monthly_revenue
+FROM Transactions t
+JOIN Sectors s ON t.company_id = s.company_id
+ORDER BY sector, month;
+
+-- Solution 3 - Using CTE (Common Table Expression)
+WITH MonthlyRevenue AS (
+    SELECT 
+        s.sector, 
+        FORMAT(t.transaction_date, 'yyyy-MM') AS month, 
+        SUM(t.revenue) AS total_revenue,
+        COUNT(DISTINCT FORMAT(t.transaction_date, 'yyyy-MM')) AS num_months
+    FROM Transactions t
+    JOIN Sectors s ON t.company_id = s.company_id
+    GROUP BY s.sector, FORMAT(t.transaction_date, 'yyyy-MM')
+)
+SELECT 
+    sector, 
+    month, 
+    total_revenue / num_months AS avg_monthly_revenue
+FROM MonthlyRevenue
+ORDER BY sector, month;
 
 -- ==================================================================================================================================
