@@ -46,12 +46,51 @@ order by user_id, trans_year, avg_trans_amount;
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. You are given two tables: Customers and Orders. 
+-- Your task is to calculate the 3-month moving average of sales revenue for each month, using the sales data in the Orders table.
 
+CREATE TABLE Customers (
+    Customer_id INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Join_Date DATE
+);
 
+INSERT INTO Customers (Customer_id, Name, Join_Date) 
+	VALUES
+(1, 'John', '2023-01-10'),
+(2, 'Simmy', '2023-02-15'),
+(3, 'Iris', '2023-03-20');
+
+CREATE TABLE Orders (
+    Order_id INT PRIMARY KEY,
+    Customer_id INT,
+    Order_Date DATE,
+    Amount DECIMAL(10,2),
+    FOREIGN KEY (Customer_id) REFERENCES Customers(Customer_id)
+);
+
+INSERT INTO Orders (Order_id, Customer_id, Order_Date, Amount) 
+	VALUES
+(1, 1, '2023-01-05', 100.00),
+(2, 2, '2023-02-14', 150.00),
+(3, 1, '2023-02-28', 200.00),
+(4, 3, '2023-03-22', 300.00),
+(5, 2, '2023-04-10', 250.00),
+(6, 1, '2023-05-15', 400.00),
+(7, 3, '2023-06-10', 350.00);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+-- Solution 1 - Using AVG() with Window Function
+with order_cte as (
+	select format(order_date, 'yyyy-MM') as months,
+	sum(amount) as total_amount
+	from Order_tb
+	group by format(order_date, 'yyyy-MM')
+)
+select months, total_amount,
+	avg(total_amount) over(order by months rows between 2 preceding and current row) as moving_avg
+from order_cte;
 
 
 -- ==================================================================================================================================
