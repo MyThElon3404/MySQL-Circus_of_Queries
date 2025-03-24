@@ -92,6 +92,25 @@ select months, total_amount,
 	avg(total_amount) over(order by months rows between 2 preceding and current row) as moving_avg
 from order_cte;
 
+-- Solution 2 - Using LAG() and LEAD()
+WITH order_cte AS (
+    SELECT 
+        FORMAT(order_date, 'yyyy-MM') AS months,
+        SUM(amount) AS total_amount
+    FROM Order_tb
+    GROUP BY FORMAT(order_date, 'yyyy-MM')
+)
+SELECT 
+    months, 
+    total_amount,
+    (total_amount 
+        + COALESCE(LAG(total_amount, 1) OVER (ORDER BY months), 0) 
+        + COALESCE(LAG(total_amount, 2) OVER (ORDER BY months), 0)) / 
+    (1 
+        + IIF(LAG(total_amount, 1) OVER (ORDER BY months) IS NOT NULL, 1, 0) 
+        + IIF(LAG(total_amount, 2) OVER (ORDER BY months) IS NOT NULL, 1, 0)
+    ) AS Moving_Avg_3_Months
+FROM order_cte;
 
 -- ==================================================================================================================================
 
