@@ -70,22 +70,9 @@ WHERE category_count = (SELECT COUNT(DISTINCT product_category) FROM products);
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. write a sql query to populate category to the last not null value in category
+-- 2. 
 
-CREATE TABLE brands (
-    category VARCHAR(20),
-    brand_name VARCHAR(20)
-);
 
-INSERT INTO brands (category, brand_name) 
-    VALUES
-('chocolates', '5-star'),
-(NULL, 'dairy milk'),
-(NULL, 'perk'),
-(NULL, 'eclair'),
-('Biscuits', 'britannia'),
-(NULL, 'good day'),
-(NULL, 'boost');
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
