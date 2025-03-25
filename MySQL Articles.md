@@ -10,7 +10,7 @@
 
 - LeetCode Ques. - https://github.com/mrinal1704/SQL-Leetcode-Challenge/tree/master/Easy
 
-- DataLemur SQL Questions - https://datalemur.com/blog/advanced-sql-interview-questions | https://datalemur.com/blog/advanced-sql-interview-questions
+- DataLemur SQL Questions - https://datalemur.com/blog/advanced-sql-interview-questions | https://datalemur.com/blog/advanced-sql-interview-questions | https://datalemur.com/sql-game/level1.html
 
 - Case Study - https://www.analyticsvidhya.com/blog/2025/01/sql-query-interview-questions/
 
