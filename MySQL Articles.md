@@ -9,3 +9,5 @@
 - SQL Ques. - https://www.youtube.com/watch?v=cIyqUG17REA
 
 - LeetCode Ques. - https://github.com/mrinal1704/SQL-Leetcode-Challenge/tree/master/Easy
+
+- Case Study - https://www.analyticsvidhya.com/blog/2025/01/sql-query-interview-questions/
