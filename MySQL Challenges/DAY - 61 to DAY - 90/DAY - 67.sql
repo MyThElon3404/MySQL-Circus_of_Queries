@@ -70,14 +70,55 @@ WHERE category_count = (SELECT COUNT(DISTINCT product_category) FROM products);
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. Stripe asked this tricky SQL interview question, 
+-- about identifying any payments made at the same merchant with the same credit card for the same amount 
+-- within 10 minutes of each other and reporting the count of such repeated payments.
 
+drop table if exists transaction_tb;
+CREATE TABLE transaction_tb (
+    transaction_id INT PRIMARY KEY,
+    merchant_id INT,
+    credit_card_id INT,
+    amount DECIMAL(10,2),
+    transaction_timestamp DATETIME
+);
 
+INSERT INTO transaction_tb
+	VALUES
+(1, 101, 1, 100, '2022-09-25 12:00:00'),
+(2, 101, 1, 100, '2022-09-25 12:08:00'),
+(3, 101, 1, 100, '2022-09-25 12:28:00'),
+(4, 102, 2, 300, '2022-09-25 12:00:00'),
+(6, 102, 2, 400, '2022-09-25 14:00:00');
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
--- Solution 1 - 
+-- Solution 1 - Using SELF JOIN
+SELECT t1.merchant_id, t1.credit_card_id, 
+    t1.amount,
+    COUNT(distinct t1.merchant_id) AS repeated_payments
+FROM transaction_tb t1
+JOIN transaction_tb t2 
+    ON t1.merchant_id = t2.merchant_id 
+    AND t1.credit_card_id = t2.credit_card_id 
+    AND t1.amount = t2.amount 
+    AND t1.transaction_id <> t2.transaction_id 
+    AND ABS(datediff(MINUTE, t1.transaction_timestamp, t2.transaction_timestamp)) <= 10
+GROUP BY t1.merchant_id, t1.credit_card_id, t1.amount;
 
+-- Solution 2 - Using WINDOW FUNCTION (LAG)
+with transaction_cte as (
+	select *,
+		LAG(transaction_timestamp) over(
+			partition by merchant_id, credit_card_id, amount
+			order by transaction_timestamp) as prev_transaction_timestamp
+	from transaction_tb
+)
+select merchant_id, credit_card_id, amount,
+	count(*) as repeated_payments
+from transaction_cte
+where ABS(DATEDIFF(MINUTE, transaction_timestamp, prev_transaction_timestamp)) <= 10
+group by merchant_id, credit_card_id, amount;
 
 -- ==================================================================================================================================
 
