@@ -123,12 +123,59 @@ group by merchant_id, credit_card_id, amount;
 -- ==================================================================================================================================
 
 -- QUESTION : 3
--- 3. 
+-- 3. Monthly Merchant Balance [Visa SQL Interview Question]
+-- Say you have access to all the transactions for a given merchant account. 
+-- Write a query to print the cumulative balance of the merchant account at the end of each day, 
+-- with the total balance reset back to zero at the end of the month. Output the transaction date and cumulative balance.
 
+drop table if exists trans_tb;
+CREATE TABLE trans_tb (
+    transaction_id INT PRIMARY KEY,
+    type VARCHAR(20) CHECK (type IN ('deposit', 'withdrawal')),
+    amount DECIMAL(10,2),
+    transaction_date DATETIME
+);
 
+INSERT INTO trans_tb
+	VALUES
+(19153, 'deposit', 65.90, '2022-07-10 10:00:00'),
+(53151, 'deposit', 178.55, '2022-07-08 10:00:00'),
+(29776, 'withdrawal', 25.90, '2022-07-08 10:00:00'),
+(16461, 'withdrawal', 45.99, '2022-07-08 10:00:00'),
+(77134, 'deposit', 32.60, '2022-07-10 10:00:00');
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+-- Solution 1 - Using CTE and window function
+with balance_cte as (
+	select CONVERT(date, transaction_date) as transaction_day,
+		MONTH(transaction_date) as transaction_month,
+		sum(case when type = 'deposit' then amount else -amount end) as balance_change
+	from trans_tb
+	group by CONVERT(date, transaction_date), MONTH(transaction_date)
+)
+select transaction_day,
+	sum(balance_change) over(partition by transaction_month order by transaction_day) as cumulative_balance
+from balance_cte
+order by transaction_day;
 
+-- Solution 2 - Using a SELF JOIN
+SELECT t1.transaction_date, 
+       SUM(CASE WHEN t2.type = 'deposit' THEN t2.amount ELSE -t2.amount END) AS cumulative_balance
+FROM transactions t1
+JOIN transactions t2 
+    ON YEAR(t1.transaction_date) = YEAR(t2.transaction_date)
+    AND MONTH(t1.transaction_date) = MONTH(t2.transaction_date)
+    AND t2.transaction_date <= t1.transaction_date
+GROUP BY t1.transaction_date
+ORDER BY t1.transaction_date;
+
+-- Solution 3 - Using SUM() with PARTITION BY
+SELECT 
+    transaction_date, 
+    SUM(CASE WHEN type = 'deposit' THEN amount ELSE -amount END) 
+        OVER (PARTITION BY YEAR(transaction_date), MONTH(transaction_date) 
+              ORDER BY transaction_date) AS cumulative_balance
+FROM transactions;
 
 -- ==================================================================================================================================
