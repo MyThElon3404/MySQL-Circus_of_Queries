@@ -50,13 +50,44 @@ from reviews;
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. NICE is a company that offers a diverse array of digital products to its customers. 
+-- In order to understand customer behavior and user engagement, they record the user login activities.
+-- They want to understand the peak login time for their users on their platform. For this purpose, 
+-- they want to perform an analysis on hourly basis to identify the hour of the day when most logins occur.
+
+-- Given the following example of a user_activity table, 
+-- write an SQL query that will return the hour of the day with the highest total user logins.
+
+
 
 
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+-- Solution 1 - Using GROUP BY and ORDER BY (Simple & Efficient Approach)
+select TOP 1
+	DATEPART(HOUR, login_time) as login_hour,
+	count(user_id) as total_user_login
+from user_activity
+group by DATEPART(HOUR, login_time)
+order by total_user_login desc;
 
+-- Solution 2 - Using RANK() (Handles Multiple Peak Hours if Tied)
+with cte as (
+	select TOP 1
+		DATEPART(HOUR, login_time) as login_hour,
+		count(user_id) as total_user_login
+	from user_activity
+	group by DATEPART(HOUR, login_time)
+	order by total_user_login desc
+)
+select login_hour, total_user_login
+from (
+	select login_hour, total_user_login,
+		rank() over(partition by login_hour order by total_user_login desc) as cte_rn
+	from cte
+) ranked_hour
+where cte_rn = 1;
 
 -- ==================================================================================================================================
 
