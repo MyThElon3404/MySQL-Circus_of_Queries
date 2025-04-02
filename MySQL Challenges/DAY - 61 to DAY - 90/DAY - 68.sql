@@ -58,9 +58,29 @@ from reviews;
 -- Given the following example of a user_activity table, 
 -- write an SQL query that will return the hour of the day with the highest total user logins.
 
-
-
-
+drop table if exists user_activity;
+CREATE TABLE user_activity (
+    activity_id INT PRIMARY KEY,
+    user_id INT,
+    login_time DATETIME
+);
+INSERT INTO user_activity (activity_id, user_id, login_time) 
+	VALUES
+(101, 564, '2022-08-07 07:45:00'),
+(102, 340, '2022-08-07 12:30:00'),
+(103, 123, '2022-08-07 13:00:00'),
+(104, 789, '2022-08-07 12:45:00'),
+(105, 456, '2022-08-07 19:00:00'),
+(106, 890, '2022-08-07 19:30:00'),
+(107, 234, '2022-08-07 08:15:00'),
+(108, 678, '2022-08-07 09:30:00'),
+(109, 321, '2022-08-07 10:45:00'),
+(110, 876, '2022-08-07 11:00:00'),
+(111, 432, '2022-08-07 12:15:00'),
+(112, 987, '2022-08-07 14:30:00'),
+(113, 654, '2022-08-07 15:00:00'),
+(114, 765, '2022-08-07 19:45:00'),
+(115, 852, '2022-08-07 20:00:00');
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
@@ -92,12 +112,44 @@ where cte_rn = 1;
 -- ==================================================================================================================================
 
 -- QUESTION : 3
--- 3. 
+-- 3. -- Given a table sales that keeps track of the number of each product sold in a certain month, along with its selling price. 
+-- Write a SQL query to calculate the total sales, average price, and total number of units sold for each product. 
+-- Use mathematical functions and arithmetic operations where appropriate.
 
-
+drop table if exists sales;
+CREATE TABLE sales (
+    sale_id INT PRIMARY KEY,
+    product_id INT,
+    month DATE,
+    units_sold INT,
+    price_per_unit DECIMAL(10,2)
+);
+INSERT INTO sales
+	VALUES
+(1, 100, '2022-01-01', 100, 20),
+(2, 100, '2022-02-01', 150, 18),
+(3, 101, '2022-01-01', 80, 30),
+(4, 102, '2022-01-01', 50, 60),
+(5, 101, '2022-03-01', 60, 25),
+(6, 103, '2022-01-01', 90, 40),
+(7, 100, '2022-03-01', 200, 22),
+(8, 101, '2022-02-01', 100, 28),
+(9, 102, '2022-02-01', 60, 55),
+(10, 103, '2022-02-01', 120, 38),
+(11, 100, '2022-04-01', 180, 19),
+(12, 101, '2022-04-01', 90, 27),
+(13, 102, '2022-03-01', 75, 58),
+(14, 103, '2022-03-01', 130, 39);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
-
+-- Solution 1 - Using GROUP BY
+SELECT 
+    product_id,
+    SUM(units_sold * price_per_unit) AS total_sales,
+    AVG(price_per_unit) AS avg_price,
+    SUM(units_sold) AS total_units_sold
+FROM sales
+GROUP BY product_id;
 
 -- ==================================================================================================================================
