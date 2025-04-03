@@ -126,12 +126,57 @@ AND (end_date IS NULL OR end_date > '2021-11-01');
 -- ==================================================================================================================================
 
 -- QUESTION : 3
--- 3. 
+-- 3. Write a query that returns the rate_type, loan_id, loan balance , and a column that shows with 
+-- what percentage the loan's balance contributes to the total balance among the loans of the same rate type.
 
+drop table if exists submissions;
+CREATE TABLE submissions (
+    id INT PRIMARY KEY,
+    balance DECIMAL(10,2),
+    interest_rate DECIMAL(5,2),
+    rate_type VARCHAR(20),
+    loan_id INT
+);
 
+INSERT INTO submissions (id, balance, interest_rate, rate_type, loan_id)
+VALUES
+    (1, 5229.12, 8.75, 'variable', 2),
+    (2, 12727.52, 11.37, 'fixed', 4),
+    (3, 14996.58, 8.25, 'fixed', 9),
+    (4, 21149.00, 4.75, 'variable', 7),
+    (5, 14379.00, 3.75, 'variable', 5),
+    (6, 6221.12, 6.75, 'variable', 11),
+    (7, 8547.30, 7.5, 'fixed', 6),
+    (8, 20031.45, 5.6, 'fixed', 8),
+    (9, 4500.00, 9.0, 'variable', 12),
+    (10, 17550.75, 4.5, 'fixed', 3),
+    (11, 23120.20, 6.9, 'variable', 10),
+    (12, 14300.90, 8.1, 'fixed', 1),
+    (13, 11200.45, 7.2, 'variable', 14),
+    (14, 18750.00, 5.8, 'fixed', 13),
+    (15, 9100.30, 9.2, 'variable', 15);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+-- Solution 1 - Using a CTE (Common Table Expression)
+with cte as (
+	select rate_type,
+		sum(balance) as total_balance
+	from submissions
+	group by rate_type
+)
+select s.rate_type, s.balance,
+	ROUND((s.balance / c.total_balance) * 100, 2) as percentage_contribution
+from submissions s
+join cte c
+	on s.rate_type = c.rate_type;
 
+-- Solution 2 - using the Window Function (SUM() OVER(PARTITION BY ))
+SELECT 
+    rate_type,
+    loan_id,
+    balance,
+    ROUND((balance / SUM(balance) OVER (PARTITION BY rate_type)) * 100, 2) AS balance_percentage
+FROM submissions;
 
 -- ==================================================================================================================================
