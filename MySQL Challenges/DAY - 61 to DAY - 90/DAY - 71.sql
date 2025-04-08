@@ -1,5 +1,5 @@
 -- QUESTION : 1
--- 1. -- Best Selling Item
+-- 1. Best Selling Item
 -- Find the best-selling item for each month (no need to separate months by year). 
 -- The best-selling item is determined by the highest total sales amount, 
 -- calculated as: total_paid = unitprice * quantity. Output the month, description of the item, and the total amount paid.
@@ -98,7 +98,9 @@ WHERE rn = 1;
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. Customers Without Orders
+-- Find customers who have never made an order.
+-- Output the first name of the customer.
 
 CREATE TABLE customers (
     id INT PRIMARY KEY,
