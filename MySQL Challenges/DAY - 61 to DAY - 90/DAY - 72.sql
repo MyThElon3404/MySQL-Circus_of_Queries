@@ -70,13 +70,42 @@ and w.worker_id in (
 -- ==================================================================================================================================
 
 -- QUESTION : 2
--- 2. 
+-- 2. Maximum of Two Numbers
+-- Given a single column of numbers, consider all possible permutations of two numbers assuming that pairs of numbers 
+-- (x,y) and (y,x) are two different permutations. Then, for each permutation, find the maximum of the two numbers.
+-- Output three columns: the first number, the second number and the maximum of the two.
 
-
+CREATE TABLE deloitte_numbers (
+    number INT
+);
+INSERT INTO deloitte_numbers (number) 
+	VALUES
+(-2),
+(-1),
+(0),
+(1),
+(2);
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+-- SOLUTION 1 - Using CROSS JOIN and CASE Statement
+select a.number as n1,
+	b.number as n2,
+	case when a.number > b.number then a.number
+	else b.number
+	end as max_number
+from deloitte_numbers a
+cross join deloitte_numbers b;
 
+-- SOLUTION 2 - Using Self Join and CASE Statement
+select a.number as n1,
+	b.number as n2,
+	case when a.number > b.number then a.number
+	else b.number
+	end as max_number
+from deloitte_numbers a
+join deloitte_numbers b
+	on 1 = 1;
 
 -- ==================================================================================================================================
 
