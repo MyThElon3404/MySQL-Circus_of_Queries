@@ -2,7 +2,7 @@
 -- 1. Find the average daily active users for January 2021 for each account. 
 -- Your output should have account_id and the average daily count for that account.
 
-drop table if exists sf_events;
+DROP TABLE IF EXISTS sf_events;
 CREATE TABLE sf_events (
     record_date DATE,
     account_id VARCHAR(10),
@@ -10,38 +10,22 @@ CREATE TABLE sf_events (
 );
 
 INSERT INTO sf_events (record_date, account_id, user_id) VALUES
-('2021-01-01', 'A1', 'U1'),
-('2021-01-01', 'A1', 'U2'),
-('2021-01-06', 'A1', 'U3'),
-('2021-01-02', 'A1', 'U1'),
-('2020-12-24', 'A1', 'U2'),
-('2020-12-08', 'A1', 'U1'),
-('2020-12-09', 'A1', 'U1'),
-('2021-01-10', 'A2', 'U4'),
-('2021-01-11', 'A2', 'U4'),
-('2021-01-12', 'A2', 'U4'),
-('2021-01-15', 'A2', 'U5'),
-('2020-12-17', 'A2', 'U4'),
-('2020-12-25', 'A3', 'U6'),
-('2020-12-25', 'A3', 'U6'),
-('2020-12-25', 'A3', 'U6'),
-('2020-12-06', 'A3', 'U7'),
-('2020-12-06', 'A3', 'U6'),
-('2021-01-14', 'A3', 'U6'),
-('2021-02-07', 'A1', 'U1'),
-('2021-02-10', 'A1', 'U2'),
-('2021-02-01', 'A2', 'U4'),
-('2021-02-01', 'A2', 'U5'),
-('2020-12-05', 'A1', 'U8'),
-('2021-01-07', 'A1', 'U3'),
-('2021-01-08', 'A1', 'U2'),
-('2021-01-09', 'A1', 'U1'),
-('2021-01-13', 'A2', 'U5'),
-('2021-01-18', 'A3', 'U7'),
-('2021-01-19', 'A3', 'U6'),
-('2021-01-20', 'A3', 'U7'),
-('2021-01-21', 'A3', 'U6'),
-('2021-01-22', 'A3', 'U6');
+('2021-01-01', 'A1', 'U1'), ('2021-01-01', 'A1', 'U2'),
+('2021-01-06', 'A1', 'U3'), ('2021-01-02', 'A1', 'U1'),
+('2020-12-24', 'A1', 'U2'), ('2020-12-08', 'A1', 'U1'),
+('2020-12-09', 'A1', 'U1'), ('2021-01-10', 'A2', 'U4'),
+('2021-01-11', 'A2', 'U4'), ('2021-01-12', 'A2', 'U4'),
+('2021-01-15', 'A2', 'U5'), ('2020-12-17', 'A2', 'U4'),
+('2020-12-25', 'A3', 'U6'), ('2020-12-25', 'A3', 'U6'),
+('2020-12-25', 'A3', 'U6'), ('2020-12-06', 'A3', 'U7'),
+('2020-12-06', 'A3', 'U6'), ('2021-01-14', 'A3', 'U6'),
+('2021-02-07', 'A1', 'U1'), ('2021-02-10', 'A1', 'U2'),
+('2021-02-01', 'A2', 'U4'), ('2021-02-01', 'A2', 'U5'),
+('2020-12-05', 'A1', 'U8'), ('2021-01-07', 'A1', 'U3'),
+('2021-01-08', 'A1', 'U2'), ('2021-01-09', 'A1', 'U1'),
+('2021-01-13', 'A2', 'U5'), ('2021-01-18', 'A3', 'U7'),
+('2021-01-19', 'A3', 'U6'), ('2021-01-20', 'A3', 'U7'),
+('2021-01-21', 'A3', 'U6'), ('2021-01-22', 'A3', 'U6');
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
@@ -152,12 +136,66 @@ ORDER BY s.user_id, s.session_date;
 -- ==================================================================================================================================
 
 -- QUESTION : 3
--- 3. 
+-- 3. Friday Purchases
+-- IBM is working on a new feature to analyze user purchasing behavior for all Fridays in the first quarter of the year. 
+-- In this question first quarter is defined as first 13 weeks. 
+-- For each Friday separately, calculate the average amount users have spent per order. 
+-- The output should contain the week number of that Friday and average amount spent.
 
+CREATE TABLE user_purchases (
+    user_id INT,
+    date DATE,
+    amount_spent INT,
+    day_name VARCHAR(10)
+);
 
+INSERT INTO user_purchases (user_id, date, amount_spent, day_name) VALUES
+(1047, '2023-01-01', 288, 'Sunday'), (1099, '2023-01-04', 803, 'Wednesday'),
+(1055, '2023-01-07', 546, 'Saturday'), (1040, '2023-01-10', 680, 'Tuesday'),
+(1052, '2023-01-13', 889, 'Friday'), (1052, '2023-01-13', 596, 'Friday'),
+(1016, '2023-01-16', 960, 'Monday'), (1023, '2023-01-17', 861, 'Tuesday'),
+(1010, '2023-01-19', 758, 'Thursday'), (1013, '2023-01-19', 346, 'Thursday'),
+(1069, '2023-01-21', 541, 'Saturday'), (1030, '2023-01-22', 175, 'Sunday'),
+(1034, '2023-01-23', 707, 'Monday'), (1019, '2023-01-25', 253, 'Wednesday'),
+(1052, '2023-01-25', 868, 'Wednesday'), (1095, '2023-01-27', 424, 'Friday'),
+(1017, '2023-01-28', 755, 'Saturday'), (1010, '2023-01-29', 615, 'Sunday'),
+(1063, '2023-01-31', 534, 'Tuesday'), (1019, '2023-02-03', 185, 'Friday'),
+(1019, '2023-02-03', 995, 'Friday'), (1092, '2023-02-06', 796, 'Monday'),
+(1058, '2023-02-09', 384, 'Thursday'), (1055, '2023-02-12', 319, 'Sunday'),
+(1090, '2023-02-15', 168, 'Wednesday'), (1090, '2023-02-18', 146, 'Saturday'),
+(1062, '2023-02-21', 193, 'Tuesday'), (1023, '2023-02-24', 259, 'Friday'),
+(1023, '2023-02-24', 849, 'Friday'), (1009, '2023-02-27', 552, 'Monday'),
+(1012, '2023-03-02', 303, 'Thursday'), (1001, '2023-03-05', 317, 'Sunday'),
+(1058, '2023-03-08', 573, 'Wednesday'), (1001, '2023-03-11', 531, 'Saturday'),
+(1034, '2023-03-14', 440, 'Tuesday'), (1096, '2023-03-17', 650, 'Friday'),
+(1048, '2023-03-20', 711, 'Monday'), (1089, '2023-03-23', 388, 'Thursday'),
+(1001, '2023-03-26', 353, 'Sunday'), (1016, '2023-03-29', 833, 'Wednesday');
 
 -- SOLUTION :------------------------------------------------------------------------------------------------------------------------
 
+-- SOLUTION 1 - Using DATEPART(WEEK, date) (SQL Server specific) and AVG function
+select 
+	DATEPART(WEEK, date) as week_number,
+	AVG(amount_spent) as avg_spend_per_user
+from user_purchases
+where day_name = 'Friday'
+	and DATEPART(WEEK, date) <= 13
+group by DATEPART(WEEK, date)
+order by week_number asc;
 
+-- SOLUTION 2 - Using Common Table Expression (CTE) to Tag Week Numbers
+WITH friday_data AS (
+    SELECT *,
+           DATEPART(week, date) AS week_number
+    FROM user_purchases
+    WHERE day_name = 'Friday'
+		and DATEPART(week, date) <= 13
+)
+SELECT 
+    week_number,
+    ROUND(AVG(amount_spent), 2) AS avg_amount_spent
+FROM friday_data
+GROUP BY week_number
+ORDER BY week_number;
 
 -- ==================================================================================================================================
